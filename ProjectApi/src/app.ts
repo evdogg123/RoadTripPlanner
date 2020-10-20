@@ -3,6 +3,7 @@ import { MainRouter } from './mainRouter';
 import { NodeApplication } from './common/NodeApplication';
 import { AppRouter } from './common/AppRouter';
 
+
 //main application class
 class Application extends NodeApplication {
 

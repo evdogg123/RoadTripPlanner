@@ -28,6 +28,7 @@ export class SecurityController {
     //expects email and password fields to be set in the body of the post request
     //sends a success message to caller on success, or a failure status code on failure
     register(req: express.Request, res: express.Response, next: express.NextFunction) {
+        console.log("Registering User...");
         const user: UserModel = new UserModel(req.body.email, req.body.password);
         SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
             .then((userRecord: any) => {
@@ -42,7 +43,6 @@ export class SecurityController {
     //returns the users email on success
     authorize(req: express.Request, res: express.Response, next: express.NextFunction) {
         //validate that req.authUser exists, if so, return the user's email address.
-        console.log();
         res.send({ fn: 'authorize', status: 'success', data:{email: req.body.authUser.email} }).end();
     }
     //changePwd - POST

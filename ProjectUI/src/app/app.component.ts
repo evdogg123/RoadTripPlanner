@@ -7,11 +7,12 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'ExampleUI';
+  title = 'ProjectUI';
   get loggedIn():boolean{
     return this.authSvc.loggedIn;
   }
   constructor(public authSvc:AuthService) {
+    console.log("trying to authorize....")
     authSvc.authorize();
   }
 

@@ -48,6 +48,16 @@ export class AuthService {
       this.token=null;
     });
   }
+  register(email: string,password:string): Observable<any>{
+    console.log("Trying to register.....");
+    return this.http.post<any>(this.path+'register',{email: email,password: password })
+      .pipe(map(user=>{
+        this.token=user.data.token
+        console.log(this.token);
+        this.CurrentUser.next(user.data.user.email);
+        return user.data.user;
+      }),catchError(err=>{this.CurrentUser.next(null);this.token=null;return throwError(err.message||'server error')}));
+  }
 
   login(email: string,password:string): Observable<any>{
     return this.http.post<any>(this.path+'login',{email: email,password: password })
