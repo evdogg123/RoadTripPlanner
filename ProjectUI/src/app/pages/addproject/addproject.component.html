@@ -1,1 +1,23 @@
-<p>addproject works!</p>
+
+<form [formGroup]="tripForm" (ngSubmit)="createTrip()">
+    <div class="form-group">
+        <label for="username">Trip Name</label>
+        <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && tripForm.controls.tripName.errors }" />
+        <div *ngIf="submitted && tripForm.controls.name.errors" class="invalid-feedback">
+            <div *ngIf="tripForm.controls.name.errors.required">Please Name your Trip!</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && tripForm.controls.description.errors }" />
+        <div *ngIf="submitted && tripForm.controls.description.errors" class="invalid-feedback">
+            <div *ngIf="tripForm.controls.description.errors.required">Description is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Create Trip
+        </button>
+    </div>
+</form>

@@ -16,5 +16,7 @@ export class ProjectsRouter extends AppRouter{
         this.expressRouter.post('/',[SecurityMiddleware.RequireAuth],ProjectsRouter.projController.addProject);
         this.expressRouter.put('/:id',[SecurityMiddleware.RequireAuth],ProjectsRouter.projController.updateProject);
         this.expressRouter.delete('/:id',[SecurityMiddleware.RequireAuth],ProjectsRouter.projController.deleteProject);
+        
+
     }    
 }
