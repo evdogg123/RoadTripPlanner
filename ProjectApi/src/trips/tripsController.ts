@@ -35,6 +35,7 @@ updateSubTrip
     //addTrip
     //adds the Trip to the database
     addTrip(req: express.Request, res: express.Response) {
+        console.log("Trying to add trip...");
         const trip: TripsModel = TripsModel.fromObject(req.body);
 
         TripsController.db.addRecord(TripsController.tripsTable, trip.toObject())

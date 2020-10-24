@@ -1,9 +1,15 @@
-<p>home works!</p>
-<div *ngIf='semesters.length>0'>
+
+<div *ngIf='trips.length>0'>
 <ul>
-    <li *ngFor='let item of semesters'>
-        {{item}}
+    <li *ngFor='let item of trips'>
+        <div class = "tripName">
+         <strong> {{item.name}} </strong>
+        </div>
+        <div class = "tripDesc">
+              <i>{{item.description}} </i>
+        </div>
+   
     </li>
 </ul>
 </div>
-<div *ngIf='semesters.length==0'>No records found</div>
+<div *ngIf='trips.length==0'>No records found</div>

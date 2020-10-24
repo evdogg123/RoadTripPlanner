@@ -7,10 +7,13 @@ import { ProjectsService } from 'src/app/services/projects.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  semesters=[];
+  trips=[];
+
   constructor(private projSvc:ProjectsService) { 
-    projSvc.getProjects().subscribe(result=>{
-      this.semesters=result.data.semesters;
+    projSvc.getTrips().subscribe(result=>{
+      console.log(result.data);
+      this.trips=result.data;
+      
     })
   }
 
