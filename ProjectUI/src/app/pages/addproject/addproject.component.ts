@@ -29,7 +29,7 @@ export class AddprojectComponent implements OnInit {
 
 createTrip() {
   console.log("Creating a Trip.....");
-  //return this.http.post<any>(this.path, this.tripForm.value).subscribe(data => console.log('success', data));
+  console.log(this.tripForm.value);
   this.projSvc.addTrips( this.tripForm.value);
 
 /*

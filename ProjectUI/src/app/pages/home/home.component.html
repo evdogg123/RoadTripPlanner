@@ -2,12 +2,15 @@
 <div *ngIf='trips.length>0'>
 <ul>
     <li *ngFor='let item of trips'>
-        <div class = "tripName">
+       
+         <a [routerLink]="['/trip',item._id]" class="btn btn-outline-info my-2 my-sm-0" style="color:black; font-size:2vw; font-weight:400;">
+          <div class = "tripName">
          <strong> {{item.name}} </strong>
         </div>
         <div class = "tripDesc">
               <i>{{item.description}} </i>
         </div>
+         </a>
    
     </li>
 </ul>

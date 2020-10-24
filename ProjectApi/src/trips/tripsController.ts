@@ -26,9 +26,9 @@ updateSubTrip
      //getTrip
     //sends the specific Trip as JSON with id=:id
     getTrip(req: express.Request, res: express.Response) {
-        const user_id = req.params.user_id; //Don't think I need this?
-        const trip_id = Database.stringToId(req.params.trip_id);
-        TripsController.db.getOneRecord(TripsController.tripsTable, {trip_id : trip_id , user_id : user_id })
+       const tripId = Database.stringToId(req.params.tripId);
+        
+        TripsController.db.getOneRecord(TripsController.tripsTable, {_id : tripId})
             .then((results) => res.send({ fn: 'getTrip', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
     }
@@ -36,12 +36,19 @@ updateSubTrip
     //adds the Trip to the database
     addTrip(req: express.Request, res: express.Response) {
         console.log("Trying to add trip...");
-        const trip: TripsModel = TripsModel.fromObject(req.body);
-
-        TripsController.db.addRecord(TripsController.tripsTable, trip.toObject())
+       
+            const trip: TripsModel = TripsModel.fromObject(req.body);
+            
+            TripsController.db.addRecord(TripsController.tripsTable, trip.toObject())
             .then((result: boolean) => res.send({ fn: 'addTrip', status: 'success' }).end())
             .catch((reason) => res.status(500).send(reason).end());
+        
     }
+
+       
+        
+        
+       
 
     //updateTrip
     //updates the trip in the database with id :id
