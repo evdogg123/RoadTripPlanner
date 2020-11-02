@@ -9,7 +9,7 @@ export class TripsRouter extends AppRouter{
 
     //sets up the routes within this module shows an example of a route that requires authorization, and one that does not
     setupRoutes(): void {      
-        this.expressRouter.get('/',TripsRouter.tripsController.getTrips);
+        this.expressRouter.get('/',[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.getTrips);
         this.expressRouter.get('/trip/:tripId',TripsRouter.tripsController.getTrip);
         //this.expressRouter.get('/trips/:trip-id/subtrips',TripsRouter.tripsController.getSubTrips);
        // this.expressRouter.get('/trips/:trip-id/sub-trips/:subtrip-id',TripsRouter.tripsController.getSubTrip);

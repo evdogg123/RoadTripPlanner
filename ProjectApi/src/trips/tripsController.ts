@@ -2,33 +2,60 @@ import express, { RequestHandler } from 'express';
 import { TripsModel } from './tripsModel';
 import { Database } from '../common/MongoDB';
 import { Config } from '../config';
+import { Client, defaultAxiosInstance } from "@googlemaps/google-maps-services-js";
+import { } from 'googlemaps';
+import  { AxiosInstance } from "axios";
 
 export class TripsController {
+
+
     static db: Database = new Database(Config.url, "users");
     static tripsTable = 'users';
 
     //TODO!
-/*
-getSubTrips
-getSubTrip
-addSubTrip
-updateTrip
-updateSubTrip
-*/
+    /*
+    getSubTrips
+    getSubTrip
+    addSubTrip
+    updateTrip
+    updateSubTrip
+    */
 
     getTrips(req: express.Request, res: express.Response) {
+      
+            /*
+              const client = new Client({});
+
+        client
+            .elevation({
+                params: {
+                    locations: [{ lat: 45, lng: -110 }],
+                    key: "AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0",
+                },
+                timeout: 1000, // milliseconds
+            })
+            .then((r) => {
+                console.log(r.data.results[0].elevation);
+            })
+            .catch((e) => {
+                console.log(e.response.data.error_message);
+            });
+
+
+            */
         const user_id = req.params.user_id; //Don't think I need this?
-        TripsController.db.getRecords(TripsController.tripsTable, { user_id: user_id})
+        console.log(req);
+        TripsController.db.getRecords(TripsController.tripsTable, { user_id: user_id })
             .then((results) => res.send({ fn: 'getTrips', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
     }
 
-     //getTrip
+    //getTrip
     //sends the specific Trip as JSON with id=:id
     getTrip(req: express.Request, res: express.Response) {
-       const tripId = Database.stringToId(req.params.tripId);
-        
-        TripsController.db.getOneRecord(TripsController.tripsTable, {_id : tripId})
+        const tripId = Database.stringToId(req.params.tripId);
+
+        TripsController.db.getOneRecord(TripsController.tripsTable, { _id: tripId })
             .then((results) => res.send({ fn: 'getTrip', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
     }
@@ -36,19 +63,19 @@ updateSubTrip
     //adds the Trip to the database
     addTrip(req: express.Request, res: express.Response) {
         console.log("Trying to add trip...");
-       
-            const trip: TripsModel = TripsModel.fromObject(req.body);
-            
-            TripsController.db.addRecord(TripsController.tripsTable, trip.toObject())
+
+        const trip: TripsModel = TripsModel.fromObject(req.body);
+
+        TripsController.db.addRecord(TripsController.tripsTable, trip.toObject())
             .then((result: boolean) => res.send({ fn: 'addTrip', status: 'success' }).end())
             .catch((reason) => res.status(500).send(reason).end());
-        
+
     }
 
-       
-        
-        
-       
+
+
+
+
 
     //updateTrip
     //updates the trip in the database with id :id

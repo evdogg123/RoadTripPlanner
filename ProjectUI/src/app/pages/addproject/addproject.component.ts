@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { ProjectsService } from 'src/app/services/projects.service';
+
 @Component({
   selector: 'app-addproject',
   templateUrl: './addproject.component.html',
@@ -15,7 +15,10 @@ export class AddprojectComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   error: string;
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private http: HttpClient, private projSvc:ProjectsService) { }
+
+
+
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private projSvc:ProjectsService) { }
 
   ngOnInit(): void {
     this.tripForm = this.formBuilder.group({
@@ -30,7 +33,7 @@ export class AddprojectComponent implements OnInit {
 createTrip() {
   console.log("Creating a Trip.....");
   console.log(this.tripForm.value);
-  this.projSvc.addTrips( this.tripForm.value);
+  this.projSvc.addTrips(this.tripForm.value);
 
 /*
 

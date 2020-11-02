@@ -10,14 +10,15 @@ export class HomeComponent implements OnInit {
   trips=[];
 
   constructor(private projSvc:ProjectsService) { 
-    projSvc.getTrips().subscribe(result=>{
+
+  }
+
+  ngOnInit(): void {
+    this.projSvc.getTrips().subscribe(result=>{
       console.log(result.data);
       this.trips=result.data;
       
     })
-  }
-
-  ngOnInit(): void {
   }
 
 }
