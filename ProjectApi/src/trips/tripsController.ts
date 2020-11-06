@@ -94,38 +94,6 @@ export class TripsController {
             .catch((reason) => res.status(500).send(reason).end());
     }
 
-    /*
-
-    
-    //getSemesters
-    //returns all valid unique semesters in the database
-    getSemesters(req: express.Request, res: express.Response) {
-        TripsController.db.getRecords(TripsController.tripsTable)
-            .then(results => {
-                //extracts just the semester
-                let semesters = results.map((x: any) => x.semester);
-                //removes duplciates
-                semesters = semesters.filter((value: string, index: number, array: any[]) =>
-                    !array.filter((v, i) => value === v && i < index).length);
-                res.send({ fn: 'deleteTrip', status: 'success', data: { semesters: semesters } })
-            })
-            .catch((reason) => res.status(500).send(reason).end());
-    }
-    //getTripNumbers
-    //returns all valid unique TripNumbers for a given semesters in the database
-    getTripNumbers(req: express.Request, res: express.Response) {
-        const semester = req.params.semester;
-        TripsController.db.getRecords(TripsController.tripsTable,{semester:semester})
-            .then(results => {
-                //extracts just the TripNumber
-                let Trips = results.map((x: any) => x.TripNumber);
-                //removes duplciates
-                Trips = Trips.filter((value: number, index: number, array: any[]) =>
-                    !array.filter((v, i) => value === v && i < index).length);
-                res.send({ fn: 'deleteTrip', status: 'success', data: { TripNumbers:Trips.sort()} });
-            })
-            .catch((reason) => res.status(500).send(reason).end());
-    }
-    */
+   
 
 }

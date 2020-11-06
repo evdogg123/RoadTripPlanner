@@ -25,7 +25,7 @@ import { TripComponent } from './pages/trip/trip.component';
   imports: [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0',
-      libraries: ['places']
+      libraries: ['places',]
     }),
     FormsModule,
     BrowserModule,

@@ -75,9 +75,11 @@ export class TripComponent implements OnInit {
   }
 
   getPlaceImage(place: any) {
-    let photoUrl = place.photos[0].getUrl({ maxWidth: 400, maxHeight: 400 });
+    console.log("here");
+    let photoUrl = place.photos[0].getUrl({ maxWidth: 500, maxHeight: 500 });
+    console.log(photoUrl);
     let img = document.createElement("img");
-    img.setAttribute('src', photoUrl + "photo.jpg");
+    img.setAttribute('src', photoUrl);
     document.getElementById('locInfoBox').appendChild(img);
   }
 
@@ -122,7 +124,7 @@ export class TripComponent implements OnInit {
       console.warn("Multiple places returned by this search, choosing the first one.")
     }
     let place = places[0];
-
+    this.getPlaceImage(place);
     if (!place.geometry) {
       //TODO: Make this display error to user
       console.warn("This place has no geometry attribute.");
