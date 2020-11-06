@@ -17,6 +17,9 @@ export class ProjectsService {
     return this.http.post<any>(this.path, data).subscribe(res => console.log('success', res));
     
   }
+  addSubTrip(data: any, tripId: string){
+    return this.http.post<any>(`${this.path}trip/${tripId}`, data).subscribe(res => console.log('success', res));
+  }
   getTrip(tripId: string): Observable<any>{
 
     return this.http.get( `${this.path}trip/${tripId}`);

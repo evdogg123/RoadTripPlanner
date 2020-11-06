@@ -1,5 +1,6 @@
 import express, { RequestHandler } from 'express';
 import { TripsModel } from './tripsModel';
+import { SubTripsModel } from './subTripsModel';
 import { Database } from '../common/MongoDB';
 import { Config } from '../config';
 import { Client, defaultAxiosInstance } from "@googlemaps/google-maps-services-js";
@@ -23,26 +24,6 @@ export class TripsController {
 
     getTrips(req: express.Request, res: express.Response) {
       
-            /*
-              const client = new Client({});
-
-        client
-            .elevation({
-                params: {
-                    locations: [{ lat: 45, lng: -110 }],
-                    key: "AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0",
-                },
-                timeout: 1000, // milliseconds
-            })
-            .then((r) => {
-                console.log(r.data.results[0].elevation);
-            })
-            .catch((e) => {
-                console.log(e.response.data.error_message);
-            });
-
-
-            */
         const user_id = req.params.user_id; //Don't think I need this?
         console.log(req);
         TripsController.db.getRecords(TripsController.tripsTable, { user_id: user_id })
@@ -54,7 +35,7 @@ export class TripsController {
     //sends the specific Trip as JSON with id=:id
     getTrip(req: express.Request, res: express.Response) {
         const tripId = Database.stringToId(req.params.tripId);
-
+        console.log(tripId);
         TripsController.db.getOneRecord(TripsController.tripsTable, { _id: tripId })
             .then((results) => res.send({ fn: 'getTrip', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
@@ -70,6 +51,22 @@ export class TripsController {
             .then((result: boolean) => res.send({ fn: 'addTrip', status: 'success' }).end())
             .catch((reason) => res.status(500).send(reason).end());
 
+    }
+    addSubTrip(req: express.Request, res: express.Response) {
+        console.log("Trying to add subTrip...");
+        console.log(req.params.tripId);
+        const tripId = Database.stringToId(req.params.tripId);
+        console.log(tripId);
+
+        const subTrip: SubTripsModel = SubTripsModel.fromObject(req.body);
+     
+        //{ $push: {subTrips:req.body}}
+        TripsController.db.updateRecord(TripsController.tripsTable, { _id: tripId  },  {$addToSet: { 'subTrips': req.body }} )
+            .then((results) => results ? (res.send({ fn: 'updateTrip', status: 'success' })) : (res.send({ fn: 'addSubTrip', status: 'failure', data: 'Not found' })).end())
+            .catch(err => res.send({ fn: 'addSubTrip', status: 'failure', data: err }).end());
+
+
+        
     }
 
 

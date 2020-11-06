@@ -62,5 +62,7 @@ defer
       </div>
     </div>
   </div>
-
+  <div class="row" id = "locInfoBox" >
+    <button type="button" (click)="saveLocation()" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save Location</button>
+  </div>
 </div>

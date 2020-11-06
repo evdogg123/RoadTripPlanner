@@ -54,6 +54,7 @@ export class Database {
         });
     }
 
+
     //getRecords
     // collection: the name of the collection to get from.
     // query: a mongo query object

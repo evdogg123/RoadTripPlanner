@@ -13,14 +13,18 @@ import { MapsAPILoader } from '@agm/core';
 export class TripComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
   markers: google.maps.Marker[] = [];
+  savedMarkers: google.maps.Marker[] = [];
   map: google.maps.Map;
   trip;
+  tripID;
+  savedPlaces: any[];
+  currentSelectedPlace: any;
   latitude: any;
   longitude: any;
   input: any;
   searchBox: any;
 
-  iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+  iconBase = 'https://maps.google.com/mpfiles/kml/shapes/';
 
   markerTypes = [
     {
@@ -37,7 +41,12 @@ export class TripComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       console.log(params.get('tripID'));
       this.tripSvc.getTrip(params.get('tripID'))
-        .subscribe(res => { this.trip = res.data; });
+        .subscribe(res => {
+          this.trip = res.data;
+          this.savedPlaces = this.trip["subTrips"];
+          console.log(this.savedPlaces);
+          this.tripID = params.get('tripID');
+        });
     });
 
   }
@@ -57,39 +66,111 @@ export class TripComponent implements OnInit {
     });
     this.searchBox.addListener("places_changed", () => {
       const places = this.searchBox.getPlaces();
-      this.getPlaceInfo(places);
+      this.handlePlaceSearch(places);
       if (places.length == 0) {
         return;
       }
     });
+    this.initSavedSubTripData();
   }
 
-  getPlaceInfo(places: any){
+  getPlaceImage(place: any) {
+    let photoUrl = place.photos[0].getUrl({ maxWidth: 400, maxHeight: 400 });
+    let img = document.createElement("img");
+    img.setAttribute('src', photoUrl + "photo.jpg");
+    document.getElementById('locInfoBox').appendChild(img);
+  }
+
+  initSavedSubTripData() {
     const bounds = new google.maps.LatLngBounds();
-    places.forEach((place) => {
-      if (!place.geometry) {
-        console.log("Returned place contains no geometry");
-        return;
-      }
+    this.savedPlaces.forEach(savedPlace => {
       const icon = {
-        url: place.icon as string,
+        url: savedPlace.icon as string,
         size: new google.maps.Size(71, 71),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
         scaledSize: new google.maps.Size(25, 25),
       };
-
-      // Create a marker for each place.
       this.markers.push(
         new google.maps.Marker({
-          map:this.map,
+          map: this.map,
           icon,
-          title: place.name,
-          position: place.geometry.location,
+          title: savedPlace.name,
+          position: savedPlace.geometry.location,
         })
       );
+      if (savedPlace.geometry.viewport) {
+        // Only geocodes have viewport.
+        bounds.union(savedPlace.geometry.viewport);
+      } else {
+        bounds.extend(savedPlace.geometry.location);
+      }
+      this.map.fitBounds(bounds);
     });
   }
+
+
+
+  handlePlaceSearch(places: any) {
+    const bounds = new google.maps.LatLngBounds();
+    this.markers.forEach((marker) => {
+      marker.setMap(null);
+    });
+    this.markers = [];
+
+    if (places.length > 1) {
+      console.warn("Multiple places returned by this search, choosing the first one.")
+    }
+    let place = places[0];
+
+    if (!place.geometry) {
+      //TODO: Make this display error to user
+      console.warn("This place has no geometry attribute.");
+      return;
+    }
+    if (!place.types.includes("locality")) {
+      //TODO: Make this display error to user
+      console.warn("This is not a valid geographical location");
+      return;
+    }
+    const icon = {
+      url: place.icon as string,
+      size: new google.maps.Size(71, 71),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(25, 25),
+    };
+    this.markers.push(
+      new google.maps.Marker({
+        map: this.map,
+        icon,
+        title: place.name,
+        position: place.geometry.location,
+      })
+    );
+    if (place.geometry.viewport) {
+      // Only geocodes have viewport.
+      bounds.union(place.geometry.viewport);
+    } else {
+      bounds.extend(place.geometry.location);
+    }
+    this.currentSelectedPlace = place;
+    this.map.fitBounds(bounds);
+
+  }
+
+  saveLocation() {
+    console.log(this.currentSelectedPlace);
+    console.log(this.tripID);
+    this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
+  }
+
+
+  /*
+  ***************************
+  DEPRECATED STUFF DOWN HERE!
+  ***************************
+  */
   setMapType(mapTypeId: string) {
     this.map.setMapTypeId(mapTypeId)
   }
@@ -121,8 +202,6 @@ export class TripComponent implements OnInit {
   }
 
   showCustomMarker() {
-
-
     this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
 
     let location = new google.maps.LatLng(this.latitude, this.longitude);
@@ -141,6 +220,8 @@ export class TripComponent implements OnInit {
     this.isHidden = !this.isHidden;
 
     this.gmapElement.nativeElement.hidden = this.isHidden;
+
   }
+
 
 }

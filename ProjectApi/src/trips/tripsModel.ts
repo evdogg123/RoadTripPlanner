@@ -13,7 +13,7 @@ export class TripsModel {
         t.name = object.name;
         t.description = object.description;
         t.length = object.length;
-        t.subTrips = object.subTrips;
+        t.subTrips = object.subTrips || [];
         return t;
     }
     toObject(): any {
