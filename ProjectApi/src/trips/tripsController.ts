@@ -52,6 +52,7 @@ export class TripsController {
             .catch((reason) => res.status(500).send(reason).end());
 
     }
+
     addSubTrip(req: express.Request, res: express.Response) {
         console.log("Trying to add subTrip...");
         console.log(req.params.tripId);

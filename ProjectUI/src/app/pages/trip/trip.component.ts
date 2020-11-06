@@ -161,8 +161,13 @@ export class TripComponent implements OnInit {
 
   saveLocation() {
     console.log(this.currentSelectedPlace);
-    console.log(this.tripID);
+    console.log("Trip id: " + this.tripID);
     this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
+  }
+
+  deleteTrip(){
+    console.log("Trip id: " + this.tripID);
+    this.tripSvc.deleteTrip(this.tripID, this.tripID);
   }
 
 
