@@ -65,8 +65,7 @@ export class TripsController {
             .then((results) => results ? (res.send({ fn: 'updateTrip', status: 'success' })) : (res.send({ fn: 'addSubTrip', status: 'failure', data: 'Not found' })).end())
             .catch(err => res.send({ fn: 'addSubTrip', status: 'failure', data: err }).end());
 
-
-        
+       
     }
 
 

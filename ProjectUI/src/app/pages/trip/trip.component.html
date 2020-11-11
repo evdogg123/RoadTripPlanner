@@ -13,35 +13,29 @@ defer
   </div>
   <br>
 
-  <div class="row">
+  <mat-sidenav-container class="example-container" >
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+      Sidenav content
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>
+      <p>Events:</p>
+      <div class="example-events">
+        Main Content
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 
-    <div class="col-md-6 col-sm-12 col-xs-12">
-      <form class="form-inline" #form="ngForm">
-        <div class="form-group">
-          <input type="text" class="form-control" name="latitude" [(ngModel)]="latitude" placeholder="Enter latitude" required>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" name="longitude" [(ngModel)]="longitude" placeholder="Enter longitude" required>
-        </div>
-        <button type="button" (click)="setCenter()" class="btn btn-primary" [disabled]="form.invalid"> Go</button>
 
-
-      </form>
-    </div>
-
-    <div class="col-md-6 col-sm-12 col-xs-12">
-      <label>Select Marker: </label>
-      <select [(ngModel)]="selectedMarkerType" name="category">
-        <option *ngFor="let marker of markerTypes" [value]="marker.value">{{marker.text}}</option>
-      </select>
-      <button type="button" (click)="showCustomMarker()" class="btn btn-primary" [disabled]="form.invalid"> Custom Marker</button>
-    </div>
+  <div id="calenderSidePanel">
+    <app-calendar style="width:100%;height:400px" ></app-calendar>
   </div>
-  <br>
+
+  <button class="openbtn" onclick="openNav()">&#9776; Toggle Sidepanel</button>
 
   <div class="row">
     <button type="button" (click)="toggleMap()" class="btn btn-primary">Toggle Map</button>
-    
   </div>
   <br>
   <div class="row" >
@@ -55,6 +49,7 @@ defer
             type="text"
             placeholder="Search Box"/>
             <div #gmap style="width:100%;height:400px" ></div>
+             <button type="button" id="saveLocButton" (click)="saveLocation()" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save Location</button>
           </div>
           
           
@@ -63,6 +58,6 @@ defer
     </div>
   </div>
   <div class="row" id = "locInfoBox" >
-    <button type="button" (click)="saveLocation()" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save Location</button>
+   
   </div>
 </div>

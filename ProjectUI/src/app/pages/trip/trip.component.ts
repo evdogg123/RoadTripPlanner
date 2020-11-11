@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { MapsAPILoader } from '@agm/core';
-
+import {CalendarComponent} from "../calendar/calendar.component";
 
 @Component({
   selector: 'app-trip',
@@ -12,6 +12,7 @@ import { MapsAPILoader } from '@agm/core';
 })
 export class TripComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
+  @ViewChild(CalendarComponent) calendar: CalendarComponent;
   markers: google.maps.Marker[] = [];
   savedMarkers: google.maps.Marker[] = [];
   map: google.maps.Map;
@@ -22,7 +23,9 @@ export class TripComponent implements OnInit {
   latitude: any;
   longitude: any;
   input: any;
+  saveLocButton: any;
   searchBox: any;
+  opened: boolean;
 
   iconBase = 'https://maps.google.com/mpfiles/kml/shapes/';
 
@@ -59,8 +62,10 @@ export class TripComponent implements OnInit {
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.input = document.getElementById("pac-input") as HTMLInputElement;
+    this.saveLocButton = document.getElementById("saveLocButton") as HTMLInputElement;
     this.searchBox = new google.maps.places.SearchBox(this.input);
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.input);
+    this.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(this.saveLocButton);
     this.map.addListener("bounds_changed", () => {
       this.searchBox.setBounds(this.map.getBounds() as google.maps.LatLngBounds);
     });

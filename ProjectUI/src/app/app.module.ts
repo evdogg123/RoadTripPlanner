@@ -4,7 +4,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AddprojectComponent } from './pages/addproject/addproject.component';
@@ -12,6 +12,19 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { TripComponent } from './pages/trip/trip.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import {
+  CalendarEvent,CalendarEventAction,CalendarEventTimesChangedEvent,CalendarView,} from 'angular-calendar';
+ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import {startOfDay,endOfDay,subDays,addDays,endOfMonth,isSameDay,isSameMonth,addHours,} from 'date-fns';
+import { CalendarComponent } from './pages/calendar/calendar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlatpickrModule } from 'angularx-flatpickr';
+import {MatSidenavModule,} from '@angular/material/sidenav';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule} from '@angular/material/button';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +33,9 @@ import { TripComponent } from './pages/trip/trip.component';
     LoginComponent,
     RegisterComponent,
     AddprojectComponent,
-    TripComponent
+    TripComponent,
+    CalendarComponent,
+
   ],
   imports: [
     AgmCoreModule.forRoot({
@@ -28,12 +43,25 @@ import { TripComponent } from './pages/trip/trip.component';
       libraries: ['places',]
     }),
     FormsModule,
+    MatSidenavModule,
+    MatButtonModule,
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule,
+    NgbModalModule,
+    FlatpickrModule.forRoot(),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+      
+    }),
+   
+
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi:true}],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
