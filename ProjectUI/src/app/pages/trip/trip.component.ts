@@ -25,7 +25,9 @@ export class TripComponent implements OnInit {
   input: any;
   saveLocButton: any;
   searchBox: any;
-  opened: boolean;
+  openedCalendar: boolean;
+
+  showLocation = false;
 
   iconBase = 'https://maps.google.com/mpfiles/kml/shapes/';
 
@@ -80,13 +82,12 @@ export class TripComponent implements OnInit {
   }
 
   getPlaceImage(place: any) {
-    console.log("here");
     let photoUrl = place.photos[0].getUrl({ maxWidth: 500, maxHeight: 500 });
     console.log(photoUrl);
-    let img = document.createElement("img");
-    img.setAttribute('src', photoUrl);
-    document.getElementById('locInfoBox').appendChild(img);
+    document.getElementById('locImg').setAttribute('src', photoUrl);
   }
+
+
 
   initSavedSubTripData() {
     const bounds = new google.maps.LatLngBounds();
@@ -129,6 +130,7 @@ export class TripComponent implements OnInit {
       console.warn("Multiple places returned by this search, choosing the first one.")
     }
     let place = places[0];
+    console.log(place);
     this.getPlaceImage(place);
     if (!place.geometry) {
       //TODO: Make this display error to user

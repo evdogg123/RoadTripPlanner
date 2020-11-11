@@ -24,7 +24,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import {MatSidenavModule,} from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
-
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -45,6 +45,7 @@ import {MatButtonModule} from '@angular/material/button';
     FormsModule,
     MatSidenavModule,
     MatButtonModule,
+    MatIconModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,

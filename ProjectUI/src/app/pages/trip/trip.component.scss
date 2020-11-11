@@ -29,3 +29,13 @@
   #pac-input:focus {
     border-color: #4d90fe;
   }
+
+  #tripContent{
+    width: 100% !important;
+    height: 100% !important;
+    flex-grow : 1;
+  }
+
+  #gmap{
+    height: 100% !important;
+  }

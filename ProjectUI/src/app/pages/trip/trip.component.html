@@ -1,63 +1,55 @@
-
 <script
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0&callback=initAutocomplete&libraries=places&v=weekly"
-defer
-></script>
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0&callback=initAutocomplete&libraries=places&v=weekly"
+  defer></script>
 
-<div class="container">
+<div class="tripContent">
   <div style="text-align:center">
     <p class="h1">
-     {{trip.name}}
+      {{trip.name}}
     </p>
-     <i>{{trip.description}}</i>
+    <i>{{trip.description}}</i>
   </div>
   <br>
 
-  <mat-sidenav-container class="example-container" >
-    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-      Sidenav content
-    </mat-sidenav>
-  
-    <mat-sidenav-content>
-      <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p>
-      <p>Events:</p>
-      <div class="example-events">
-        Main Content
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav mode="side" [(opened)]="openedCalendar">
+      <div id="calenderSidePanel">
+        <app-calendar style="width:100%;height:800px"></app-calendar>
       </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+    
+      
+<div class="mapPage">
+  <div class="row">
+    <p><button mat-button (click)="sidenav.toggle()">	<mat-icon> calendar_today</mat-icon></button></p>
+    <!-- <button type="button" (click)="toggleMap()" class="btn btn-primary"><mat-icon> map</mat-icon></button> -->
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+          <div>
+            <input id="pac-input" class="controls" type="text" placeholder="Search Box" />
+            <div #gmap style="width:100%;height:800px"></div>
+            <button type="button" id="saveLocButton" (click)="saveLocation()"
+              [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save Location</button>
+          </div>
+    </div>
+  </div>
+  <div class="row" id="locInfoBox" >
+    <img src="" id="locImg" height="200">
+    <div *ngIf = "currentSelectedPlace">
+      <h2>
+        {{currentSelectedPlace.formatted_address}}
+      </h2>
+        Brief Description of Location Found on Wikipedia
+    </div>
+  </div>
+</div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 
 
-  <div id="calenderSidePanel">
-    <app-calendar style="width:100%;height:400px" ></app-calendar>
-  </div>
-
-  <button class="openbtn" onclick="openNav()">&#9776; Toggle Sidepanel</button>
-
-  <div class="row">
-    <button type="button" (click)="toggleMap()" class="btn btn-primary">Toggle Map</button>
-  </div>
-  <br>
-  <div class="row" >
-    <div class="col-md-12">
-      <div class="text-center">
-        <h3>
-          <div>
-            <input
-            id="pac-input"
-            class="controls"
-            type="text"
-            placeholder="Search Box"/>
-            <div #gmap style="width:100%;height:400px" ></div>
-             <button type="button" id="saveLocButton" (click)="saveLocation()" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save Location</button>
-          </div>
-          
-          
-        </h3>
-      </div>
-    </div>
-  </div>
-  <div class="row" id = "locInfoBox" >
-   
-  </div>
+  
 </div>
