@@ -44,11 +44,12 @@ export class TripsController {
     //adds the Trip to the database
     addTrip(req: express.Request, res: express.Response) {
         console.log("Trying to add trip...");
+        const id = Database.stringToId(req.params.id);
 
         const trip: TripsModel = TripsModel.fromObject(req.body);
 
         TripsController.db.addRecord(TripsController.tripsTable, trip.toObject())
-            .then((result: boolean) => res.send({ fn: 'addTrip', status: 'success', id: "" }).end())
+            .then((result: boolean) => res.send({ fn: 'addTrip', status: 'success', id: id }).end())
             .catch((reason) => res.status(500).send(reason).end());
 
     }

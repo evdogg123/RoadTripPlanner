@@ -14,7 +14,7 @@ export class ProjectsService {
     return this.http.get(this.path);
   }
   addTrips(data: any){
-    return this.http.post<any>(this.path, data).subscribe(res => console.log('success', res));
+    return this.http.post<any>(this.path, data);//.subscribe(res => console.log('success', res));
     
   }
   addSubTrip(data: any, tripId: string){
