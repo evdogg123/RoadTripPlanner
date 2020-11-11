@@ -5,3 +5,12 @@
 body {
     min-height: 100%;
   }
+  
+  
+*,*:focus,*:hover{
+    outline:none !important;
+}
+
+.mat-button-focus-overlay {
+    background-color: transparent!important;
+}

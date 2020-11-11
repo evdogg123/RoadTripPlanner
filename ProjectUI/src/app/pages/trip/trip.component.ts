@@ -26,6 +26,7 @@ export class TripComponent implements OnInit {
   saveLocButton: any;
   searchBox: any;
   openedCalendar: boolean;
+  openedLocInfo: boolean;
 
   showLocation = false;
 
@@ -66,8 +67,7 @@ export class TripComponent implements OnInit {
     this.input = document.getElementById("pac-input") as HTMLInputElement;
     this.saveLocButton = document.getElementById("saveLocButton") as HTMLInputElement;
     this.searchBox = new google.maps.places.SearchBox(this.input);
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.input);
-    this.map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(this.saveLocButton);
+    document.getElementById("googleMap").children[0].setAttribute("style", "height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223); overflow:hidden;");
     this.map.addListener("bounds_changed", () => {
       this.searchBox.setBounds(this.map.getBounds() as google.maps.LatLngBounds);
     });
