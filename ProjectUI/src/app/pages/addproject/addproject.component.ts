@@ -30,11 +30,16 @@ export class AddprojectComponent implements OnInit {
   }
 
 
+getId(){
+  console.log(this.tripForm.value.name);
+  console.log(this.projSvc.getTrip(this.tripForm.value.name));
+}
 createTrip() {
   console.log("Creating a Trip.....");
   console.log(this.tripForm.value);
   this.projSvc.addTrips(this.tripForm.value);
-
+  //this.getId();
+  this.router.navigateByUrl("/home");
 /*
 
     

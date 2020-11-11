@@ -21,7 +21,7 @@ export class TripsRouter extends AppRouter{
         this.expressRouter.put('/:trip-id',[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.updateTrip);
        // this.expressRouter.put('/trips/:trip-id/subtrips/:subtrip-id',[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.updateSubTrip);
         
-        this.expressRouter.delete('/:trip-id',[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.deleteTrip);
+        this.expressRouter.delete('/trip/:id',[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.deleteTrip);
 
     }    
 }

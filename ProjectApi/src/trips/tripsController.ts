@@ -48,7 +48,7 @@ export class TripsController {
         const trip: TripsModel = TripsModel.fromObject(req.body);
 
         TripsController.db.addRecord(TripsController.tripsTable, trip.toObject())
-            .then((result: boolean) => res.send({ fn: 'addTrip', status: 'success' }).end())
+            .then((result: boolean) => res.send({ fn: 'addTrip', status: 'success', id: "" }).end())
             .catch((reason) => res.status(500).send(reason).end());
 
     }
