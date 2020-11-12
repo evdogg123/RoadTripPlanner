@@ -11,28 +11,23 @@
   </div>
   <br>
 
-  <div id = "sidebarContainer">
     <div id="calendarBar">
-      <mat-sidenav-container class="example-container">
 
-        <mat-sidenav #sidenav mode="side" [(opened)]="openedCalendar">
-          <div id="calendarSidePanel">
-            <app-calendar style="width:100%;height:800px"></app-calendar>
-          </div>
-        </mat-sidenav>
-        <mat-sidenav-content>
-          <div class="mapPage">
-            <div class="row">
-              <p><button mat-button (click)="sidenav.toggle()">
-                  <mat-icon> calendar_today</mat-icon>
-                </button></p>
-              <!-- <button type="button" (click)="toggleMap()" class="btn btn-primary"><mat-icon> map</mat-icon></button> -->
-            </div>
-          </div>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-    
+
+      <div id="calendarSidePanel">
+        <app-calendar></app-calendar>
+      </div>
+
+          <p><button mat-button id=calendarButton (click)="expandCalendar()">
+              <mat-icon> calendar_today</mat-icon>
+            </button></p>
+          <!-- <button type="button" (click)="toggleMap()" class="btn btn-primary"><mat-icon> map</mat-icon></button> -->
+      
+     
     </div>
+
+
+
     <div id="infoBar">
       <mat-sidenav-container class="example-container" >
         <mat-sidenav #locnav mode="side" [(opened)]="openedLocInfo" position="end">
@@ -61,7 +56,7 @@
         </mat-sidenav-content>
       </mat-sidenav-container>
     </div>
-  </div>
+  
 
 
 

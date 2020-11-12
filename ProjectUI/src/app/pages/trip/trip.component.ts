@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { MapsAPILoader } from '@agm/core';
-import {CalendarComponent} from "../calendar/calendar.component";
+import { CalendarComponent } from "../calendar/calendar.component";
 
 @Component({
   selector: 'app-trip',
@@ -87,6 +87,36 @@ export class TripComponent implements OnInit {
     document.getElementById('locImg').setAttribute('src', photoUrl);
   }
 
+  expandCalendar() {
+
+    console.log("ho");
+    if (this.openedCalendar) {
+      document.getElementById("calendarSidePanel").animate([
+        // keyframes
+        { width: '0%' }
+      ], {
+        // timing options
+        duration: 1000,
+        fill:"both",
+        easing:"ease-out"
+      });
+      this.openedCalendar = false;
+    }
+    else {
+      document.getElementById("calendarSidePanel").animate([
+        // keyframes
+
+        { width: '200%' }
+      ], {
+        // timing options
+        duration: 1000,
+        fill:"both",
+        easing:"ease-out"
+      });
+      this.openedCalendar = true;
+    }
+
+  }
 
 
   initSavedSubTripData() {
