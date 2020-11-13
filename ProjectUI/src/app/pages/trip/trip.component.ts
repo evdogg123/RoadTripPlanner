@@ -16,7 +16,7 @@ export class TripComponent implements OnInit {
   markers: google.maps.Marker[] = [];
   savedMarkers: google.maps.Marker[] = [];
   map: google.maps.Map;
-  bounds:google.maps.LatLngBounds;
+  bounds: google.maps.LatLngBounds;
   trip;
   tripID;
   savedPlaces: any[];
@@ -78,7 +78,7 @@ export class TripComponent implements OnInit {
         return;
       }
     });
-    setTimeout(() => {                        
+    setTimeout(() => {
       this.initSavedSubTripData();
     }, 6000);
 
@@ -107,7 +107,7 @@ export class TripComponent implements OnInit {
       document.getElementById("calendarBar").animate([
         // keyframes
 
-        { left: '0px'}
+        { left: '0px' }
       ], {
         // timing optionse initial limit, the app will start failing. You can increase this limit free of charge, up to 150,000 requests per 24 hour period, by enabling billing on the Google API Console to verify your identity. A credit card is required for verification. We ask for your credit card purely to validate your identity. Your card will not be charged for use of the Google Places API Web Service.
         duration: 1000,
@@ -118,8 +118,8 @@ export class TripComponent implements OnInit {
     }
 
   }
-  ToggleLocInfo(){
-    if (this.openedLocInfo){
+  ToggleLocInfo() {
+    if (this.openedLocInfo) {
       document.getElementById("infoBar").animate([
         // keyframes
         { right: '-22%' },
@@ -130,10 +130,10 @@ export class TripComponent implements OnInit {
         easing: "ease-out"
       });
     }
-    else{
+    else {
       document.getElementById("infoBar").animate([
         // keyframes
-        {right: "0%"}
+        { right: "0%" }
       ], {
         // timing options
         duration: 1000,
@@ -173,7 +173,7 @@ export class TripComponent implements OnInit {
       }
       console.log("BOUNDS");
       console.log(bounds);
-      this.map.fitBounds(bounds,0);
+      this.map.fitBounds(bounds, 0);
       this.map.setZoom(8);
     });
   }
@@ -203,13 +203,15 @@ export class TripComponent implements OnInit {
       console.warn("This is not a valid geographical location");
       return;
     }
-    const icon = {
-      url: place.icon as string,
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(25, 25),
-    };
+    // const icon = {
+    //   url: place.icon as string,
+    //   size: new google.maps.Size(71, 71),
+    //   origin: new google.maps.Point(0, 0),
+    //   anchor: new google.maps.Point(17, 34),
+    //   scaledSize: new google.maps.Size(25, 25),
+    // };
+    let color = this.getColor()
+    let icon = this.createIcon(color);
     this.markers.push(
       new google.maps.Marker({
         map: this.map,
@@ -227,76 +229,100 @@ export class TripComponent implements OnInit {
     this.currentSelectedPlace = place;
     this.map.fitBounds(bounds);
     this.map.setZoom(8);
-    if (! this.openedLocInfo){
+    if (!this.openedLocInfo) {
       this.ToggleLocInfo();
-     
+
     }
-    
+
   }
 
+getColor(){ 
+    return "hsl(" + 360 * Math.random() + ',' +
+               100+ '%,' + 
+               (85 + 10 * Math.random()) + '%)'
+  }
+
+  
   saveLocation() {
     console.log(this.currentSelectedPlace);
     console.log(this.tripID);
     this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
   }
 
+  createIcon(color: string) {
 
-  /*
-  ***************************
-  DEPRECATED STUFF DOWN HERE!
-  ***************************
-  */
-  setMapType(mapTypeId: string) {
-    this.map.setMapTypeId(mapTypeId)
+    let icon = {
+      path: "M-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0",
+      fillColor: color,
+      fillOpacity: .8,
+      anchor: new google.maps.Point(0, 0),
+      strokeWeight: 0,
+      scale: 1
+    }
+    return icon;
   }
 
-  setCenter() {
-    this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
 
-    let location = new google.maps.LatLng(this.latitude, this.longitude);
 
-    let marker = new google.maps.Marker({
-      position: location,
-      map: this.map,
-      title: 'Got you!'
-    });
 
-    marker.addListener('click', this.simpleMarkerHandler);
 
-    marker.addListener('click', () => {
-      this.markerHandler(marker);
-    });
-  }
 
-  simpleMarkerHandler() {
-    alert('Simple Component\'s function...');
-  }
+/*
+***************************
+DEPRECATED STUFF DOWN HERE!
+***************************
+*/
+setMapType(mapTypeId: string) {
+  this.map.setMapTypeId(mapTypeId)
+}
 
-  markerHandler(marker: google.maps.Marker) {
-    alert('Marker\'s Title: ' + marker.getTitle());
-  }
+setCenter() {
+  this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
 
-  showCustomMarker() {
-    this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
+  let location = new google.maps.LatLng(this.latitude, this.longitude);
 
-    let location = new google.maps.LatLng(this.latitude, this.longitude);
+  let marker = new google.maps.Marker({
+    position: location,
+    map: this.map,
+    title: 'Got you!'
+  });
 
-    console.log(`selected marker: ${this.selectedMarkerType}`);
+  marker.addListener('click', this.simpleMarkerHandler);
 
-    let marker = new google.maps.Marker({
-      position: location,
-      map: this.map,
-      icon: this.iconBase + this.selectedMarkerType,
-      title: 'Got you!'
-    });
-  }
+  marker.addListener('click', () => {
+    this.markerHandler(marker);
+  });
+}
 
-  toggleMap() {
-    this.isHidden = !this.isHidden;
+simpleMarkerHandler() {
+  alert('Simple Component\'s function...');
+}
 
-    this.gmapElement.nativeElement.hidden = this.isHidden;
+markerHandler(marker: google.maps.Marker) {
+  alert('Marker\'s Title: ' + marker.getTitle());
+}
 
-  }
+showCustomMarker() {
+  this.map.setCenter(new google.maps.LatLng(this.latitude, this.longitude));
+
+  let location = new google.maps.LatLng(this.latitude, this.longitude);
+
+  console.log(`selected marker: ${this.selectedMarkerType}`);
+
+  let marker = new google.maps.Marker({
+    position: location,
+    map: this.map,
+    icon: this.iconBase + this.selectedMarkerType,
+    title: 'Got you!'
+  });
+}
+
+toggleMap() {
+  this.isHidden = !this.isHidden;
+
+  this.gmapElement.nativeElement.hidden = this.isHidden;
+
+}
 
 
 }
