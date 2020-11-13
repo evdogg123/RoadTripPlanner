@@ -13,7 +13,7 @@ export class ProjectsService {
   getTrips(): Observable<any>{
     return this.http.get(this.path);
   }
-  addTrips(data: any){
+  addTrips(data: any):Observable<any>{
     return this.http.post<any>(this.path, data);//.subscribe(res => console.log('success', res));
     
   }

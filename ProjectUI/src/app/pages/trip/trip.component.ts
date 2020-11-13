@@ -21,6 +21,7 @@ export class TripComponent implements OnInit {
   tripID;
   savedPlaces: any[];
   currentSelectedPlace: any;
+  currentSelectedColor: any;
   latitude: any;
   longitude: any;
   input: any;
@@ -33,12 +34,6 @@ export class TripComponent implements OnInit {
 
   iconBase = 'https://maps.google.com/mpfiles/kml/shapes/';
 
-  markerTypes = [
-    {
-      text: "Parking", value: "parking_lot_maps.png"
-    }
-  ];
-
   selectedMarkerType: string = "parking_lot_maps.png";
   isHidden = false;
 
@@ -49,6 +44,8 @@ export class TripComponent implements OnInit {
       console.log(params.get('tripID'));
       this.tripSvc.getTrip(params.get('tripID'))
         .subscribe(res => {
+          console.log(res);
+
           this.trip = res.data;
           this.savedPlaces = this.trip["subTrips"];
           console.log(this.savedPlaces);
@@ -80,7 +77,7 @@ export class TripComponent implements OnInit {
     });
     setTimeout(() => {
       this.initSavedSubTripData();
-    }, 6000);
+    }, 3000);
 
   }
 
@@ -149,15 +146,23 @@ export class TripComponent implements OnInit {
 
   initSavedSubTripData() {
     const bounds = new google.maps.LatLngBounds();
+    let icon: any;
     this.savedPlaces.forEach(savedPlace => {
-      const icon = {
-        url: savedPlace.icon as string,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25),
-      };
-      this.markers.push(
+      if (savedPlace["color"]){
+        icon = this.createIcon(savedPlace["color"]);
+      }
+      else{
+        icon = {
+          url: savedPlace.icon as string,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25),
+        };
+
+      }
+   
+      this.savedMarkers.push(
         new google.maps.Marker({
           map: this.map,
           icon,
@@ -171,8 +176,6 @@ export class TripComponent implements OnInit {
       } else {
         bounds.extend(savedPlace.geometry.location);
       }
-      console.log("BOUNDS");
-      console.log(bounds);
       this.map.fitBounds(bounds, 0);
       this.map.setZoom(8);
     });
@@ -183,6 +186,7 @@ export class TripComponent implements OnInit {
   handlePlaceSearch(places: any) {
     const bounds = new google.maps.LatLngBounds();
     this.markers.forEach((marker) => {
+      console.log(marker);
       marker.setMap(null);
     });
     this.markers = [];
@@ -203,14 +207,8 @@ export class TripComponent implements OnInit {
       console.warn("This is not a valid geographical location");
       return;
     }
-    // const icon = {
-    //   url: place.icon as string,
-    //   size: new google.maps.Size(71, 71),
-    //   origin: new google.maps.Point(0, 0),
-    //   anchor: new google.maps.Point(17, 34),
-    //   scaledSize: new google.maps.Size(25, 25),
-    // };
-    let color = this.getColor()
+    this.currentSelectedColor = this.getColor();
+    let color = this.getColor();
     let icon = this.createIcon(color);
     this.markers.push(
       new google.maps.Marker({
@@ -239,13 +237,15 @@ export class TripComponent implements OnInit {
 getColor(){ 
     return "hsl(" + 360 * Math.random() + ',' +
                100+ '%,' + 
-               (85 + 10 * Math.random()) + '%)'
+               50 + '%)'
   }
 
   
   saveLocation() {
+    this.currentSelectedPlace["color"] = this.currentSelectedColor;
     console.log(this.currentSelectedPlace);
     console.log("Trip id: " + this.tripID);
+    
     this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
   }
 
