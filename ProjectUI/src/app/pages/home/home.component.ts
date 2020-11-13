@@ -21,4 +21,13 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  deleteTrip(id){
+    console.log("Trip id: " + id);
+    this.projSvc.deleteTrip(id, id);
+    this.projSvc.getTrips().subscribe(result=>{
+      console.log(result.data);
+      this.trips=result.data;
+    });
+  }
+
 }

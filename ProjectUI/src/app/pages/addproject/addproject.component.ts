@@ -15,6 +15,7 @@ export class AddprojectComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   error: string;
+  tripId: string;
 
 
 
@@ -29,12 +30,17 @@ export class AddprojectComponent implements OnInit {
 
   }
 
-
 createTrip() {
   console.log("Creating a Trip.....");
   console.log(this.tripForm.value);
-  this.projSvc.addTrips(this.tripForm.value);
-
+  this.projSvc.addTrips(this.tripForm.value).subscribe(result=>{
+    console.log(result);
+    this.tripId = result.id;
+    console.log(this.tripId);
+    this.router.navigateByUrl("/trip/" + this.tripId);
+  });
+  //console.log(this.tripId);
+  //this.router.navigateByUrl("/trip/" + this.tripId);
 /*
 
     

@@ -245,12 +245,17 @@ getColor(){
   
   saveLocation() {
     console.log(this.currentSelectedPlace);
-    console.log(this.tripID);
+    console.log("Trip id: " + this.tripID);
     this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
   }
 
-  createIcon(color: string) {
 
+  deleteTrip(){
+    console.log("Trip id: " + this.tripID);
+    this.tripSvc.deleteTrip(this.tripID, this.tripID);
+  }
+
+  createIcon(color: string) {
     let icon = {
       path: "M-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0",
       fillColor: color,
