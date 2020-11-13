@@ -11,52 +11,56 @@
   </div>
   <br>
 
-    <div id="calendarBar">
+  <div id="calendarBar">
 
 
-      <div id="calendarSidePanel">
-        <app-calendar></app-calendar>
+    <div id="calendarSidePanel" [ngClass]="openedCalendar ? '' : 'closed'" class="shadow">
+      <app-calendar></app-calendar>
+    </div>
+
+    <p><button mat-button id=calendarButton (click)="expandCalendar()">
+        <mat-icon> calendar_today</mat-icon>
+      </button></p>
+    <!-- <button type="button" (click)="toggleMap()" class="btn btn-primary"><mat-icon> map</mat-icon></button> -->
+
+
+  </div>
+
+
+
+  <div id="infoBar">
+    <div>
+      <p><button id=locNavButton mat-button (click)="ToggleLocInfo()">
+          <mat-icon> navigate_before</mat-icon>
+        </button></p>
+
+    </div>
+
+    <div id = infoBarElems class="shadow">
+      <div id="selectedPlaceCard">
+        <div *ngIf="currentSelectedPlace">
+          <h2>
+            {{currentSelectedPlace.formatted_address}}
+          </h2>
+        </div>
+        <img src="" id="locImg" height="200">
+
+        <button type="button" id="saveLocButton" (click)="saveLocation()" [disabled]="currentSelectedPlace === undefined"
+        class="btn btn-primary">Save Location</button>
+        <div>
+        Brief Description of Location Found
+        </div>
+  
+  
+  
       </div>
 
-          <p><button mat-button id=calendarButton (click)="expandCalendar()">
-              <mat-icon> calendar_today</mat-icon>
-            </button></p>
-          <!-- <button type="button" (click)="toggleMap()" class="btn btn-primary"><mat-icon> map</mat-icon></button> -->
-      
-     
     </div>
-
-
-
-    <div id="infoBar">
-      <mat-sidenav-container class="example-container" >
-        <mat-sidenav #locnav mode="side" [(opened)]="openedLocInfo" position="end">
-          <div class="row" id="locInfoBox">
-            <img src="" id="locImg" height="200">
-            <div *ngIf="currentSelectedPlace">
-              <h2>
-                {{currentSelectedPlace.formatted_address}}
-              </h2>
-              Brief Description of Location Found
-            </div>
-          </div>
-        </mat-sidenav>
     
-        <mat-sidenav-content>
-          <div class="row">
-            <div class="col-md-12">
-              <div>
-                <p><button id = locNavButton mat-button (click)="locnav.toggle()">
-                  <mat-icon> navigate_before</mat-icon>
-                  </button></p>
-        
-              </div>
-            </div>
-          </div>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-    </div>
-  
+
+
+
+  </div>
 
 
 
@@ -65,8 +69,8 @@
 
 
 
-  <button type="button" id="saveLocButton" (click)="saveLocation()"
-  [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save Location</button>
+
+ 
   <div id="searchContainer">
     <input id="pac-input" class="controls" type="text" placeholder="Search For a Place" />
   </div>

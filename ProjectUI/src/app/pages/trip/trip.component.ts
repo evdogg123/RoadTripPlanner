@@ -16,6 +16,7 @@ export class TripComponent implements OnInit {
   markers: google.maps.Marker[] = [];
   savedMarkers: google.maps.Marker[] = [];
   map: google.maps.Map;
+  bounds:google.maps.LatLngBounds;
   trip;
   tripID;
   savedPlaces: any[];
@@ -25,8 +26,8 @@ export class TripComponent implements OnInit {
   input: any;
   saveLocButton: any;
   searchBox: any;
-  openedCalendar: boolean;
-  openedLocInfo: boolean;
+  openedCalendar = false;
+  openedLocInfo = false;
 
   showLocation = false;
 
@@ -59,7 +60,6 @@ export class TripComponent implements OnInit {
 
   ngAfterViewInit() {
     let mapProp = {
-      center: new google.maps.LatLng(18.5793, 73.8143),
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -78,7 +78,10 @@ export class TripComponent implements OnInit {
         return;
       }
     });
-    this.initSavedSubTripData();
+    setTimeout(() => {                        
+      this.initSavedSubTripData();
+    }, 6000);
+
   }
 
   getPlaceImage(place: any) {
@@ -88,33 +91,58 @@ export class TripComponent implements OnInit {
   }
 
   expandCalendar() {
-
-    console.log("ho");
     if (this.openedCalendar) {
-      document.getElementById("calendarSidePanel").animate([
+      document.getElementById("calendarBar").animate([
         // keyframes
-        { width: '0%' }
+        { left: '-675px' }
       ], {
         // timing options
         duration: 1000,
-        fill:"both",
-        easing:"ease-out"
+        fill: "both",
+        easing: "ease-out"
       });
       this.openedCalendar = false;
     }
     else {
-      document.getElementById("calendarSidePanel").animate([
+      document.getElementById("calendarBar").animate([
         // keyframes
 
-        { width: '200%' }
+        { left: '0px'}
       ], {
-        // timing options
+        // timing optionse initial limit, the app will start failing. You can increase this limit free of charge, up to 150,000 requests per 24 hour period, by enabling billing on the Google API Console to verify your identity. A credit card is required for verification. We ask for your credit card purely to validate your identity. Your card will not be charged for use of the Google Places API Web Service.
         duration: 1000,
-        fill:"both",
-        easing:"ease-out"
+        fill: "both",
+        easing: "ease-out"
       });
       this.openedCalendar = true;
     }
+
+  }
+  ToggleLocInfo(){
+    if (this.openedLocInfo){
+      document.getElementById("infoBar").animate([
+        // keyframes
+        { right: '-22%' },
+      ], {
+        // timing options
+        duration: 1000,
+        fill: "both",
+        easing: "ease-out"
+      });
+    }
+    else{
+      document.getElementById("infoBar").animate([
+        // keyframes
+        {right: "0%"}
+      ], {
+        // timing options
+        duration: 1000,
+        fill: "both",
+        easing: "ease-out",
+      });
+
+    }
+    this.openedLocInfo = !this.openedLocInfo;
 
   }
 
@@ -143,7 +171,10 @@ export class TripComponent implements OnInit {
       } else {
         bounds.extend(savedPlace.geometry.location);
       }
-      this.map.fitBounds(bounds);
+      console.log("BOUNDS");
+      console.log(bounds);
+      this.map.fitBounds(bounds,0);
+      this.map.setZoom(8);
     });
   }
 
@@ -195,7 +226,12 @@ export class TripComponent implements OnInit {
     }
     this.currentSelectedPlace = place;
     this.map.fitBounds(bounds);
-
+    this.map.setZoom(8);
+    if (! this.openedLocInfo){
+      this.ToggleLocInfo();
+     
+    }
+    
   }
 
   saveLocation() {
