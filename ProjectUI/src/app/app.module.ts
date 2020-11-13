@@ -14,9 +14,8 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
 import { TripComponent } from './pages/trip/trip.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import {
-  CalendarEvent,CalendarEventAction,CalendarEventTimesChangedEvent,CalendarView,} from 'angular-calendar';
- import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { CalendarEvent,CalendarEventAction,CalendarEventTimesChangedEvent,CalendarView,} from 'angular-calendar';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import {startOfDay,endOfDay,subDays,addDays,endOfMonth,isSameDay,isSameMonth,addHours,} from 'date-fns';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';

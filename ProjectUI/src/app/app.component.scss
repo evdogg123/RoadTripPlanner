@@ -3,3 +3,8 @@
     z-index: 100000;
     width: 100%;
 }
+
+.container-fluid#content{
+    // padding should be the same as header height
+    padding-top: 60px;
+}
