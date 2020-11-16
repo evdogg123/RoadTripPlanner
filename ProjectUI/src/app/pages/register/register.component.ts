@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
       password: ['',Validators.required]
     });
     this.returnUrl=this.route.snapshot.queryParams['returnUrl'] || '/';
+    console.log(this.returnUrl);
   }
 
   register(): void{
@@ -33,8 +34,15 @@ export class RegisterComponent implements OnInit {
     }
     this.loading=true;
     this.authSvc.register(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
+      console.log("test");
       this.router.navigate([this.returnUrl]);
     },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
+
+    this.authSvc.login(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
+      this.router.navigate([this.returnUrl]);
+    },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
+    
+    console.log(this.error);
   }
 
 }

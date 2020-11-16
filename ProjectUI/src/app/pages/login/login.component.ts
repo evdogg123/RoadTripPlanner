@@ -17,8 +17,9 @@ export class LoginComponent implements OnInit {
   error: string;
 
   constructor(private formBuilder: FormBuilder,private route: ActivatedRoute,private router: Router,private authSvc:AuthService) {
-      if (authSvc.loggedIn)
-      this.router.navigate(['/']);
+      if (authSvc.loggedIn){
+        this.router.navigate(['/']);
+      }
    }
 
   ngOnInit(): void {
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
       password: ['',Validators.required]
     });
     this.returnUrl=this.route.snapshot.queryParams['returnUrl'] || '/';
+    console.log(this.returnUrl);
   }
 
   login(){
