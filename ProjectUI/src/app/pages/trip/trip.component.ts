@@ -1,6 +1,6 @@
 /// <reference types="@types/googlemaps" />
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { CalendarComponent } from "../calendar/calendar.component";
 
@@ -43,7 +43,8 @@ export class TripComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService) { }
+  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private router: Router) { }
+
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       console.log(params.get('tripID'));
@@ -242,6 +243,8 @@ export class TripComponent implements OnInit {
 
   planTrip() {
     console.log("GOTO SubTrip planning page");
+    this.router.navigate(['/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"]])
+
   }
 
 

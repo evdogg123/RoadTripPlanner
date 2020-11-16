@@ -6,6 +6,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { AddprojectComponent } from './pages/addproject/addproject.component';
 import {TripComponent} from './pages/trip/trip.component';
 import {CalendarComponent} from './pages/calendar/calendar.component';
+import { SubtripComponent } from './pages/subtrip/subtrip.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path:'register',component: RegisterComponent},
   {path:'addproject',component: AddprojectComponent},
   {path:'trip/:tripID',component: TripComponent},
+  {path:'trip/:tripID/:subtripID', component: SubtripComponent},
   {path:'trip/:tripID/calendar',component: CalendarComponent}
 ];
 
