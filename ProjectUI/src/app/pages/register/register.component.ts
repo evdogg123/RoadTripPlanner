@@ -23,7 +23,6 @@ export class RegisterComponent implements OnInit {
       password: ['',Validators.required]
     });
     this.returnUrl=this.route.snapshot.queryParams['returnUrl'] || '/';
-    console.log(this.returnUrl);
   }
 
   register(): void{
