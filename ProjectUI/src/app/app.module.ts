@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AgmCoreModule } from '@agm/core';
+import { NgModule, } from '@angular/core';
+import { AgmCoreModule} from '@agm/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -25,7 +25,7 @@ import {MatSidenavModule,} from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-
+import {ChangeDetectorRef} from '@angular/core'
 @NgModule({
   declarations: [
     AppComponent,
