@@ -24,7 +24,8 @@ export class AddprojectComponent implements OnInit {
   ngOnInit(): void {
     this.tripForm = this.formBuilder.group({
       name: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      length: ['', Validators.required]
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
