@@ -55,8 +55,6 @@ export class AuthService {
 
         //WTF does this do because it's causing an error
         /*
-        console.log("Before");
-
         this.token=user.data.token
         console.log(this.token);
         this.CurrentUser.next(user.data.user.email);
