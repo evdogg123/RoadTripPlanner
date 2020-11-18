@@ -1,17 +1,21 @@
-<div [routerLink]="['/trip',trip._id]" class="card mb-4 box-shadow btn btn-outline-dark">
+<div class="card mb-4 box-shadow btn expand">
 
+    <a [routerLink]="['/trip',trip._id]" class="fake-button" style="height: 100%; width: 100%; top: 0px; left: 0px; position: absolute;"></a>
+    
     <div class="card-body card-header">
         <h3>{{trip.name}}</h3>
     </div>
 
     <div class="card-body">
+
         <p class="card-text">
             {{trip.description}}
         </p>
 
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-                <button routerLink="." (click)="deleteTrip(trip._id)" type="button" class="btn btn-sm btn-outline-secondary">Delete</button>
+                <button routerLink="." (click)="deleteTrip(trip._id)" type="button"
+                    class="btn btn-sm btn-outline-secondary">Delete</button>
             </div>
             <small class="text-muted">Length: {{trip.length}}</small>
         </div>
@@ -19,17 +23,3 @@
     </div>
 
 </div>
-
-<!-- <a [routerLink]="['/trip',item._id]" class="btn btn-outline-info my-2 my-sm-0"
-    style="color:black; font-size:2vw; font-weight:400;">
-    <div class="tripName">
-        <strong> {{item.name}} </strong>
-    </div>
-    <div class="tripDesc">
-        <i>{{item.description}} </i>
-    </div>
-</a>
-<div class="del">
-    <button type="button" (click)="deleteTrip(item._id)" class="btn btn-primary">Delete Trip</button>
-</div>
-<br /> -->

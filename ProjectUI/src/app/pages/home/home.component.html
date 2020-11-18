@@ -1,47 +1,10 @@
-<!-- <div *ngIf='trips.length>0'>
-    <ul>
-        <li *ngFor='let item of trips'>
-
-            <a [routerLink]="['/trip',item._id]" class="btn btn-outline-info my-2 my-sm-0"
-                style="color:black; font-size:2vw; font-weight:400;">
-                <div class="tripName">
-                    <strong> {{item.name}} </strong>
-                </div>
-                <div class="tripDesc">
-                    <i>{{item.description}} </i>
-                </div>
-            </a>
-            <div class="del">
-                <button type="button" (click)="deleteTrip(item._id)" class="btn btn-primary">Delete Trip</button>
-            </div>
-            <br />
-
-        </li>
-    </ul>
-</div> -->
-
 <div *ngIf='trips.length>0'>
     <div class="album py-5 bg-light">
         <div class="container">
             <div class="row">
                 <div *ngFor='let item of trips' class="col-md-4">
                     <app-trip-card [trip]=item>
-
                     </app-trip-card>
-
-                    <!-- <a [routerLink]="['/trip',item._id]" class="btn btn-outline-info my-2 my-sm-0"
-                style="color:black; font-size:2vw; font-weight:400;">
-                <div class="tripName">
-                    <strong> {{item.name}} </strong>
-                </div>
-                <div class="tripDesc">
-                    <i>{{item.description}} </i>
-                </div>
-            </a>
-            <div class="del">
-                <button type="button" (click)="deleteTrip(item._id)" class="btn btn-primary">Delete Trip</button>
-            </div>
-            <br /> -->
                 </div>
             </div>
         </div>
