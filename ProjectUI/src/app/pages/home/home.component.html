@@ -1,8 +1,8 @@
-<div *ngIf='trips.length>0'>
+<div *ngIf='tripsSvc.trips.length>0'>
     <div class="album py-5">
         <div class="container">
             <div class="row">
-                <div *ngFor='let item of trips' class="col-md-4">
+                <div *ngFor='let item of tripsSvc.trips' class="col-md-4">
                     <app-trip-card [trip]=item>
                     </app-trip-card>
                 </div>
@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<div *ngIf='trips.length==0' class="text-center main">
+<div *ngIf='tripsSvc.trips.length==0' class="text-center main">
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
 
         <header class="masthead mb-auto" style="margin: auto">
