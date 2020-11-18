@@ -17,14 +17,16 @@
         <header class="masthead mb-auto" style="margin: auto">
             <div class="inner">
                 <h1 class="cover-heading" style="font-size: 4rem">DayTripper</h1>
+                <br>
+                <h3 *ngIf='authSvc.loggedIn'>You currently have no trips planned.</h3>
             </div>
         </header>
 
         <main role="main" class="inner cover" styel="margin-bottom: auto">
-            <p class="lead">Dream. Plan. Go.<br>Map out every stop on your next road trip.<br>Create an account to start
-                your journey.</p>
+            <p class="lead">Dream. Plan. Go.<br>Map out every stop on your next road trip.</p>
             <p class="lead">
-                <a routerLink='../register' routerLinkActive='active' class="btn btn-lg btn-secondary">Get started</a>
+                <a *ngIf='!authSvc.loggedIn' routerLink='../register' routerLinkActive='active' class="btn btn-lg btn-secondary">Sign up</a>
+                <a *ngIf='authSvc.loggedIn' routerLink='../addproject' routerLinkActive='active' class="btn btn-lg btn-secondary">Get started</a>
             </p>
         </main>
 

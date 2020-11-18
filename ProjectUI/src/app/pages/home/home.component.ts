@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { TripsService } from 'src/app/trips.service';
 
@@ -9,7 +10,7 @@ import { TripsService } from 'src/app/trips.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private projSvc:ProjectsService, public tripsSvc: TripsService) { 
+  constructor(private projSvc:ProjectsService, public authSvc:AuthService, public tripsSvc: TripsService) { 
 
   }
 
