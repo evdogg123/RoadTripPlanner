@@ -1,4 +1,4 @@
-<div *ngIf='trips.length>0'>
+<!-- <div *ngIf='trips.length>0'>
     <ul>
         <li *ngFor='let item of trips'>
 
@@ -18,35 +18,52 @@
 
         </li>
     </ul>
+</div> -->
+
+<div *ngIf='trips.length>0'>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div *ngFor='let item of trips' class="col-md-4">
+                    <app-trip-card [trip]=item>
+
+                    </app-trip-card>
+
+                    <!-- <a [routerLink]="['/trip',item._id]" class="btn btn-outline-info my-2 my-sm-0"
+                style="color:black; font-size:2vw; font-weight:400;">
+                <div class="tripName">
+                    <strong> {{item.name}} </strong>
+                </div>
+                <div class="tripDesc">
+                    <i>{{item.description}} </i>
+                </div>
+            </a>
+            <div class="del">
+                <button type="button" (click)="deleteTrip(item._id)" class="btn btn-primary">Delete Trip</button>
+            </div>
+            <br /> -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div *ngIf='trips.length==0' class="text-center main">
     <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-        <header class="masthead mb-auto">
+
+        <header class="masthead mb-auto" style="margin: auto">
             <div class="inner">
-                <h3 class="masthead-brand">Cover</h3>
-                <nav class="nav nav-masthead justify-content-center">
-                    <a class="nav-link active" href="#">Home</a>
-                    <a class="nav-link" href="#">Features</a>
-                    <a class="nav-link" href="#">Contact</a>
-                </nav>
+                <h1 class="cover-heading" style="font-size: 4rem">DayTripper</h1>
             </div>
         </header>
 
-        <main role="main" class="inner cover">
-            <h1 class="cover-heading">Cover your page.</h1>
-            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit
-                the text, and add your own fullscreen background photo to make it your own.</p>
+        <main role="main" class="inner cover" styel="margin-bottom: auto">
+            <p class="lead">Dream. Plan. Go.<br>Map out every stop on your next road trip.<br>Create an account to start
+                your journey.</p>
             <p class="lead">
-                <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+                <a routerLink='../register' routerLinkActive='active' class="btn btn-lg btn-secondary">Get started</a>
             </p>
         </main>
 
-        <footer class="mastfoot mt-auto">
-            <div class="inner">
-                <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a
-                        href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
-        </footer>
     </div>
 </div>
