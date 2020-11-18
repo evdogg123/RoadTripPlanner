@@ -25,7 +25,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ChangeDetectorRef} from '@angular/core';
-import { SubtripComponent } from './pages/subtrip/subtrip.component'
+import { SubtripComponent } from './pages/subtrip/subtrip.component';
+import { TripCardComponent } from './elements/trip-card/trip-card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,7 @@ import { SubtripComponent } from './pages/subtrip/subtrip.component'
     TripComponent,
     CalendarComponent,
     SubtripComponent,
-
+    TripCardComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({
