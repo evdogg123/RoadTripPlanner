@@ -25,7 +25,8 @@
         <main role="main" class="inner cover" styel="margin-bottom: auto">
             <p class="lead">Dream. Plan. Go.<br>Map out every stop on your next road trip.</p>
             <p class="lead">
-                <a *ngIf='!authSvc.loggedIn' routerLink='../register' routerLinkActive='active' class="btn btn-lg btn-secondary">Sign up</a>
+                <a *ngIf='!authSvc.loggedIn' routerLink='../login' routerLinkActive='active' class="btn btn-lg btn-secondary" style="margin: 0.5rem">Log in</a>
+                <a *ngIf='!authSvc.loggedIn' routerLink='../register' routerLinkActive='active' class="btn btn-lg btn-outline-secondary" style="margin: 0.5rem">Sign up</a>
                 <a *ngIf='authSvc.loggedIn' routerLink='../addproject' routerLinkActive='active' class="btn btn-lg btn-secondary">Get started</a>
             </p>
         </main>

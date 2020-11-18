@@ -2,6 +2,8 @@
 
     <a [routerLink]="['/trip',trip._id]" class="fake-button" style="height: 100%; width: 100%; top: 0px; left: 0px; position: absolute;"></a>
     
+    <img *ngIf='img' class="img-card-top" [src]=img>
+    
     <div class="card-body card-header">
         <h3>{{trip.name}}</h3>
     </div>
@@ -15,7 +17,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
                 <button routerLink="." (click)="deleteTrip(trip._id)" type="button"
-                    class="btn btn-sm btn-outline-secondary">Delete</button>
+                    class="btn btn-sm btn-outline-danger">Delete</button>
             </div>
             <small class="text-muted">Length: {{trip.length}}</small>
         </div>
