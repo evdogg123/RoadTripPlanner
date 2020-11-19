@@ -42,20 +42,26 @@ footer p {
 }
 
 .expand {
-    min-height: 1px; 
     min-width: 100%; 
     top: 0%; 
     left: 0%; 
+    padding: 1.25rem; 
     box-shadow: 0 0.75rem .75rem rgba(0, 0, 0, .5);
     z-index: 1; 
-    transition: min-height 0.25s, min-width 0.25s, top 0.25s, left 0.25s, box-shadow 0.5s, z-index 0.1s; 
+    transition: max-height 0.25s, min-width 0.25s, top 0.25s, left 0.25s, box-shadow 0.5s, z-index 0.1s; 
 }
 
 .expand:hover {
-    min-height: 105%; 
-    min-width: 110%; 
+    max-height: 100%; 
+    min-width: 115%; 
     top: -7.5%;  
-    left: -5%; 
+    left: -7.5%; 
     box-shadow: 0 1.5rem 1.5rem rgba(0, 0, 0, .75);
     z-index: 2; 
+}
+
+img {
+  object-fit: cover; 
+  border-radius: 0.5rem; 
+  height: 15rem; 
 }
