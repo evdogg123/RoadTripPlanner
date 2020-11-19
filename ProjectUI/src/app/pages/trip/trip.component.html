@@ -45,9 +45,9 @@
         </div>
         <img src="" id="locImg" height="200">
 
-        <button type="button" id="saveLocButton" (click)="saveLocation()" *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined"
+        <button type="button" id="saveLocButton" (click)="this.deleteButtonVisible = true" (click)="this.planTripButtonVisible = true" (click)="this.saveLocButtonVisible = false" (click)="saveLocation()" *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined"
         class="btn btn-primary">Save Location</button>
-        <button type="button" id="deleteLocButton" (click)="deleteSubTrip()" [disabled]="currentSelectedPlace === undefined"
+        <button type="button" id="deleteLocButton" (click)="deleteSubTrip()" *ngIf="this.deleteButtonVisible" [disabled]="currentSelectedPlace === undefined"
         class="btn btn-primary">Delete Location</button>
         <button type="button" id="planTripButton" (click)="planTrip()" *ngIf="this.planTripButtonVisible" [disabled]="currentSelectedPlace === undefined"
         class="btn btn-primary">Plan Trip</button>

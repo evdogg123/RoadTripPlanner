@@ -38,6 +38,7 @@ export class TripComponent implements OnInit {
   openedCalendar = false;
   openedLocInfo = false;
   showLocation = false;
+  deleteButtonVisible = false;
 
 
 
@@ -128,6 +129,7 @@ export class TripComponent implements OnInit {
     if (saved) {
       this.planTripButtonVisible = true;
       this.saveLocButtonVisible = false;
+      this.deleteButtonVisible = true;
     }
     else {
       this.planTripButtonVisible = false;
