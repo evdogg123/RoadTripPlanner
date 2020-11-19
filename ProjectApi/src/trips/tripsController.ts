@@ -70,7 +70,28 @@ export class TripsController {
        
     }
 
+    /* deleteSubTrip(req: express.Request, res: express.Response){
+        console.log("Trying to delete subTrip...");
+        const id = Database.stringToId(req.params.id);
+        const subTrip = SubTripsModel.fromObject(req.body);
+        const formAddr = subTrip.formattedAddr;
+        const subName = subTrip.formattedAddr;
+        TripsController.db.deleteSubRecord(TripsController.tripsTable, {_id: id}, {$pull: {'subTrips': name, subName}})
+            .then((results) => results ? (res.send({ fn: 'deleteSubTrip', status: 'success' })) : (res.send({ fn: 'deleteSubTrip', status: 'failure', data: 'Not found' })).end())
+            .catch(err => res.send({ fn: 'deleteSubTrip', status: 'failure', data: err }).end());
+    } */
 
+    deleteSubTrip(req: express.Request, res: express.Response){
+        console.log("Trying to delete subTrip...");
+        const id = Database.stringToId(req.params.id);
+        //const subTrip = SubTripsModel.fromObject(req.body);
+        //const formAddr = subTrip.formattedAddr;
+        const placeid = req.body.Name;
+        console.log(placeid);
+        TripsController.db.updateRecord(TripsController.tripsTable, {_id: id}, {$pull: {'subTrips': {place_id: placeid}}})
+            .then((results) => results ? (res.send({ fn: 'deleteSubTrip', status: 'success' })) : (res.send({ fn: 'deleteSubTrip', status: 'failure', data: 'Not found' })).end())
+            .catch(err => res.send({ fn: 'deleteSubTrip', status: 'failure', data: err }).end());
+    }
 
 
 
@@ -89,6 +110,7 @@ export class TripsController {
     //deleteTrip
     //deletes the Trip int he database with id :id
     deleteTrip(req: express.Request, res: express.Response) {
+        console.log("Trying to delete trip...");
         const id = Database.stringToId(req.params.id);
         TripsController.db.deleteRecord(TripsController.tripsTable, { _id: id })
             .then((results) => results ? (res.send({ fn: 'deleteTrip', status: 'success' })) : (res.send({ fn: 'deleteTrip', status: 'failure', data: 'Not found' })).end())

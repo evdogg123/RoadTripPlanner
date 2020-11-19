@@ -27,4 +27,7 @@ export class ProjectsService {
   deleteTrip(data:any, tripId: string){
     return this.http.delete(`${this.path}trip/${tripId}`, data).subscribe(res => console.log('success', res));
   }
+  deleteSubTrip(data: any, tripId: string){
+    return this.http.put(`${this.path}trip/${tripId}`, data).subscribe(res => console.log('success', res));
+  }
 }

@@ -113,7 +113,22 @@ export class Database {
                 });
             });
         });
+    }
 
+    deleteSubRecord(collection: string, filter: any, update: any): Promise<boolean> {
+        var dbname = this.dbName;
+        var url = this.url;
+        return new Promise(function (resolve, reject){
+            MongoClient.connect(url, function (err, db){
+                if (err) reject(err);
+                const dbo = db.db(dbname);
+                dbo.collection(collection).updateOne(filter, update, (err, result) => {
+                    if (err) reject(err);
+                    db.close();
+                    resolve(result.matchedCount == 1);
+                });
+            });
+        });
     }
 
     getSequenceNextValue(collection: string, seqName: string): Promise<any> {

@@ -37,7 +37,9 @@ createTrip() {
     console.log(result);
     this.tripId = result.id;
     console.log(this.tripId);
-    this.router.navigateByUrl("/trip/" + this.tripId);
+    this.router.navigateByUrl("/home");
+    //alert(1);
+    //this.router.navigateByUrl("/trip/" + this.tripId);
     //this.router.navigate(["/trip/" + this.tripId]);
   });
   //console.log(this.tripId);

@@ -329,5 +329,10 @@ toggleMap() {
 
 }
 
+deleteSubTrip(){
+  console.log(this.currentSelectedPlace.name);
+  console.log("Trip id: " + this.tripID);
+  this.tripSvc.deleteSubTrip({Name:this.currentSelectedPlace.place_id}, this.tripID);
+}
 
 }
