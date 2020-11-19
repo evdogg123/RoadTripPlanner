@@ -1,0 +1,27 @@
+<div class="card mb-4 box-shadow btn expand">
+
+    <a [routerLink]="['/trip',trip._id]" class="fake-button" style="height: 100%; width: 100%; top: 0px; left: 0px; position: absolute;"></a>
+    
+    <div class="card-body card-header">
+        <h3>{{trip.name}}</h3>
+    </div>
+
+    <div class="card-body">
+
+        <p class="card-text">
+            {{trip.description}}
+        </p>
+
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+                <button routerLink="." (click)="deleteTrip(trip._id)" type="button"
+                    class="btn btn-sm btn-outline-secondary">Delete</button>
+                <button routerLink="." (click)="deleteTrip(trip._id)" type="button"
+                    class="btn btn-sm btn-outline-secondary">Edit</button>
+            </div>
+            <small class="text-muted">Length: {{trip.length}}</small>
+        </div>
+
+    </div>
+
+</div>
