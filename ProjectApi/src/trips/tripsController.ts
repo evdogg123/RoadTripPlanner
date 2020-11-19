@@ -127,6 +127,11 @@ export class TripsController {
             .catch((reason) => res.status(500).send(reason).end());
     }
 
+    editSubStrip(req: express.Request, res: express.Response){
+        console.log("Tring to edit subtrip...");
+        
+    }
+
    
 
 }

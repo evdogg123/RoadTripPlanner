@@ -33,4 +33,7 @@ export class ProjectsService {
   editTrip(data: any, tripId: string){
     return this.http.put(`${this.path}trip/${tripId}/edit`, data)//.subscribe(res => console.log('success', res));
   }
+  editSubTrip(data: any, tripId: string){
+    return this.http.put(`${this.path}trip/${tripId}/editSubTrip`, data)//.subscribe(res => console.log('success', res));
+  }
 }
