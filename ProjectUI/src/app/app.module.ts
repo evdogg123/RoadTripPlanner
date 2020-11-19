@@ -27,6 +27,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {ChangeDetectorRef} from '@angular/core';
 import { SubtripComponent } from './pages/subtrip/subtrip.component';
 import { TripCardComponent } from './elements/trip-card/trip-card.component';
+import { EditdetailsComponent } from './pages/editdetails/editdetails.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +39,7 @@ import { TripCardComponent } from './elements/trip-card/trip-card.component';
     CalendarComponent,
     SubtripComponent,
     TripCardComponent,
+    EditdetailsComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({

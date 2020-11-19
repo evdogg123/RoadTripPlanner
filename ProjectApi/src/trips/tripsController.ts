@@ -117,6 +117,16 @@ export class TripsController {
             .catch((reason) => res.status(500).send(reason).end());
     }
 
+    editTrip(req: express.Request, res: express.Response) {
+        console.log("Trying to edit trip...");
+        const id = Database.stringToId(req.params.id);
+        delete req.body.authUser;
+        console.log(req.body);
+        TripsController.db.updateRecord(TripsController.tripsTable, { _id: id }, { $set: req.body })
+            .then((results) => results ? (res.send({ fn: 'editTrip', status: 'success' })) : (res.send({ fn: 'editTrip', status: 'failure', data: 'Not found' })).end())
+            .catch((reason) => res.status(500).send(reason).end());
+    }
+
    
 
 }

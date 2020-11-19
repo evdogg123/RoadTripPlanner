@@ -2,7 +2,7 @@
 
     <a [routerLink]="['/trip',trip._id]" class="fake-button" style="height: 100%; width: 100%; top: 0px; left: 0px; position: absolute;"></a>
     
-    <div class="card-body card-header">
+    <div class="card-body card-header" >
         <h3>{{trip.name}}</h3>
     </div>
 
@@ -14,9 +14,9 @@
 
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-                <button routerLink="." (click)="deleteTrip(trip._id)" type="button"
+                <button routerLink="." id= "del" (click)="deleteTrip(trip._id)" type="button"
                     class="btn btn-sm btn-outline-secondary">Delete</button>
-                <button routerLink="." (click)="deleteTrip(trip._id)" type="button"
+                <button routerLink="." id="edit" (click)="editTrip(trip._id, trip.name, trip.description)" type="button"
                     class="btn btn-sm btn-outline-secondary">Edit</button>
             </div>
             <small class="text-muted">Length: {{trip.length}}</small>
