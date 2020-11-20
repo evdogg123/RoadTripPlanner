@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.projSvc.getTrips().subscribe(result=>{
+      console.log("Home oninit:")
       console.log(result.data);
       this.tripsSvc.trips=result.data;
     })

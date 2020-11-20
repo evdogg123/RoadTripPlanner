@@ -37,10 +37,14 @@ export class AuthService {
   authorize():void{
     this.http.get(this.path+'authorize').subscribe(result=>{
       //on success, we do nothing because token is good
+      console.log("authorizing...");
       if (result['status']!='success'){
+        console.log("auth success")
         this.token=null;
       }
       else{
+        console.log("auth no success, result email:");
+        console.log(result['data'].email);
         this.CurrentUser.next(result['data'].email)
       }
 
@@ -53,8 +57,9 @@ export class AuthService {
     return this.http.post<any>(this.path+'register',{email: email,password: password })
       .pipe(map(user=>{
         this.token=user.data.token
-        console.log(this.token);
+        console.log("Register token data:" + this.token);
         this.CurrentUser.next(user.data.user.email);
+        console.log("Register user data:" + this.token);
         return user.data.user;
       }),catchError(err=>{this.CurrentUser.next(null);this.token=null;return throwError(err.message||'server error')}));
   }
@@ -63,7 +68,9 @@ export class AuthService {
     return this.http.post<any>(this.path+'login',{email: email,password: password })
       .pipe(map(user=>{
         this.token=user.data.token
+        console.log("login token data:" + this.token);
         this.CurrentUser.next(user.data.user.email);
+        console.log("login user data:" + user.data.user.email);
         return user.data.user;
       }),catchError(err=>{this.CurrentUser.next(null);this.token=null;return throwError(err.message||'server error')}));
   }
