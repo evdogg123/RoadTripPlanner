@@ -28,6 +28,7 @@ import {ChangeDetectorRef} from '@angular/core';
 import { SubtripComponent } from './pages/subtrip/subtrip.component';
 import { TripCardComponent } from './elements/trip-card/trip-card.component';
 import { EditdetailsComponent } from './pages/editdetails/editdetails.component';
+import { AlertModule } from './elements/_alert';
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,6 +64,7 @@ import { EditdetailsComponent } from './pages/editdetails/editdetails.component'
       useFactory: adapterFactory,
       
     }),
+    AlertModule
    
 
   ],
