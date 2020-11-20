@@ -2,7 +2,7 @@
 <form [formGroup]="tripForm" (ngSubmit)="createTrip()">
     <div class="form-group">
         <label for="username">Trip Name</label>
-        <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && tripForm.controls.tripName.errors }" />
+        <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && tripForm.controls.name.errors }" />
         <div *ngIf="submitted && tripForm.controls.name.errors" class="invalid-feedback">
             <div *ngIf="tripForm.controls.name.errors.required">Please Name your Trip!</div>
         </div>
@@ -14,6 +14,32 @@
             <div *ngIf="tripForm.controls.description.errors.required">Description is required</div>
         </div>
     </div>
+
+    <label for="endDate">Start Date</label>
+    <div class="form-group">
+        <mat-form-field appearance="outline">
+            <input matInput formControlName="startDate" class="form-control" [matDatepicker]="picker1" disabled [ngClass]="{ 'is-invalid': submitted && tripForm.controls.startDate.errors }">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+        </mat-form-field>
+        <div *ngIf="submitted && tripForm.controls.startDate.errors" class="invalid-feedback">
+            <div *ngIf="tripForm.controls.startDate.errors.required"></div>
+        </div>
+    </div>
+    <label for="endDate">End Date</label>
+    <div class="form-group">
+        <mat-form-field appearance="outline">
+            <mat-label>Choose a date</mat-label>
+            <input matInput formControlName="endDate" class="form-control" [matDatepicker]="picker" disabled [ngClass]="{ 'is-invalid': submitted && tripForm.controls.endDate.errors }">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker disabled="false"></mat-datepicker>
+        </mat-form-field>
+        <div *ngIf="submitted && tripForm.controls.endDate.errors" class="invalid-feedback">
+            <div *ngIf="tripForm.controls.endDate.errors.required"></div>
+        </div>
+    </div>
+    
+    
     
     <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">
