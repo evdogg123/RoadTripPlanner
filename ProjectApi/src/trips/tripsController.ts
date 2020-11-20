@@ -26,6 +26,7 @@ export class TripsController {
       
         const user_id = req.params.user_id; //Don't think I need this?
         console.log(req);
+        console.log(user_id);
         TripsController.db.getRecords(TripsController.tripsTable, { user_id: user_id })
             .then((results) => res.send({ fn: 'getTrips', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
