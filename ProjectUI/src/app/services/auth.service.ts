@@ -39,12 +39,11 @@ export class AuthService {
       //on success, we do nothing because token is good
       console.log("authorizing...");
       if (result['status']!='success'){
-        console.log("auth success")
+        console.log(result['status']);
         this.token=null;
       }
       else{
-        console.log("auth no success, result email:");
-        console.log(result['data'].email);
+        console.log(result['status']);
         this.CurrentUser.next(result['data'].email)
       }
 
