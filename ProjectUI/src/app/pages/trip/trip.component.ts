@@ -122,6 +122,7 @@ export class TripComponent implements OnInit {
   createInfoBar(place: any, saved: boolean) {
     //Populates the data from the right side bar with information about the location
     //Handles both saved locations and locations returned by the user's search
+    
     this.currentSelectedPlace = place;
     console.log(place);
     let photoUrl = this.getPhotoUrl(place, saved);
@@ -134,6 +135,7 @@ export class TripComponent implements OnInit {
     else {
       this.planTripButtonVisible = false;
       this.saveLocButtonVisible = true;
+      this.deleteButtonVisible = false;
     }
   }
 
@@ -190,6 +192,7 @@ export class TripComponent implements OnInit {
     -Adds a temporary Marker with a randomly generated color
     -Resizes the maps bounds to include this new location
     */
+    
     let place = places[0]; //Using first result of search if there are multiple results
     console.log(place);
     const bounds = new google.maps.LatLngBounds();
