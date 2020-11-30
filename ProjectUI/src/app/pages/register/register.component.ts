@@ -33,8 +33,14 @@ export class RegisterComponent implements OnInit {
     }
     this.loading=true;
     this.authSvc.register(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
-      this.router.navigate([this.returnUrl]);
+      console.log("Account Creation successful, logging in");
+
+      this.authSvc.login(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
+        this.router.navigate([this.returnUrl]);
+      },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
+
     },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
+
   }
 
 }
