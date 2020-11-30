@@ -23,10 +23,10 @@ export class TripsController {
     */
 
     getTrips(req: express.Request, res: express.Response) {
-      
-        const user_id = req.params.user_id; //Don't think I need this?
         console.log(req);
-        TripsController.db.getRecords(TripsController.tripsTable, { user_id: user_id })
+      
+        const user_id = req.body.authUser.email; //Don't think I need this?
+        TripsController.db.getRecords(TripsController.tripsTable, { userId: user_id })
             .then((results) => res.send({ fn: 'getTrips', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
     }
@@ -45,6 +45,8 @@ export class TripsController {
     addTrip(req: express.Request, res: express.Response) {
         console.log("Trying to add trip...");
         const id = Database.stringToId(req.params.id);
+
+        console.log(req);
 
         const trip: TripsModel = TripsModel.fromObject(req.body);
 

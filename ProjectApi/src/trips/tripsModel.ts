@@ -10,7 +10,7 @@ export class TripsModel {
 
     static fromObject(object: any): TripsModel {
         const t: TripsModel = new TripsModel();
-        t.userId = object.userId;
+        t.userId = object.authUser.email;
         t.name = object.name;
         t.description = object.description;
         t.startDate = object.startDate;
