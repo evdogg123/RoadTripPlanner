@@ -1,50 +1,167 @@
-<form [formGroup]="tripForm" (ngSubmit)="createTrip()">
-    <div class="form-group">
-        <label for="username">Trip Name</label>
-        <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && tripForm.controls.name.errors }" />
-        <div *ngIf="submitted && tripForm.controls.name.errors" class="invalid-feedback">
-            <div *ngIf="tripForm.controls.name.errors.required">Please Name your Trip!</div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && tripForm.controls.description.errors }" />
-        <div *ngIf="submitted && tripForm.controls.description.errors" class="invalid-feedback">
-            <div *ngIf="tripForm.controls.description.errors.required">Description is required</div>
-        </div>
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h1 style="font-size: 2rem">Add Trip</h1>
     </div>
 
-    <label for="endDate">Start Date</label>
-    <div class="form-group">
-        <mat-form-field appearance="outline">
-            <input matInput formControlName="startDate" class="form-control" [matDatepicker]="picker1" disabled [ngClass]="{ 'is-invalid': submitted && tripForm.controls.startDate.errors }">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1 disabled="false"></mat-datepicker>
-        </mat-form-field>
-        <div *ngIf="submitted && tripForm.controls.startDate.errors" class="invalid-feedback">
-            <div *ngIf="tripForm.controls.startDate.errors.required"></div>
+    <form [formGroup]="tripForm" (ngSubmit)="createTrip()">
+
+        <div class="col-md-6 mb-3 automargin">
+            <label for="tripname">Trip Name</label>
+            <input type="text" formControlName="name" class="form-control" id="tripname"
+                placeholder="Example: Summer Road Trip"
+                [ngClass]="{ 'is-invalid': submitted && tripForm.controls.name.errors }" required>
+            <div *ngIf="submitted && tripForm.controls.name.errors" class="invalid-feedback">
+                <div *ngIf="tripForm.controls.name.errors.required">Please Name your Trip</div>
+            </div>
         </div>
-    </div>
-    <label for="endDate">End Date</label>
-    <div class="form-group">
-        <mat-form-field appearance="outline">
-            <mat-label>Choose a date</mat-label>
-            <input matInput formControlName="endDate" class="form-control" [matDatepicker]="picker" disabled [ngClass]="{ 'is-invalid': submitted && tripForm.controls.endDate.errors }">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker disabled="false"></mat-datepicker>
-        </mat-form-field>
-        <div *ngIf="submitted && tripForm.controls.endDate.errors" class="invalid-feedback">
-            <div *ngIf="tripForm.controls.endDate.errors.required"></div>
+
+        <div class="automargin" style="margin-bottom: 2.5rem">
+            <label for="description">Trip Name</label>
+            <input type="text" formControlName="description" class="form-control" id="description"
+                placeholder="Example: Summer 2020 trip from Newark to NYC!"
+                [ngClass]="{ 'is-invalid': submitted && tripForm.controls.description.errors }" required>
+            <div *ngIf="submitted && tripForm.controls.description.errors" class="invalid-feedback">
+                <div *ngIf="tripForm.controls.description.errors.required">Description is required</div>
+            </div>
         </div>
-    </div>
-    
-    
-    
-    <div class="form-group">
-        <button [disabled]="loading" class="btn btn-primary">
+
+        <div class="row">
+
+            <div class="col-md-5 mb-3 automargin">
+                <div class="center text-center" style="width: 50%; padding-bottom: 0%;">
+                    <label for="startdate center">Start Date</label>
+                </div>
+
+
+                <div class="form-group">
+                    <mat-form-field appearance="outline">
+                        <input matInput formControlName="startDate" class="form-control" [matDatepicker]="picker1" disabled
+                            [ngClass]="{ 'is-invalid': submitted && tripForm.controls.startDate.errors }">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="submitted && tripForm.controls.startDate.errors" class="invalid-feedback">
+                        <div *ngIf="tripForm.controls.startDate.errors.required"></div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="form-group">
+                    <mat-form-field class="center">
+                        <input matInput formControlName="startdate" class="form-control" [matDatepicker]="picker1"
+                            [ngClass]="{ 'is-invalid': submitted && tripForm.controls.startDate.errors }">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="submitted && tripForm.controls.startDate.errors" class="invalid-feedback">
+                        <div *ngIf="tripForm.controls.startDate.errors.required"></div>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="col-md-5 mb-3 automargin">
+                <div class="center text-center" style="width: 50%; padding-bottom: 0%;">
+                    <label for="enddate">End Date</label>
+                </div>
+
+
+                <div class="form-group">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput formControlName="endDate" class="form-control" [matDatepicker]="picker" disabled
+                            [ngClass]="{ 'is-invalid': submitted && tripForm.controls.endDate.errors }">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="submitted && tripForm.controls.endDate.errors" class="invalid-feedback">
+                        <div *ngIf="tripForm.controls.endDate.errors.required"></div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="form-group">
+                    <mat-form-field class="center">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput formControlName="enddate" class="form-control" [matDatepicker]="picker"
+                            [ngClass]="{ 'is-invalid': submitted && tripForm.controls.endDate.errors }">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="submitted && tripForm.controls.endDate.errors" class="invalid-feedback">
+                        <div *ngIf="tripForm.controls.endDate.errors.required"></div>
+                    </div>
+                </div> -->
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary btn-lg btn-block col-md-2 automargin" [disabled]="loading">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Create Trip
+            Add Trip
         </button>
+
+    </form>
+
+</div>
+
+
+<!-- <div class="text-center main">
+    <div class="container">
+
+        <form [formGroup]="tripForm" (ngSubmit)="createTrip()" class="form-addtrip" style="padding-bottom: 150px">
+            <div class="form-group">
+                <label for="username">Trip Name</label>
+                <input type="text" formControlName="name" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && tripForm.controls.name.errors }" />
+                <div *ngIf="submitted && tripForm.controls.name.errors" class="invalid-feedback">
+                    <div *ngIf="tripForm.controls.name.errors.required">Please Name your Trip!</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" formControlName="description" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && tripForm.controls.description.errors }" />
+                <div *ngIf="submitted && tripForm.controls.description.errors" class="invalid-feedback">
+                    <div *ngIf="tripForm.controls.description.errors.required">Description is required</div>
+                </div>
+            </div>
+
+            <label for="endDate">Start Date</label>
+            <div class="form-group">
+                <mat-form-field appearance="outline">
+                    <input matInput formControlName="startDate" class="form-control" [matDatepicker]="picker1" disabled
+                        [ngClass]="{ 'is-invalid': submitted && tripForm.controls.startDate.errors }">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="submitted && tripForm.controls.startDate.errors" class="invalid-feedback">
+                    <div *ngIf="tripForm.controls.startDate.errors.required"></div>
+                </div>
+            </div>
+            <label for="endDate">End Date</label>
+            <div class="form-group">
+                <mat-form-field appearance="outline">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput formControlName="endDate" class="form-control" [matDatepicker]="picker" disabled
+                        [ngClass]="{ 'is-invalid': submitted && tripForm.controls.endDate.errors }">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <div *ngIf="submitted && tripForm.controls.endDate.errors" class="invalid-feedback">
+                    <div *ngIf="tripForm.controls.endDate.errors.required"></div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Create Trip
+                </button>
+            </div>
+
+        </form>
     </div>
-    
-</form>
+</div> -->
