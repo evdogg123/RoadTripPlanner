@@ -3,6 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { AlertService } from '../../elements/_alert';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-addproject',
@@ -29,13 +33,20 @@ export class AddprojectComponent implements OnInit {
   ngOnInit(): void {
     this.tripForm = this.formBuilder.group({
       name: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required]
+      
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
   }
 
 createTrip() {
+  this.submitted=true;
+  if (!this.tripForm.valid){
+    return false;
+  }
   console.log("Creating a Trip.....");
   console.log(this.tripForm.value);
   this.projSvc.addTrips(this.tripForm.value).subscribe(result=>{
