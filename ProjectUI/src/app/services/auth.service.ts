@@ -52,10 +52,9 @@ export class AuthService {
     console.log("Trying to register.....");
     return this.http.post<any>(this.path+'register',{email: email,password: password })
       .pipe(map(user=>{
-        this.token=user.data.token
-        console.log(this.token);
-        this.CurrentUser.next(user.data.user.email);
-        return user.data.user;
+        //this.token=user.data.token  //Not sure if this is needed, causing errors, done in login instead
+        //this.CurrentUser.next(user.data.user.email);
+        return null;
       }),catchError(err=>{this.CurrentUser.next(null);this.token=null;return throwError(err.message||'server error')}));
   }
 

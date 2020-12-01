@@ -11,30 +11,36 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent implements OnInit {
 
   signupForm: FormGroup;
-  loading =false;
-  submitted=false;
+  loading = false;
+  submitted = false;
   returnUrl: string;
   error: string;
-  constructor(private formBuilder: FormBuilder,private route: ActivatedRoute,private router: Router,private authSvc:AuthService) { }
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authSvc: AuthService) { }
 
   ngOnInit(): void {
-    this.signupForm=this.formBuilder.group({
-      username: ['',Validators.required],
-      password: ['',Validators.required]
+    this.signupForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
-    this.returnUrl=this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
-  register(): void{
-    this.submitted=true;
-    if (this.signupForm.invalid){
+  register(): void {
+    this.submitted = true;
+    if (this.signupForm.invalid) {
       console.log("Invalid user/password");
       return;
     }
     this.loading=true;
     this.authSvc.register(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
-      this.router.navigate([this.returnUrl]);
+      console.log("Account Creation successful, logging in");
+
+      this.authSvc.login(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
+        this.router.navigate([this.returnUrl]);
+      },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
+
     },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
+
   }
 
 }

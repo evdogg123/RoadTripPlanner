@@ -33,10 +33,10 @@ export class TripsController {
 
 
     getTrips(req: express.Request, res: express.Response) {
+        console.log(req);
       
-        const user_id = req.params.user_id; //Don't think I need this?
-        console.log(req.body);
-        TripsController.db.getRecords(TripsController.tripsTable, { user_id: user_id })
+        const user_id = req.body.authUser.email; //Don't think I need this?
+        TripsController.db.getRecords(TripsController.tripsTable, { userId: user_id })
             .then((results) => res.send({ fn: 'getTrips', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
     }
@@ -55,6 +55,8 @@ export class TripsController {
     addTrip(req: express.Request, res: express.Response) {
         console.log("Trying to add trip...");
         const id = Database.stringToId(req.params.id);
+
+        console.log(req);
 
         const trip: TripsModel = TripsModel.fromObject(req.body);
 
@@ -80,7 +82,28 @@ export class TripsController {
        
     }
 
+    /* deleteSubTrip(req: express.Request, res: express.Response){
+        console.log("Trying to delete subTrip...");
+        const id = Database.stringToId(req.params.id);
+        const subTrip = SubTripsModel.fromObject(req.body);
+        const formAddr = subTrip.formattedAddr;
+        const subName = subTrip.formattedAddr;
+        TripsController.db.deleteSubRecord(TripsController.tripsTable, {_id: id}, {$pull: {'subTrips': name, subName}})
+            .then((results) => results ? (res.send({ fn: 'deleteSubTrip', status: 'success' })) : (res.send({ fn: 'deleteSubTrip', status: 'failure', data: 'Not found' })).end())
+            .catch(err => res.send({ fn: 'deleteSubTrip', status: 'failure', data: err }).end());
+    } */
 
+    deleteSubTrip(req: express.Request, res: express.Response){
+        console.log("Trying to delete subTrip...");
+        const id = Database.stringToId(req.params.id);
+        //const subTrip = SubTripsModel.fromObject(req.body);
+        //const formAddr = subTrip.formattedAddr;
+        const placeid = req.body.Name;
+        console.log(placeid);
+        TripsController.db.updateRecord(TripsController.tripsTable, {_id: id}, {$pull: {'subTrips': {place_id: placeid}}})
+            .then((results) => results ? (res.send({ fn: 'deleteSubTrip', status: 'success' })) : (res.send({ fn: 'deleteSubTrip', status: 'failure', data: 'Not found' })).end())
+            .catch(err => res.send({ fn: 'deleteSubTrip', status: 'failure', data: err }).end());
+    }
 
 
 
@@ -99,10 +122,26 @@ export class TripsController {
     //deleteTrip
     //deletes the Trip int he database with id :id
     deleteTrip(req: express.Request, res: express.Response) {
+        console.log("Trying to delete trip...");
         const id = Database.stringToId(req.params.id);
         TripsController.db.deleteRecord(TripsController.tripsTable, { _id: id })
             .then((results) => results ? (res.send({ fn: 'deleteTrip', status: 'success' })) : (res.send({ fn: 'deleteTrip', status: 'failure', data: 'Not found' })).end())
             .catch((reason) => res.status(500).send(reason).end());
+    }
+
+    editTrip(req: express.Request, res: express.Response) {
+        console.log("Trying to edit trip...");
+        const id = Database.stringToId(req.params.id);
+        delete req.body.authUser;
+        console.log(req.body);
+        TripsController.db.updateRecord(TripsController.tripsTable, { _id: id }, { $set: req.body })
+            .then((results) => results ? (res.send({ fn: 'editTrip', status: 'success' })) : (res.send({ fn: 'editTrip', status: 'failure', data: 'Not found' })).end())
+            .catch((reason) => res.status(500).send(reason).end());
+    }
+
+    editSubStrip(req: express.Request, res: express.Response){
+        console.log("Tring to edit subtrip...");
+        
     }
 
    

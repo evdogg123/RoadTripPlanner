@@ -43,6 +43,11 @@ export class TripComponent implements OnInit {
   dragging = false;
   optimized = false;
  
+  deleteButtonVisible = false;
+
+
+
+
 
   constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private router: Router) { }
 
@@ -198,6 +203,7 @@ export class TripComponent implements OnInit {
   createInfoBar(place: any, saved: boolean) {
     //Populates the data from the right side bar with information about the location
     //Handles both saved locations and locations returned by the user's search
+    
     this.currentSelectedPlace = place;
     console.log(place);
     let photoUrl = this.getPhotoUrl(place, saved);
@@ -205,10 +211,12 @@ export class TripComponent implements OnInit {
     if (saved) {
       this.planTripButtonVisible = true;
       this.saveLocButtonVisible = false;
+      this.deleteButtonVisible = true;
     }
     else {
       this.planTripButtonVisible = false;
       this.saveLocButtonVisible = true;
+      this.deleteButtonVisible = false;
     }
   }
 
@@ -276,6 +284,7 @@ saveCenter(bounds:google.maps.LatLngBounds){
     -Adds a temporary Marker with a randomly generated color
     -Resizes the maps bounds to include this new location
     */
+    
     let place = places[0]; //Using first result of search if there are multiple results
     console.log(place);
     const bounds = new google.maps.LatLngBounds();
@@ -335,11 +344,6 @@ saveCenter(bounds:google.maps.LatLngBounds){
 
   }
 
-
-  deleteTrip() {
-    console.log("Trip id: " + this.tripID);
-    this.tripSvc.deleteTrip(this.tripID, this.tripID);
-  }
 
   /*
   ****************
@@ -446,7 +450,6 @@ saveCenter(bounds:google.maps.LatLngBounds){
 
     }
     this.openedLocInfo = !this.openedLocInfo;
-
   }
   toggleRouteInfo(){
     console.log("hello");
@@ -459,4 +462,14 @@ saveCenter(bounds:google.maps.LatLngBounds){
       true
     );
   }
+
+
+
+deleteSubTrip(){
+  console.log(this.currentSelectedPlace.name);
+  console.log("Trip id: " + this.tripID);
+  this.tripSvc.deleteSubTrip({Name:this.currentSelectedPlace.place_id}, this.tripID);
+}
+
+  
 }

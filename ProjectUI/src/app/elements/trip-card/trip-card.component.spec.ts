@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddprojectComponent } from './addproject.component';
+import { TripCardComponent } from './trip-card.component';
 
-describe('AddprojectComponent', () => {
-  let component: AddprojectComponent;
-  let fixture: ComponentFixture<AddprojectComponent>;
+describe('TripCardComponent', () => {
+  let component: TripCardComponent;
+  let fixture: ComponentFixture<TripCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddprojectComponent ]
+      declarations: [ TripCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddprojectComponent);
+    fixture = TestBed.createComponent(TripCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -22,4 +22,4 @@ describe('AddprojectComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-}); 
+});
