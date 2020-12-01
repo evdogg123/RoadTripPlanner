@@ -26,6 +26,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ChangeDetectorRef} from '@angular/core';
 import { SubtripComponent } from './pages/subtrip/subtrip.component'
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +42,7 @@ import { SubtripComponent } from './pages/subtrip/subtrip.component'
   imports: [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0',
-      libraries: ['places',]
+      libraries: ['places', 'directions']
     }),
     FormsModule,
     MatSidenavModule,
@@ -52,6 +53,7 @@ import { SubtripComponent } from './pages/subtrip/subtrip.component'
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    DragDropModule,
     NgbModule,
     NgbModalModule,
     FlatpickrModule.forRoot(),

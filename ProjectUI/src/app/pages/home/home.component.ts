@@ -7,27 +7,27 @@ import { ProjectsService } from 'src/app/services/projects.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  trips=[];
+  trips = [];
 
-  constructor(private projSvc:ProjectsService) { 
+  constructor(private projSvc: ProjectsService) {
 
   }
 
   ngOnInit(): void {
-    this.projSvc.getTrips().subscribe(result=>{
+    this.projSvc.getTrips().subscribe(result => {
       console.log(result.data);
-      this.trips=result.data;
-      
+      this.trips = result.data;
+
     })
   }
 
-  deleteTrip(id){
+  deleteTrip(id) {
     console.log("Trip id: " + id);
-    this.projSvc.deleteTrip(id, id);
-    this.projSvc.getTrips().subscribe(result=>{
+    this.projSvc.deleteTrip(id, id).subscribe(res => this.projSvc.getTrips().subscribe(result => {
       console.log(result.data);
-      this.trips=result.data;
-    });
+      this.trips = result.data;
+    }));
+
   }
 
 }
