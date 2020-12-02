@@ -10,7 +10,7 @@
         <a class="nav-link" routerLink='home' routerLinkActive='active'>Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [class.disabled]='!loggedIn' routerLink='addproject' routerLinkActive='active'>Add Trip
+        <a class="nav-link" [class.disabled]='!loggedIn' (click)="addtripSvc.show_box = !addtripSvc.show_box" style="cursor: pointer">Add Trip
           <span class="sr-only">(current)</span></a>
       </li>
     </ul>
@@ -39,5 +39,6 @@
 <!-- we can use this main as our html body -->
 <div> 
   <alert></alert>
+  <app-add-trip [ngClass]="{'hide': !addtripSvc.show_box}"></app-add-trip>
   <router-outlet></router-outlet>
 </div>
