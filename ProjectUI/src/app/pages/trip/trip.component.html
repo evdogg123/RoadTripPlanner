@@ -67,7 +67,7 @@
 
 
   <div id=routePlannerContainer>
-    <div id="routePlanner">
+    <div id="routePlanner" class = "shadow">
       <div cdkDropList class="locList" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal">
 
         <div class="example-box" *ngFor="let place of savedPlaces" cdkDrag>
@@ -108,12 +108,13 @@
     </div>
     <div id="optimizeButtonContainer">
       <button type="button" id="optimizeButton" (click)="optimizePath()"
-      [disabled]="optimized==true" class="btn btn-primary">Optimize Route</button>
-      <div *ngIf = "this.totalMilesStr">
+      [disabled]="optimized==true" class="btn btn-primary bottomBarElems" >Optimize Route</button>
+
+      <div *ngIf = "this.totalMilesStr"  class = "bottomBarElems botBarText">
         {{this.totalMilesStr}}
       </div>
     
-      <div *ngIf = "this.totalTimeStr">
+      <div *ngIf = "this.totalTimeStr" class = "bottomBarElems botBarText">
         {{this.totalTimeStr}}
       </div>
     </div>

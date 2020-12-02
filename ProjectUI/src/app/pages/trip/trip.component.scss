@@ -201,10 +201,10 @@
   z-index: 1000;
   height: 100%;
   padding: 2vw 0vw 0vw 1vw;
+  border-color: white;
 
   background-color: white;
   position: absolute;
-  border-color: #212529;
   border-style: solid;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
@@ -290,4 +290,19 @@
 #optimizeButtonContainer{
   display: flex;
   justify-content: space-evenly;
+}
+
+.bottomBarElems{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.botBarText{
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+background-color:   #e9ecef;
+
 }
