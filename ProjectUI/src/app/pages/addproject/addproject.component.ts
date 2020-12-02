@@ -20,7 +20,7 @@ export class AddprojectComponent implements OnInit {
   options = {
     autoClose: true,
     keepAfterRouteChange: false
-};
+  };
 
 
 
