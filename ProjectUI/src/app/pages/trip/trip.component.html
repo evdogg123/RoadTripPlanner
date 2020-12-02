@@ -66,29 +66,27 @@
   </div>
 
 
-  <div id=routePlannerBar>
-    <div>
-      <p><button id=routePlanButton mat-button (click)="toggleRouteInfo()">
-          <mat-icon>directions_car</mat-icon>
-        </button></p>
-    </div>
+  <div id=routePlannerContainer>
     <div id="routePlanner">
       <div cdkDropList class="locList" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal">
 
         <div class="example-box" *ngFor="let place of savedPlaces" cdkDrag>
           <div class=ballContainer>
-
-            <div class="circle" [style.background-color]="place.color"></div>
+            <div class="iconContainer">
+              <div class="circle" [style.background-color]="place.color"></div>
+            </div>
+            
             <div class="barContainer">
               <div *ngFor="let route of routes">
-                <div *ngIf="route.start_address ==place.formatted_address">
+                <div *ngIf="route.start_address ==place.formatted_address" class="routeText">
                   {{route.distance.text}}
                 </div>
               </div>
-            <div class="tripOrderBar"></div>
+            <div *ngIf ="place.formatted_address != this.destination" class="tripOrderBar"></div>
+            
             <div *ngFor="let route of routes">
 
-              <div *ngIf="route.start_address ==place.formatted_address">
+              <div *ngIf="route.start_address ==place.formatted_address" class="routeText">
                 {{route.duration.text}}
               </div>
             </div>
@@ -108,13 +106,26 @@
 
       </div>
     </div>
-    <button type="button" id="optimizeButton" (click)="optimizePath()"
-    [disabled]="optimized==true" class="btn btn-primary">Optimize Route</button>
+    <div id="optimizeButtonContainer">
+      <button type="button" id="optimizeButton" (click)="optimizePath()"
+      [disabled]="optimized==true" class="btn btn-primary">Optimize Route</button>
+      <div *ngIf = "this.totalMilesStr">
+        {{this.totalMilesStr}}
+      </div>
+    
+      <div *ngIf = "this.totalTimeStr">
+        {{this.totalTimeStr}}
+      </div>
+    </div>
+    
+    
   </div>
 
 
 
 </div>
+
+
 <div id="searchContainer">
   <input id="pac-input" class="controls" type="text" placeholder="Search For a Place" />
 </div>

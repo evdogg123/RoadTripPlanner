@@ -28,12 +28,15 @@ export class TripComponent implements OnInit {
   tripID;
   savedPlaces: any[];
   initialCenter:any;
-
+  destination:any;
   //currentSelected Location is what appears in the location info bar on the right side
   currentSelectedPlace: any;
   currentSelectedColor: any;
   routes: any;
- 
+  totalMiles:number;
+  totalMinutes:number;
+  totalMilesStr:string;
+  totalTimeStr:string;
   //Front-end HTML logic
   saveLocButtonVisible = false;
   planTripButtonVisible = false;
@@ -69,7 +72,6 @@ export class TripComponent implements OnInit {
   }
   calculateAndDisplayRoute(
     directionsService: google.maps.DirectionsService,directionsRenderer: google.maps.DirectionsRenderer, optimize:boolean) {
-    console.log("HERE!!!!!!!");
     const waypts: google.maps.DirectionsWaypoint[] = [];
       
   
@@ -82,7 +84,7 @@ export class TripComponent implements OnInit {
       }
     let start = this.savedPlaces[0]["formatted_address"];
     let end = this.savedPlaces[this.savedPlaces.length - 1]["formatted_address"];
-
+    this.destination = end;
   
     directionsService.route(
       {
@@ -97,14 +99,28 @@ export class TripComponent implements OnInit {
           console.log("DISPLAYING ROUTE");
           directionsRenderer.setDirections(response);
           const route = response.routes[0];
+          
           console.log(response);
           this.routes = response["routes"][0]["legs"];
+          this.totalMiles = 0;
+          this.totalMinutes = 0;
+          this.totalMilesStr = undefined;
+          this.totalTimeStr = undefined;
           this.routes.forEach(leg => {
             console.log(leg["duration"])
             leg["duration"]["text"] =  leg["duration"]["text"].replace(/hours|hour/gi, "hr");
             leg["duration"]["text"] =  leg["duration"]["text"].replace(/mins|min/gi, "m");
             leg["duration"]["text"] = leg["duration"]["text"].replace(/ /g, "");
+
+            let tempDist =  leg["distance"]["text"].match(/\d/g);
+            let tempTime = leg["duration"]["text"].replace("m", "").split("hr");
+            this.totalMinutes += parseInt(tempTime[0])*60;
+            this.totalMinutes += parseInt(tempTime[1]);
+            tempDist = parseInt(tempDist.join(""));
+            this.totalMiles += tempDist; 
           });
+          this.totalMilesStr = "Total Miles: " + this.totalMiles + " mi";
+          this.totalTimeStr = "Total Time: " + Math.floor(this.totalMinutes / 60) + " hours " + (this.totalMinutes % 60) + " min"
           console.log(this.routes);
         } else {
           window.alert("Directions request failed due to " + status);
@@ -334,7 +350,7 @@ saveCenter(bounds:google.maps.LatLngBounds){
     this.currentSelectedPlace["color"] = this.currentSelectedColor;
     console.log(this.currentSelectedPlace);
     console.log("Trip id: " + this.tripID);
-
+    this.savedPlaces.concat(this.currentSelectedPlace);
     this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
   }
 
