@@ -40,5 +40,6 @@
 <div> 
   <alert></alert>
   <app-add-trip [ngClass]="{'hide': !addtripSvc.show_box}"></app-add-trip>
+  <app-edit-trip-info [ngClass]="{'hide': !edittripSvc.show_box}"></app-edit-trip-info>
   <router-outlet></router-outlet>
 </div>

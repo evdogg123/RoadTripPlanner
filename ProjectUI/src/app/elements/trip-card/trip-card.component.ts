@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { TripsService } from 'src/app/trips.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { setClassMetadata } from '@angular/core/src/r3_symbols';
-import { $ } from 'protractor';
+import { Router } from '@angular/router';
+import { EditTripInfoService } from 'src/app/services/edit-trip-info.service';
 
 @Component({
   selector: 'app-trip-card',
@@ -17,7 +16,7 @@ export class TripCardComponent implements OnInit {
   start_date; 
   end_date; 
 
-  constructor(private projSvc:ProjectsService, public tripsSvc: TripsService, private router: Router) { 
+  constructor(private projSvc:ProjectsService, public tripsSvc: TripsService, private router: Router, public edittripSvc: EditTripInfoService) { 
 
   }
 
@@ -58,10 +57,10 @@ export class TripCardComponent implements OnInit {
     }
   }
 
-  editTrip(id, name, description){
-    console.log("Trip id: " + id);
-    this.router.navigate(["/editdetails"], {state: {"tripId" : id, "name": name, "description": description}});
-    //this.router.navigate["/editdetails"]
-  }
+  // editTrip(id, name, description){
+  //   console.log("Trip id: " + id);
+  //   this.router.navigate(["/editdetails"], {state: {"tripId" : id, "name": name, "description": description}});
+  //   //this.router.navigate["/editdetails"]
+  // }
 
 }

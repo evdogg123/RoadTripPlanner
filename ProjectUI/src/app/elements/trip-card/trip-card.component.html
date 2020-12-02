@@ -18,7 +18,7 @@
             <div class="btn-group" [ngClass]="{'w-100': del_confirm}">
                 <button (click)="clickDelete()" [ngClass]="{'hide': del_confirm}" type="button" id="del"
                     class="btn btn-sm btn-outline-secondary">Delete</button>
-                <button (click)="editTrip(trip._id, trip.name, trip.description)" [ngClass]="{'hide': del_confirm}" type="button"
+                <button (click)="edittripSvc.show_box = true" [ngClass]="{'hide': del_confirm}" type="button"
                     class="btn btn-sm btn-outline-secondary">Edit</button>
                 <button (click)="cancelDelete()" [ngClass]="{'btn btn-sm btn-secondary': del_confirm, 'hide': !del_confirm}" type="button" id="del"
                     class="">Cancel</button>

@@ -30,22 +30,12 @@ import { SubtripComponent } from './pages/subtrip/subtrip.component';
 import { TripCardComponent } from './elements/trip-card/trip-card.component';
 import { EditdetailsComponent } from './pages/editdetails/editdetails.component';
 import { AlertModule } from './elements/_alert';
-<<<<<<< HEAD
-
-
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatInputModule} from '@angular/material/input';
-=======
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { AddTripComponent } from './elements/add-trip/add-trip.component';
->>>>>>> reworked add trip
 
 @NgModule({
   declarations: [
