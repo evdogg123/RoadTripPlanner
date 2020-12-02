@@ -14,6 +14,8 @@ export class TripCardComponent implements OnInit {
   @Input() trip;
   img; 
   del_confirm: boolean = false; 
+  start_date; 
+  end_date; 
 
   constructor(private projSvc:ProjectsService, public tripsSvc: TripsService, private router: Router) { 
 
@@ -25,6 +27,9 @@ export class TripCardComponent implements OnInit {
     } else {
       this.img = null; 
     }
+
+    this.start_date = new Date(this.trip.startDate).toDateString(); 
+    this.end_date = new Date(this.trip.endDate).toDateString(); 
   }
 
   clickDelete() {
