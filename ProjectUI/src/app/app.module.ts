@@ -25,10 +25,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ChangeDetectorRef} from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SubtripComponent } from './pages/subtrip/subtrip.component';
 import { TripCardComponent } from './elements/trip-card/trip-card.component';
 import { EditdetailsComponent } from './pages/editdetails/editdetails.component';
 import { AlertModule } from './elements/_alert';
+
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatInputModule} from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +54,7 @@ import { AlertModule } from './elements/_alert';
   imports: [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0',
-      libraries: ['places',]
+      libraries: ['places', 'directions']
     }),
     FormsModule,
     MatSidenavModule,
@@ -56,8 +65,14 @@ import { AlertModule } from './elements/_alert';
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    DragDropModule,
     NgbModule,
     NgbModalModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,

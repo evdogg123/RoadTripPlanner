@@ -22,11 +22,21 @@ export class TripsController {
     updateSubTrip
     */
 
+    updateCenter(req: express.Request, res: express.Response){
+        const tripId = Database.stringToId(req.params.tripId);
+        console.log(req.body);
+        console.log(tripId);
+        TripsController.db.updateRecord(TripsController.tripsTable, { _id: tripId }, { $set: req.body })
+            .then((results) => results ? (res.send({ fn: 'updateTrip', status: 'success' })) : (res.send({ fn: 'updateTrip', status: 'failure', data: 'Not found' })).end())
+            .catch(err => res.send({ fn: 'updateTrip', status: 'failure', data: err }).end());
+    }
+
+
     getTrips(req: express.Request, res: express.Response) {
-      
-        const user_id = req.params.user_id; //Don't think I need this?
         console.log(req);
-        TripsController.db.getRecords(TripsController.tripsTable, { user_id: user_id })
+      
+        const user_id = req.body.authUser.email; //Don't think I need this?
+        TripsController.db.getRecords(TripsController.tripsTable, { userId: user_id })
             .then((results) => res.send({ fn: 'getTrips', status: 'success', data: results }).end())
             .catch((reason) => res.status(500).send(reason).end());
     }
@@ -45,6 +55,8 @@ export class TripsController {
     addTrip(req: express.Request, res: express.Response) {
         console.log("Trying to add trip...");
         const id = Database.stringToId(req.params.id);
+
+        console.log(req);
 
         const trip: TripsModel = TripsModel.fromObject(req.body);
 

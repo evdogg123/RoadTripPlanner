@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { CalendarComponent } from "../calendar/calendar.component";
-
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-trip',
@@ -17,20 +17,22 @@ export class TripComponent implements OnInit {
   //Google maps member variables
  
   map: google.maps.Map;
-  bounds: google.maps.LatLngBounds;
+  bounds =  new google.maps.LatLngBounds();
   input: any;
   searchBox: any;
-
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderer;
   markers: google.maps.Marker[] = []; //temp, returned by search
   savedMarkers: google.maps.Marker[] = []; //saved, populated by backend
   trip;
   tripID;
   savedPlaces: any[];
+  initialCenter:any;
 
   //currentSelected Location is what appears in the location info bar on the right side
   currentSelectedPlace: any;
   currentSelectedColor: any;
-
+  routes: any;
  
   //Front-end HTML logic
   saveLocButtonVisible = false;
@@ -38,6 +40,9 @@ export class TripComponent implements OnInit {
   openedCalendar = false;
   openedLocInfo = false;
   showLocation = false;
+  dragging = false;
+  optimized = false;
+ 
   deleteButtonVisible = false;
 
 
@@ -52,34 +57,109 @@ export class TripComponent implements OnInit {
       this.tripSvc.getTrip(params.get('tripID'))
         .subscribe(res => {
           console.log(res);
-
           this.trip = res.data;
+          this.initialCenter = this.trip["center"];
+          console.log(this.initialCenter);
           this.savedPlaces = this.trip["subTrips"];
-          console.log(this.savedPlaces);
           this.tripID = params.get('tripID');
+          this.createGoogleMap();
         });
     });
 
   }
+  calculateAndDisplayRoute(
+    directionsService: google.maps.DirectionsService,directionsRenderer: google.maps.DirectionsRenderer, optimize:boolean) {
+    console.log("HERE!!!!!!!");
+    const waypts: google.maps.DirectionsWaypoint[] = [];
+      
+  
+    for (let i = 1; i < this.savedPlaces.length - 1; i++) {
 
+        waypts.push({
+          location: this.savedPlaces[i]["formatted_address"],
+          stopover: true,
+        });
+      }
+    let start = this.savedPlaces[0]["formatted_address"];
+    let end = this.savedPlaces[this.savedPlaces.length - 1]["formatted_address"];
+
+  
+    directionsService.route(
+      {
+        origin: start,
+        destination: end,
+        waypoints: waypts,
+        optimizeWaypoints: optimize,
+        travelMode: google.maps.TravelMode.DRIVING,
+      },
+      (response, status) => {
+        if (status === "OK") {
+          console.log("DISPLAYING ROUTE");
+          directionsRenderer.setDirections(response);
+          const route = response.routes[0];
+          console.log(response);
+          this.routes = response["routes"][0]["legs"];
+          this.routes.forEach(leg => {
+            console.log(leg["duration"])
+            leg["duration"]["text"] =  leg["duration"]["text"].replace(/hours|hour/gi, "hr");
+            leg["duration"]["text"] =  leg["duration"]["text"].replace(/mins|min/gi, "m");
+            leg["duration"]["text"] = leg["duration"]["text"].replace(/ /g, "");
+          });
+          console.log(this.routes);
+        } else {
+          window.alert("Directions request failed due to " + status);
+        }
+      }
+    );
+
+  }
+  
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(event);
+    console.log( event.previousIndex);
+    console.log(event.currentIndex);
+    this.optimized = false;
+    moveItemInArray(this.savedPlaces, event.previousIndex, event.currentIndex);
+    this.calculateAndDisplayRoute(
+      this.directionsService,
+      this.directionsRenderer,
+      false
+    );
+  }
+ 
   ngAfterViewInit() {
-    this.createGoogleMap();
-    //Wait for google map to finish loading before trying to initialize data
+    
     setTimeout(() => {
-      this.initSavedSubTripData();
-    }, 3000);
+      if (this.savedPlaces.length > 0){
+        // this.calculateAndDisplayRoute(
+        //   this.directionsService,
+        //   this.directionsRenderer
+        // );
+        this.initSavedSubTripData();
+      }
+  
 
+     
+ 
+    },5000);
   }
 
   createGoogleMap(){
     /*
     Initializes the google map with an integrated search box listening for user input
     */
+   console.log(this.initialCenter);
+    if (this.initialCenter == null){
+      this.initialCenter = {lat:20,lng:20};
+    }
     let mapProp = {
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center:this.initialCenter
     };
+
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+    this.directionsRenderer = new google.maps.DirectionsRenderer({ map: this.map , suppressMarkers:true,preserveViewport: true});
     this.input = document.getElementById("pac-input") as HTMLInputElement;
     this.searchBox = new google.maps.places.SearchBox(this.input);
     document.getElementById("googleMap").children[0].setAttribute("style", "height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223); overflow:hidden;");
@@ -93,6 +173,7 @@ export class TripComponent implements OnInit {
         return;
       }
     });
+
   }
 
 
@@ -122,6 +203,7 @@ export class TripComponent implements OnInit {
   createInfoBar(place: any, saved: boolean) {
     //Populates the data from the right side bar with information about the location
     //Handles both saved locations and locations returned by the user's search
+    
     this.currentSelectedPlace = place;
     console.log(place);
     let photoUrl = this.getPhotoUrl(place, saved);
@@ -134,6 +216,7 @@ export class TripComponent implements OnInit {
     else {
       this.planTripButtonVisible = false;
       this.saveLocButtonVisible = true;
+      this.deleteButtonVisible = false;
     }
   }
 
@@ -142,8 +225,9 @@ export class TripComponent implements OnInit {
     Initializes data from the backend and displays it on the map
     -Creates markers, and resizes the bounds to fit all of the saved locations
     */
-    const bounds = new google.maps.LatLngBounds();
+   const bounds = new google.maps.LatLngBounds();
     let icon: any;
+  
     this.savedPlaces.forEach(savedPlace => {
       if (savedPlace["color"]) {
         icon = this.createIcon(savedPlace["color"]);
@@ -168,19 +252,29 @@ export class TripComponent implements OnInit {
         })
       );
 
-
       if (savedPlace.geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(savedPlace.geometry.viewport);
       } else {
         bounds.extend(savedPlace.geometry.location);
       }
-      this.map.fitBounds(bounds, 0);
-      this.map.setZoom(8);
+      console.log("INIT SAVED DATA")
+     
     });
+    console.log(bounds);
+    this.saveCenter(bounds);
     this.initMarkerListeners();
+    this.calculateAndDisplayRoute(
+      this.directionsService,
+      this.directionsRenderer,
+      false
+    );
   }
 
+saveCenter(bounds:google.maps.LatLngBounds){
+  console.log(bounds.getCenter().lat());
+  this.tripSvc.updateCenter({center:{lat:bounds.getCenter().lat(), lng:bounds.getCenter().lng()}},this.tripID);
+}
 
 
   handlePlaceSearch(places: any) {
@@ -190,6 +284,7 @@ export class TripComponent implements OnInit {
     -Adds a temporary Marker with a randomly generated color
     -Resizes the maps bounds to include this new location
     */
+    
     let place = places[0]; //Using first result of search if there are multiple results
     console.log(place);
     const bounds = new google.maps.LatLngBounds();
@@ -215,12 +310,12 @@ export class TripComponent implements OnInit {
       })
     );
     if (place.geometry.viewport) {
-      bounds.union(place.geometry.viewport);
+      this.bounds.union(place.geometry.viewport);
     } else {
-      bounds.extend(place.geometry.location);
+      this.bounds.extend(place.geometry.location);
     }
-    this.map.fitBounds(bounds);
-    this.map.setZoom(8);
+    console.log(this.bounds);
+    this.map.setCenter(this.bounds.getCenter());
     if (!this.openedLocInfo) {
       this.ToggleLocInfo();
 
@@ -355,6 +450,17 @@ export class TripComponent implements OnInit {
 
     }
     this.openedLocInfo = !this.openedLocInfo;
+  }
+  toggleRouteInfo(){
+    console.log("hello");
+  }
+  optimizePath(){
+    this.optimized = true;
+    this.calculateAndDisplayRoute(
+      this.directionsService,
+      this.directionsRenderer,
+      true
+    );
   }
 
 

@@ -21,6 +21,8 @@ export class AppComponent {
   signout(){
     this.authSvc.logout();
     this.tripsSvc.trips= [];
+    this.tripsSvc.trips.length = 0; // this is a bit of workaround to make it seem 
+                                   // like the page is refreshing on sign-out
     return false;
   }
 }

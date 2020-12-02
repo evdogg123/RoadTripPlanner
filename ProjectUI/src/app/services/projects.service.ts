@@ -15,13 +15,11 @@ export class ProjectsService {
   }
   addTrips(data: any):Observable<any>{
     return this.http.post<any>(this.path, data);//.subscribe(res => console.log('success', res));
-    
   }
   addSubTrip(data: any, tripId: string){
     return this.http.post<any>(`${this.path}trip/${tripId}`, data).subscribe(res => console.log('success', res));
   }
   getTrip(tripId: string): Observable<any>{
-
     return this.http.get( `${this.path}trip/${tripId}`);
   }
   deleteTrip(data:any, tripId: string){
@@ -36,4 +34,8 @@ export class ProjectsService {
   editSubTrip(data: any, tripId: string){
     return this.http.put(`${this.path}trip/${tripId}/editSubTrip`, data)//.subscribe(res => console.log('success', res));
   }
-}
+  updateCenter(data:any, tripID:string){
+    return this.http.post<any>(`${this.path}trip/${tripID}/center`, data).subscribe(res => console.log('success', res));
+  }
+  }
+

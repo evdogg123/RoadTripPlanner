@@ -1,7 +1,9 @@
-<p>
-    placeholder
-</p> <p>o</p>
+<div class="map-container">
+    <agm-map [latitude]="lat" [longitude]="lng">
+        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
+</div>
 
-
-<p>subtrip works!</p>
-<p> {{subTripID}} </p>
+<div id="pac-container">
+    <input #search id="pac-input" type="text" placeholder="Enter a location">
+</div>
