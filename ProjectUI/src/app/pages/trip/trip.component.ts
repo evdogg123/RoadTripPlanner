@@ -15,9 +15,9 @@ export class TripComponent implements OnInit {
   @ViewChild(CalendarComponent) calendar: CalendarComponent;
 
   //Google maps member variables
- 
+
   map: google.maps.Map;
-  bounds =  new google.maps.LatLngBounds();
+  bounds = new google.maps.LatLngBounds();
   input: any;
   searchBox: any;
   directionsService = new google.maps.DirectionsService();
@@ -27,13 +27,16 @@ export class TripComponent implements OnInit {
   trip;
   tripID;
   savedPlaces: any[];
-  initialCenter:any;
-
+  initialCenter: any;
+  destination: any;
   //currentSelected Location is what appears in the location info bar on the right side
   currentSelectedPlace: any;
   currentSelectedColor: any;
   routes: any;
- 
+  totalMiles: number;
+  totalMinutes: number;
+  totalMilesStr: string;
+  totalTimeStr: string;
   //Front-end HTML logic
   saveLocButtonVisible = false;
   planTripButtonVisible = false;
@@ -42,7 +45,7 @@ export class TripComponent implements OnInit {
   showLocation = false;
   dragging = false;
   optimized = false;
- 
+
   deleteButtonVisible = false;
 
 
@@ -68,22 +71,21 @@ export class TripComponent implements OnInit {
 
   }
   calculateAndDisplayRoute(
-    directionsService: google.maps.DirectionsService,directionsRenderer: google.maps.DirectionsRenderer, optimize:boolean) {
-    console.log("HERE!!!!!!!");
+    directionsService: google.maps.DirectionsService, directionsRenderer: google.maps.DirectionsRenderer, optimize: boolean) {
     const waypts: google.maps.DirectionsWaypoint[] = [];
-      
-  
+
+
     for (let i = 1; i < this.savedPlaces.length - 1; i++) {
 
-        waypts.push({
-          location: this.savedPlaces[i]["formatted_address"],
-          stopover: true,
-        });
-      }
+      waypts.push({
+        location: this.savedPlaces[i]["formatted_address"],
+        stopover: true,
+      });
+    }
     let start = this.savedPlaces[0]["formatted_address"];
     let end = this.savedPlaces[this.savedPlaces.length - 1]["formatted_address"];
+    this.destination = end;
 
-  
     directionsService.route(
       {
         origin: start,
@@ -97,26 +99,60 @@ export class TripComponent implements OnInit {
           console.log("DISPLAYING ROUTE");
           directionsRenderer.setDirections(response);
           const route = response.routes[0];
+
           console.log(response);
           this.routes = response["routes"][0]["legs"];
+          this.totalMiles = 0;
+          this.totalMinutes = 0;
+          this.totalMilesStr = undefined;
+          this.totalTimeStr = undefined;
           this.routes.forEach(leg => {
             console.log(leg["duration"])
-            leg["duration"]["text"] =  leg["duration"]["text"].replace(/hours|hour/gi, "hr");
-            leg["duration"]["text"] =  leg["duration"]["text"].replace(/mins|min/gi, "m");
+            leg["duration"]["text"] = leg["duration"]["text"].replace(/hours|hour/gi, "hr");
+            leg["duration"]["text"] = leg["duration"]["text"].replace(/mins|min/gi, "m");
             leg["duration"]["text"] = leg["duration"]["text"].replace(/ /g, "");
+
+            let tempDist = leg["distance"]["text"].match(/\d/g);
+            let tempTime = leg["duration"]["text"].replace("m", "").split("hr");
+            console.log(tempTime);
+            if (tempTime[1]){
+              this.totalMinutes += parseInt(tempTime[0]) * 60;
+              this.totalMinutes += parseInt(tempTime[1]);
+            }
+            else{
+              this.totalMinutes += parseInt(tempTime[0]);
+            }
+           
+            tempDist = parseInt(tempDist.join(""));
+            this.totalMiles += tempDist;
           });
-          console.log(this.routes);
+          this.totalMilesStr = "Total Miles: " + this.totalMiles + " mi";
+          this.totalTimeStr = "Total Time: " + Math.floor(this.totalMinutes / 60) + " hours " + (this.totalMinutes % 60) + " min"
+          if (optimize) {
+            let newSavedPlaces = [];
+            newSavedPlaces.push(this.savedPlaces[0]);
+            for (let i =0; i < this.routes.length; i++){
+              for (let j = 1; j < this.savedPlaces.length; j++){
+                if (this.routes[i]["end_address"] == this.savedPlaces[j]["formatted_address"]){
+                  newSavedPlaces.push(this.savedPlaces[j]);
+                }
+              }
+            }
+            this.savedPlaces = newSavedPlaces;
+          
+          }
         } else {
           window.alert("Directions request failed due to " + status);
         }
       }
     );
 
+
   }
-  
+
   drop(event: CdkDragDrop<string[]>) {
     console.log(event);
-    console.log( event.previousIndex);
+    console.log(event.previousIndex);
     console.log(event.currentIndex);
     this.optimized = false;
     moveItemInArray(this.savedPlaces, event.previousIndex, event.currentIndex);
@@ -126,40 +162,40 @@ export class TripComponent implements OnInit {
       false
     );
   }
- 
+
   ngAfterViewInit() {
-    
+
     setTimeout(() => {
-      if (this.savedPlaces.length > 0){
+      if (this.savedPlaces.length > 0) {
         // this.calculateAndDisplayRoute(
         //   this.directionsService,
         //   this.directionsRenderer
         // );
         this.initSavedSubTripData();
       }
-  
 
-     
- 
-    },5000);
+
+
+
+    }, 5000);
   }
 
-  createGoogleMap(){
+  createGoogleMap() {
     /*
     Initializes the google map with an integrated search box listening for user input
     */
-   console.log(this.initialCenter);
-    if (this.initialCenter == null){
-      this.initialCenter = {lat:20,lng:20};
+    console.log(this.initialCenter);
+    if (this.initialCenter == null) {
+      this.initialCenter = { lat: 20, lng: 20 };
     }
     let mapProp = {
       zoom: 8,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      center:this.initialCenter
+      center: this.initialCenter
     };
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-    this.directionsRenderer = new google.maps.DirectionsRenderer({ map: this.map , suppressMarkers:true,preserveViewport: true});
+    this.directionsRenderer = new google.maps.DirectionsRenderer({ map: this.map, suppressMarkers: true, preserveViewport: true });
     this.input = document.getElementById("pac-input") as HTMLInputElement;
     this.searchBox = new google.maps.places.SearchBox(this.input);
     document.getElementById("googleMap").children[0].setAttribute("style", "height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223); overflow:hidden;");
@@ -203,7 +239,7 @@ export class TripComponent implements OnInit {
   createInfoBar(place: any, saved: boolean) {
     //Populates the data from the right side bar with information about the location
     //Handles both saved locations and locations returned by the user's search
-    
+
     this.currentSelectedPlace = place;
     console.log(place);
     let photoUrl = this.getPhotoUrl(place, saved);
@@ -225,9 +261,9 @@ export class TripComponent implements OnInit {
     Initializes data from the backend and displays it on the map
     -Creates markers, and resizes the bounds to fit all of the saved locations
     */
-   const bounds = new google.maps.LatLngBounds();
+    const bounds = new google.maps.LatLngBounds();
     let icon: any;
-  
+
     this.savedPlaces.forEach(savedPlace => {
       if (savedPlace["color"]) {
         icon = this.createIcon(savedPlace["color"]);
@@ -259,7 +295,7 @@ export class TripComponent implements OnInit {
         bounds.extend(savedPlace.geometry.location);
       }
       console.log("INIT SAVED DATA")
-     
+
     });
     console.log(bounds);
     this.saveCenter(bounds);
@@ -271,10 +307,10 @@ export class TripComponent implements OnInit {
     );
   }
 
-saveCenter(bounds:google.maps.LatLngBounds){
-  console.log(bounds.getCenter().lat());
-  this.tripSvc.updateCenter({center:{lat:bounds.getCenter().lat(), lng:bounds.getCenter().lng()}},this.tripID);
-}
+  saveCenter(bounds: google.maps.LatLngBounds) {
+    console.log(bounds.getCenter().lat());
+    this.tripSvc.updateCenter({ center: { lat: bounds.getCenter().lat(), lng: bounds.getCenter().lng() } }, this.tripID);
+  }
 
 
   handlePlaceSearch(places: any) {
@@ -284,7 +320,7 @@ saveCenter(bounds:google.maps.LatLngBounds){
     -Adds a temporary Marker with a randomly generated color
     -Resizes the maps bounds to include this new location
     */
-    
+
     let place = places[0]; //Using first result of search if there are multiple results
     console.log(place);
     const bounds = new google.maps.LatLngBounds();
@@ -299,8 +335,7 @@ saveCenter(bounds:google.maps.LatLngBounds){
 
     this.createInfoBar(place, false);
     this.currentSelectedColor = this.getColor();
-    let color = this.getColor();
-    let icon = this.createIcon(color);
+    let icon = this.createIcon( this.currentSelectedColor);
     this.markers.push(
       new google.maps.Marker({
         map: this.map,
@@ -334,8 +369,13 @@ saveCenter(bounds:google.maps.LatLngBounds){
     this.currentSelectedPlace["color"] = this.currentSelectedColor;
     console.log(this.currentSelectedPlace);
     console.log("Trip id: " + this.tripID);
-
+    this.savedPlaces.push(this.currentSelectedPlace);
     this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
+    this.calculateAndDisplayRoute(
+      this.directionsService,
+      this.directionsRenderer,
+      false
+    );
   }
 
   planTrip() {
@@ -451,10 +491,10 @@ saveCenter(bounds:google.maps.LatLngBounds){
     }
     this.openedLocInfo = !this.openedLocInfo;
   }
-  toggleRouteInfo(){
+  toggleRouteInfo() {
     console.log("hello");
   }
-  optimizePath(){
+  optimizePath() {
     this.optimized = true;
     this.calculateAndDisplayRoute(
       this.directionsService,
@@ -465,11 +505,11 @@ saveCenter(bounds:google.maps.LatLngBounds){
 
 
 
-deleteSubTrip(){
-  console.log(this.currentSelectedPlace.name);
-  console.log("Trip id: " + this.tripID);
-  this.tripSvc.deleteSubTrip({Name:this.currentSelectedPlace.place_id}, this.tripID);
-}
+  deleteSubTrip() {
+    console.log(this.currentSelectedPlace.name);
+    console.log("Trip id: " + this.tripID);
+    this.tripSvc.deleteSubTrip({ Name: this.currentSelectedPlace.place_id }, this.tripID);
+  }
 
-  
+
 }
