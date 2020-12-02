@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertService } from '../../elements/_alert';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +16,12 @@ export class LoginComponent implements OnInit {
   submitted=false;
   returnUrl: string;
   error: string;
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
 
-  constructor(private formBuilder: FormBuilder,private route: ActivatedRoute,private router: Router,private authSvc:AuthService) {
+  constructor(protected alertService: AlertService, private formBuilder: FormBuilder,private route: ActivatedRoute,private router: Router,private authSvc:AuthService) {
       if (authSvc.loggedIn)
       this.router.navigate(['/']);
    }
@@ -37,6 +42,16 @@ export class LoginComponent implements OnInit {
     this.loading=true;
     this.authSvc.login(this.loginForm.controls.username.value,this.loginForm.controls.password.value).subscribe(response=>{
       this.router.navigate([this.returnUrl]);
-    },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
+    },err=>{
+      this.submitted=false;
+      this.loading=false;
+      if(err == "Http failure response for http://localhost:3000/api/security/login: 401 Unauthorized"){
+        this.alertService.error('Incorrect username or password', this.options);
+      }
+      else{
+        this.alertService.error('Login failed', this.options);
+      }
+      //this.error=err.message||err;
+    });
   }
 }
