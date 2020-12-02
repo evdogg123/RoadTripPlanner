@@ -34,6 +34,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { AddTripComponent } from './elements/add-trip/add-trip.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MatInputModule } from '@angular/material/input';
     SubtripComponent,
     TripCardComponent,
     EditdetailsComponent,
+    AddTripComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({
