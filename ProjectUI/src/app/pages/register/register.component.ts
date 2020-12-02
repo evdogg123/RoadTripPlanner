@@ -46,8 +46,15 @@ export class RegisterComponent implements OnInit {
       this.loading=false;
       if(err == "Http failure response for http://localhost:3000/api/security/register: 400 Bad Request"){
         this.alertService.error('Sign up failed', this.options);
+        return;
       }
-      this.error=err.message||err;
+      else{
+        this.alertService.error('Sign up failed, please try again', this.options);
+      }
+      this.router.navigateByUrl("/login");
+      this.alertService.success('Account Created.  Redirecting to login...', this.options);
+      //this.error=err.message||err;
+
     });
   }
 
