@@ -16,16 +16,12 @@ export class RegisterComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   error: string;
-<<<<<<< HEAD
   options = {
     autoClose: true,
     keepAfterRouteChange: false
   };
 
   constructor(protected alertService: AlertService, private formBuilder: FormBuilder,private route: ActivatedRoute,private router: Router,private authSvc:AuthService) { }
-=======
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authSvc: AuthService) { }
->>>>>>> 9525a3e78f6c25f0ab3a2c3801ca5c89f37bbcb3
 
   ngOnInit(): void {
     this.signupForm = this.formBuilder.group({
@@ -43,7 +39,6 @@ export class RegisterComponent implements OnInit {
     }
     this.loading=true;
     this.authSvc.register(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
-<<<<<<< HEAD
       console.log(response);
       this.router.navigate([this.returnUrl]);
     },err=>{
@@ -54,16 +49,6 @@ export class RegisterComponent implements OnInit {
       }
       this.error=err.message||err;
     });
-=======
-      console.log("Account Creation successful, logging in");
-
-      this.authSvc.login(this.signupForm.controls.username.value,this.signupForm.controls.password.value).subscribe(response=>{
-        this.router.navigate([this.returnUrl]);
-      },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
-
-    },err=>{this.submitted=false;this.loading=false;this.error=err.message||err;});
-
->>>>>>> 9525a3e78f6c25f0ab3a2c3801ca5c89f37bbcb3
   }
 
 }
