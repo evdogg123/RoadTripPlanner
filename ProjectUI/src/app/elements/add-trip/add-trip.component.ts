@@ -40,6 +40,7 @@ export class AddTripComponent implements OnInit {
   }
 
 createTrip() {
+  this.loading = true; 
   this.submitted=true;
   if (!this.tripForm.valid){
     return false;
@@ -54,10 +55,11 @@ createTrip() {
     this.alertService.success('Trip Created.  Redirecting to home...', this.options);
     setTimeout(() =>{
       this.router.navigateByUrl("/home");
-    }, 3500);
+      this.addtripSvc.show_box = false; 
+      this.loading = false; 
+    }, 2000);
     // this.router.navigateByUrl("/trip/" + this.tripId);
     // this.router.navigate(["/trip/" + this.tripId]);
-    this.addtripSvc.show_box = false; 
   });
   //console.log(this.tripId);
   //this.router.navigateByUrl("/trip/" + this.tripId);
