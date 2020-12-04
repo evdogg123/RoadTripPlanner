@@ -8,9 +8,23 @@ agm-map {
   padding-top: 50px;
 }
 
+#back-button {
+  padding-top: 200px;
+  margin-right: 12px;
+  z-index: 3;
+  position: absolute;
+}
+
+#add-button {
+  padding-top: 300px;
+  margin-right: 12px;
+  z-index: 2;
+  position: absolute;
+}
+
 #pac-container {
   padding-top: 100px;
   margin-right: 12px;
-  z-index: 2; /* not setting this can lead to angular hiding the autocomplete */
+  z-index: 5; /* not setting this can lead to angular hiding the autocomplete */
   position: absolute; /* not setting this can lead to angular hiding the autocomplete */
 }

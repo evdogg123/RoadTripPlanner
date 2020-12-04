@@ -1,8 +1,15 @@
 <div class="map-container">
-    <agm-map [latitude]="lat" [longitude]="lng">
-        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    <agm-map id="main-map" [latitude]="lat" [longitude]="lng">
+        <agm-marker id = "main-map-marker" [latitude]="marklat" [longitude]="marklng"></agm-marker>
     </agm-map>
 </div>
+
+<button id="back-button" (click)="goBack()">
+    Back
+</button>
+<button id="add-button" (click)="addSubtrip()">
+    Add Subtrip
+</button>
 
 <div id="pac-container">
     <input #search id="pac-input" type="text" placeholder="Enter a location">
