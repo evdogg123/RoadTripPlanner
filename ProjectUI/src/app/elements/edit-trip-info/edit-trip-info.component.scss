@@ -1,0 +1,43 @@
+/* This is the container of this component. 
+ * It is the full size of the screen minus the navbar
+ * at the top. It is to the current component as the
+ * body of an HTML document is. 
+ */
+ :host {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding-top: 3.5rem;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(black, 0.5); 
+    z-index: 10001; 
+  }
+
+.card {
+    width: 30%; 
+    min-width: 35rem; 
+    min-height: 30rem; 
+    margin: auto;
+    margin-top: 7.5rem; 
+    border-radius: 1rem; 
+    z-index: 10002;
+}
+
+.btn {
+    width: 100%; 
+    margin: auto; 
+    display: block; 
+}
+
+.btn-group {
+    width: 100%; 
+}
+
+.box-shadow {
+    box-shadow: 0.75rem 0.75rem 0.75rem 0.75rem rgba(0, 0, 0, 0.5);
+}
+
+.mat-datepicker-toggle {
+    color: rgb(64, 64, 64); 
+}

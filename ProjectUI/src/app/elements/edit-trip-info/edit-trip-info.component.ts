@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EditTripInfoService } from 'src/app/services/edit-trip-info.service';
 import { ProjectsService } from 'src/app/services/projects.service';
-import { map } from 'rxjs/operators';
-import { $ } from 'protractor';
 
 @Component({
-  selector: 'app-editdetails',
-  templateUrl: './editdetails.component.html',
-  styleUrls: ['./editdetails.component.scss']
+  selector: 'app-edit-trip-info',
+  templateUrl: './edit-trip-info.component.html',
+  styleUrls: ['./edit-trip-info.component.scss']
 })
-export class EditdetailsComponent implements OnInit {
+export class EditTripInfoComponent implements OnInit {
   private path = 'http://localhost:3000/api/trips/'
   tripForm: FormGroup;
   updating = false;
@@ -25,7 +24,7 @@ export class EditdetailsComponent implements OnInit {
 
 
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private projSvc:ProjectsService) { }
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private projSvc:ProjectsService, public edittripSvc: EditTripInfoService) { }
 
   ngOnInit(): void {
     this.tripId = window.history.state.tripId; 
