@@ -22,6 +22,7 @@ export class SubtripComponent implements OnInit {
   marklng = null;
 
   searchBar: any;
+  temp;
 
   zoom = 1;
   private geoCoder;
@@ -49,11 +50,12 @@ export class SubtripComponent implements OnInit {
 
       this.tripSvc.getTrip(params.get('tripID'))
         .subscribe(res => {
-          console.log(res);
           this.tripData = res.data;
 
 
           //Just has first subtrip for now... how interact with subtrip ID?
+          console.log("Locations:")
+          console.log(this.tripData);
           console.log(this.tripData.subTrips[0]);
           this.lat = this.tripData.subTrips[0].geometry.location.lat;
           this.lng = this.tripData.subTrips[0].geometry.location.lng;
@@ -105,5 +107,9 @@ export class SubtripComponent implements OnInit {
   addSubtrip() {
     console.log("Add subtrip");
     console.log(this.currentSubtrips);
+    this.currentSubtrips.forEach(element => {
+      this.temp = element.geometry.location.lat() + " " + element.geometry.location.lng();
+      console.log(element.name + " " +  this.temp);
+    });
   }
 }
