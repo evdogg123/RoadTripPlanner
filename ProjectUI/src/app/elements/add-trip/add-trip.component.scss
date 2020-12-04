@@ -41,3 +41,48 @@
 .mat-datepicker-toggle {
     color: rgb(64, 64, 64); 
 }
+
+::ng-deep .mat-form-field {
+    
+
+    .mat-form-field-outline{
+        color: white;
+    }
+}
+::ng-deep .mat-form-field.mat-focused {
+
+    .mat-form-field-outline{
+        color: white;
+    }
+}
+::ng-deep .mat-form-field.mat-focused.ng-touched.ng-invalid {
+
+    .mat-form-field-outline{
+        color: red;
+    }
+}
+::ng-deep .mat-form-field.mat-form-field-invalid {
+   
+    .mat-form-field-outline{
+        color: red
+    }
+}
+::ng-deep .mat-form-field.mat-form-field-invalid.ng-touched {
+   
+    .mat-form-field-outline{
+        color: red
+    }
+}
+::ng-deep .mat-form-field.mat-form-field-invalid.ng-untouched {
+   
+    .mat-form-field-outline{
+        color: white
+    }
+}
+
+::ng-deep .mat-form-field.ng-touched {
+   
+    .mat-form-field-outline{
+        color: white
+    }
+}
