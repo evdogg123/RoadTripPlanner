@@ -34,6 +34,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { AddTripComponent } from './elements/add-trip/add-trip.component';
+import { EditTripInfoComponent } from './elements/edit-trip-info/edit-trip-info.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AddTripComponent } from './elements/add-trip/add-trip.component';
     SubtripComponent,
     TripCardComponent,
     AddTripComponent,
+    EditTripInfoComponent,
   ],
   imports: [
     AgmCoreModule.forRoot({
