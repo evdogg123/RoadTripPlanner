@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, NgZone  } from '@angular/core
 import { ActivatedRoute } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { AgmCoreModule, GoogleMapsAPIWrapper, MapsAPILoader } from '@agm/core';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -62,6 +63,7 @@ export class SubtripComponent implements OnInit {
             //set latitude, longitude and zoom
             this.lat = place.geometry.location.lat();
             this.lng = place.geometry.location.lng();
+            console.log(place.name);
             this.zoom = 12;
           }); 
         });
