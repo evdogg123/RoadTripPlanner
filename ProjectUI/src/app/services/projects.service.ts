@@ -37,5 +37,8 @@ export class ProjectsService {
   updateCenter(data:any, tripID:string){
     return this.http.post<any>(`${this.path}trip/${tripID}/center`, data).subscribe(res => console.log('success', res));
   }
+  getLocationSummary(data:string){
+    return this.http.get(`${this.path}wikiSearch/${data}`);
+  }
   }
 

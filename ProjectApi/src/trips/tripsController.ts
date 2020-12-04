@@ -6,6 +6,7 @@ import { Config } from '../config';
 import { Client, defaultAxiosInstance } from "@googlemaps/google-maps-services-js";
 import { } from 'googlemaps';
 import  { AxiosInstance } from "axios";
+import wiki from 'wikijs';
 
 export class TripsController {
 
@@ -144,6 +145,14 @@ export class TripsController {
         
     }
 
-   
+   getWikiSearch(req: express.Request, res: express.Response){
+    console.log(req.params);
+    console.log(req.body);
+    wiki().page(req.params.data)
+    .then(page => page.summary())
+        .then(summary => res.send({"data":summary}));
+
+       
+   }
 
 }

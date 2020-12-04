@@ -45,18 +45,23 @@
         </div>
         <img src="" id="locImg" height="200">
 
-        <button type="button" id="saveLocButton" (click)="saveLocation(); this.deleteButtonVisible = true; this.planTripButtonVisible = true; this.saveLocButtonVisible = false" *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined"
-        class="btn btn-primary">Save Location</button>
-        
-        <button type="button" id="deleteLocButton" (click)="deleteSubTrip(); this.deleteButtonVisible = false; this.planTripButtonVisible = false; this.saveLocButtonVisible = true"
-         *ngIf="this.deleteButtonVisible" [disabled]="currentSelectedPlace === undefined"
-        class="btn btn-primary">Delete Location</button>
-        
-        <button type="button" id="planTripButton" (click)="planTrip()" *ngIf="this.planTripButtonVisible" [disabled]="currentSelectedPlace === undefined"
-        class="btn btn-primary">Plan Trip</button>
-        <div>
-          Brief Description of Location Found
-        </div>
+        <button type="button" id="saveLocButton"
+          (click)="saveLocation(); this.deleteButtonVisible = true; this.planTripButtonVisible = true; this.saveLocButtonVisible = false"
+          *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save
+          Location</button>
+
+        <button type="button" id="deleteLocButton"
+          (click)="deleteSubTrip(); this.deleteButtonVisible = false; this.planTripButtonVisible = false; this.saveLocButtonVisible = true"
+          *ngIf="this.deleteButtonVisible" [disabled]="currentSelectedPlace === undefined"
+          class="btn btn-primary">Delete Location</button>
+
+        <button type="button" id="planTripButton" (click)="planTrip()" *ngIf="this.planTripButtonVisible"
+          [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Plan Trip</button>
+          
+          <div *ngIf="currentSelectedPlace && currentSelectedPlace.summary" id = "summary">
+              {{currentSelectedPlace.summary}}
+          </div>
+      
 
 
 
@@ -67,7 +72,7 @@
 
 
   <div id=routePlannerContainer>
-    <div id="routePlanner" class = "shadow">
+    <div id="routePlanner" class="shadow">
       <div cdkDropList class="locList" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal">
 
         <div class="example-box" *ngFor="let place of savedPlaces" cdkDrag>
@@ -75,61 +80,61 @@
             <div class="iconContainer">
               <div class="circle" [style.background-color]="place.color"></div>
             </div>
-            
+
             <div class="barContainer">
               <div *ngFor="let route of routes">
                 <div *ngIf="route.start_address ==place.formatted_address" class="routeText">
                   {{route.distance.text}}
                 </div>
               </div>
-            <div *ngIf ="place.formatted_address != this.destination" class="tripOrderBar"></div>
-            
-            <div *ngFor="let route of routes">
+              <div *ngIf="place.formatted_address != this.destination" class="tripOrderBar"></div>
 
-              <div *ngIf="route.start_address ==place.formatted_address" class="routeText">
-                {{route.duration.text}}
+              <div *ngFor="let route of routes">
+
+                <div *ngIf="route.start_address ==place.formatted_address" class="routeText">
+                  {{route.duration.text}}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
 
-        <div class="ballName">
-          {{place.name}}
-        </div>
-        <div class="ball-preview" *cdkDragPreview>
-          <div class="circle" [style.background-color]="place.color"></div>
           <div class="ballName">
             {{place.name}}
           </div>
+          <div class="ball-preview" *cdkDragPreview>
+            <div class="circle" [style.background-color]="place.color"></div>
+            <div class="ballName">
+              {{place.name}}
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div id="optimizeButtonContainer">
+        <button type="button" id="optimizeButton" (click)="optimizePath()" [disabled]="optimized==true"
+          class="btn btn-primary bottomBarElems">Optimize Route</button>
+
+        <div *ngIf="this.totalMilesStr" class="bottomBarElems botBarText">
+          {{this.totalMilesStr}}
         </div>
 
+        <div *ngIf="this.totalTimeStr" class="bottomBarElems botBarText">
+          {{this.totalTimeStr}}
+        </div>
       </div>
-    </div>
-    <div id="optimizeButtonContainer">
-      <button type="button" id="optimizeButton" (click)="optimizePath()"
-      [disabled]="optimized==true" class="btn btn-primary bottomBarElems" >Optimize Route</button>
 
-      <div *ngIf = "this.totalMilesStr"  class = "bottomBarElems botBarText">
-        {{this.totalMilesStr}}
-      </div>
-    
-      <div *ngIf = "this.totalTimeStr" class = "bottomBarElems botBarText">
-        {{this.totalTimeStr}}
-      </div>
+
     </div>
-    
-    
+
+
+
   </div>
 
 
-
-</div>
-
-
-<div id="searchContainer">
-  <input id="pac-input" class="controls" type="text" placeholder="Search For a Place" />
-</div>
-<div id="googleMap" #gmap></div>
+  <div id="searchContainer">
+    <input id="pac-input" class="controls" type="text" placeholder="Search For a Place" />
+  </div>
+  <div id="googleMap" #gmap></div>
 
 </div>

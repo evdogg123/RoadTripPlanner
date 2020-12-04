@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { CalendarComponent } from "../calendar/calendar.component";
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -52,7 +52,7 @@ export class TripComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private router: Router,private http:HttpClient ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -66,6 +66,7 @@ export class TripComponent implements OnInit {
           this.savedPlaces = this.trip["subTrips"];
           this.tripID = params.get('tripID');
           this.createGoogleMap();
+          this.getLocationSummary("hi");
         });
     });
 
@@ -294,7 +295,7 @@ export class TripComponent implements OnInit {
       } else {
         bounds.extend(savedPlace.geometry.location);
       }
-      console.log("INIT SAVED DATA")
+      
 
     });
     console.log(bounds);
@@ -332,7 +333,10 @@ export class TripComponent implements OnInit {
     this.currentSelectedPlace = place;
     let photoUrl = this.getPhotoUrl(place, false);
     place["photoUrl"] = photoUrl;
-
+    this.getLocationSummary(place).subscribe(res => 
+      {this.currentSelectedPlace["summary"] = res["data"];
+      console.log(res["data"]);
+    });
     this.createInfoBar(place, false);
     this.currentSelectedColor = this.getColor();
     let icon = this.createIcon( this.currentSelectedColor);
@@ -511,5 +515,13 @@ export class TripComponent implements OnInit {
     this.tripSvc.deleteSubTrip({ Name: this.currentSelectedPlace.place_id }, this.tripID);
   }
 
+  getLocationSummary(place:any){
+    let query: string = "";
+
+    query += place["address_components"][0]["long_name"] + ", ";
+    query += place["address_components"][2]["long_name"];
+    console.log(query);
+    return this.tripSvc.getLocationSummary(query);
+  }
 
 }
