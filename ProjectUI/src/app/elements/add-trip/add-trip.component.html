@@ -63,7 +63,7 @@
         <div class="btn-group mb-5">
 
             <div class="container">
-                <button (click)="addtripSvc.show_box = false" class="btn btn-outline-danger btn-lg">
+                <button (click)="addtripSvc.show_box = false" class="btn btn-outline-danger btn-lg" [disabled]="loading">
                     Cancel
                 </button>
             </div>

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AddTripService } from 'src/app/services/add-trip.service';
 import { ProjectsService } from 'src/app/services/projects.service';
+import { TripsService } from 'src/app/trips.service';
 import { AlertService } from '../../elements/_alert';
 
 @Component({
@@ -25,7 +26,7 @@ export class AddTripComponent implements OnInit {
 
 
 
-  constructor(protected alertService: AlertService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private projSvc:ProjectsService, public addtripSvc: AddTripService) { }
+  constructor(public tripsSvc: TripsService, protected alertService: AlertService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private projSvc:ProjectsService, public addtripSvc: AddTripService) { }
 
   ngOnInit(): void {
     this.tripForm = this.formBuilder.group({
@@ -43,6 +44,7 @@ createTrip() {
   this.loading = true; 
   this.submitted=true;
   if (!this.tripForm.valid){
+    this.loading = false; 
     return false;
   }
   console.log("Creating a Trip.....");
@@ -51,36 +53,19 @@ createTrip() {
     console.log(result);
     this.tripId = result.id;
     console.log(this.tripId);
-    //this.router.navigateByUrl("/home");
     this.alertService.success('Trip Created.  Redirecting to home...', this.options);
     setTimeout(() =>{
       this.router.navigateByUrl("/home");
+      this.projSvc.getTrips().subscribe(result=>{
+        console.log(result.data);
+        this.tripsSvc.trips=result.data;
+      });
       this.addtripSvc.show_box = false; 
       this.loading = false; 
+      this.submitted = false; 
+      this.tripForm.reset(); 
     }, 2000);
-    // this.router.navigateByUrl("/trip/" + this.tripId);
-    // this.router.navigate(["/trip/" + this.tripId]);
   });
-  //console.log(this.tripId);
-  //this.router.navigateByUrl("/trip/" + this.tripId);
-/*
-
-    
-    this.submitted = true;
-    if (this.tripForm.invalid) {
-      console.log("Invalid");
-      return;
-    }
-
-
-    console.log(this.tripForm);
-    this.loading = true;
-    console.log(this.http);
-    this.http.post<any>(this.path, { name: this.tripForm.controls.name.value, description: this.tripForm.controls.description.value })
-    .subscribe(data => console.log('success', data),
-      error => console.log('oops', error));
-
-*/
 }
 
 }

@@ -3,6 +3,7 @@ import { AuthService } from './services/auth.service';
 import { TripsService } from 'src/app/trips.service';
 import { AddTripService } from './services/add-trip.service';
 import { EditTripInfoService } from './services/edit-trip-info.service';
+import { AlertService } from './elements/_alert/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent {
   get loggedIn():boolean{
     return this.authSvc.loggedIn;
   }
-  constructor(public authSvc:AuthService, public tripsSvc: TripsService, public addtripSvc: AddTripService, public edittripSvc: EditTripInfoService) {
+  constructor(public authSvc:AuthService, public tripsSvc: TripsService, public addtripSvc: AddTripService, public edittripSvc: EditTripInfoService, protected alertService: AlertService) {
     console.log("trying to authorize....")
     authSvc.authorize();
   }

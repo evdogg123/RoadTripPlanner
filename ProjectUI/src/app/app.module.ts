@@ -7,7 +7,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { AddprojectComponent } from './pages/addproject/addproject.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TokenInterceptorService } from './services/token-interceptor.service';
@@ -27,7 +26,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {ChangeDetectorRef} from '@angular/core';
 import { SubtripComponent } from './pages/subtrip/subtrip.component';
 import { TripCardComponent } from './elements/trip-card/trip-card.component';
-import { EditdetailsComponent } from './pages/editdetails/editdetails.component';
 import { AlertModule } from './elements/_alert';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -43,12 +41,10 @@ import { EditTripInfoComponent } from './elements/edit-trip-info/edit-trip-info.
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    AddprojectComponent,
     TripComponent,
     CalendarComponent,
     SubtripComponent,
     TripCardComponent,
-    EditdetailsComponent,
     AddTripComponent,
     EditTripInfoComponent,
   ],
