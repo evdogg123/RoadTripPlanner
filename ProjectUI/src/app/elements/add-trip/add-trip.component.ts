@@ -6,6 +6,9 @@ import { ProjectsService } from 'src/app/services/projects.service';
 import { TripsService } from 'src/app/trips.service';
 import { AlertService } from '../../elements/_alert';
 
+
+import {FormControl} from '@angular/forms';
+
 @Component({
   selector: 'app-add-trip',
   templateUrl: './add-trip.component.html',
@@ -19,6 +22,7 @@ export class AddTripComponent implements OnInit {
   returnUrl: string;
   error: string;
   tripId: string;
+
   options = {
     autoClose: true,
     keepAfterRouteChange: false
@@ -29,11 +33,14 @@ export class AddTripComponent implements OnInit {
   constructor(public tripsSvc: TripsService, protected alertService: AlertService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private projSvc:ProjectsService, public addtripSvc: AddTripService) { }
 
   ngOnInit(): void {
+    
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 7);
     this.tripForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required]
+      startDate: [new Date(), Validators.required],
+      endDate: [(tomorrow), Validators.required]
       
     });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
