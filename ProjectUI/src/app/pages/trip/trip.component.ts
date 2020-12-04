@@ -185,15 +185,19 @@ export class TripComponent implements OnInit {
     /*
     Initializes the google map with an integrated search box listening for user input
     */
+
+    let currentZoom = 8;
     console.log(this.initialCenter);
     if (this.initialCenter == null) {
-      this.initialCenter = { lat: 20, lng: 20 };
+      this.initialCenter = { lat: 37.090240, lng: -95.712891 };
+      currentZoom = 5;
     }
     let mapProp = {
-      zoom: 8,
+      zoom: currentZoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       center: this.initialCenter
     };
+    
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.directionsRenderer = new google.maps.DirectionsRenderer({ map: this.map, suppressMarkers: true, preserveViewport: true });
