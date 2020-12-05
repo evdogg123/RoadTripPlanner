@@ -197,13 +197,14 @@ export class TripComponent implements OnInit {
     console.log(this.initialCenter);
     if (this.initialCenter == null) {
       initialZoom= 3;
-      this.initialCenter = { lat: 20, lng: 20 };
+      this.initialCenter = { lat: 37.090240, lng: -95.712891 };
     }
     let mapProp = {
       zoom: initialZoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       center: this.initialCenter
     };
+    
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.directionsRenderer = new google.maps.DirectionsRenderer({ map: this.map, suppressMarkers: true, preserveViewport: true });

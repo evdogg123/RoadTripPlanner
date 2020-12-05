@@ -20,6 +20,8 @@ export class SubtripComponent implements OnInit {
   //@ViewChild('search');
   tripID;
   subTripID;
+  tripData;
+  currentSubtrips = [];
 
   lat = null;
   lng = null;
