@@ -71,6 +71,30 @@ export class TripComponent implements OnInit {
     });
 
   }
+
+
+  ngAfterViewInit() {
+
+    setTimeout(() => {
+      if (this.savedPlaces.length > 0) {
+        this.initSavedSubTripData();
+     
+      }
+    }, 5000);
+
+
+    setTimeout(() => {
+      console.log(this.trip["startDate"]);
+      this.calendar.startDate = new Date(this.trip["startDate"]);
+      this.calendar.endDate = new Date(this.trip["endDate"]);
+
+      }
+    , 1000);
+   
+   
+  }
+
+
   calculateAndDisplayRoute(
     directionsService: google.maps.DirectionsService, directionsRenderer: google.maps.DirectionsRenderer, optimize: boolean) {
     const waypts: google.maps.DirectionsWaypoint[] = [];
@@ -164,33 +188,19 @@ export class TripComponent implements OnInit {
     );
   }
 
-  ngAfterViewInit() {
-
-    setTimeout(() => {
-      if (this.savedPlaces.length > 0) {
-        // this.calculateAndDisplayRoute(
-        //   this.directionsService,
-        //   this.directionsRenderer
-        // );
-        this.initSavedSubTripData();
-      }
-
-
-
-
-    }, 5000);
-  }
 
   createGoogleMap() {
     /*
     Initializes the google map with an integrated search box listening for user input
     */
+   let initialZoom = 8;
     console.log(this.initialCenter);
     if (this.initialCenter == null) {
+      initialZoom= 3;
       this.initialCenter = { lat: 20, lng: 20 };
     }
     let mapProp = {
-      zoom: 8,
+      zoom: initialZoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       center: this.initialCenter
     };
@@ -272,7 +282,7 @@ export class TripComponent implements OnInit {
       else {
         icon = {
           url: savedPlace.icon as string,
-          size: new google.maps.Size(71, 71),
+          size: new google.maps.Size(71, 71), 
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(17, 34),
           scaledSize: new google.maps.Size(25, 25),
@@ -317,7 +327,9 @@ export class TripComponent implements OnInit {
   handlePlaceSearch(places: any) {
     /*
     Triggered when user selects a location from the search bar
-    -Creates and populates the left side bar with information about the place
+    -Creates and populates the left side bar with info current view date
+
+rmation about the place
     -Adds a temporary Marker with a randomly generated color
     -Resizes the maps bounds to include this new location
     */
@@ -371,6 +383,7 @@ export class TripComponent implements OnInit {
 
   saveLocation() {
     this.currentSelectedPlace["color"] = this.currentSelectedColor;
+    this.currentSelectedPlace["activities"] = [];
     console.log(this.currentSelectedPlace);
     console.log("Trip id: " + this.tripID);
     this.savedPlaces.push(this.currentSelectedPlace);
@@ -384,7 +397,8 @@ export class TripComponent implements OnInit {
 
   planTrip() {
     console.log("GOTO SubTrip planning page");
-    this.router.navigate(['/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"]])
+   // this.router.navigate(['/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"]]);
+    this.router.navigateByUrl('/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"], { state: { "data": this.currentSelectedPlace } });
 
   }
 

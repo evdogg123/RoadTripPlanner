@@ -30,8 +30,8 @@ import { SubtripComponent } from './pages/subtrip/subtrip.component';
 import { TripCardComponent } from './elements/trip-card/trip-card.component';
 import { EditdetailsComponent } from './pages/editdetails/editdetails.component';
 import { AlertModule } from './elements/_alert';
-
-
+import {MatMenuModule} from '@angular/material/menu';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
@@ -66,7 +66,9 @@ import {MatInputModule} from '@angular/material/input';
     AppRoutingModule,
     ReactiveFormsModule,
     DragDropModule,
+    MatButtonToggleModule,
     NgbModule,
+    MatMenuModule,
     NgbModalModule,
     MatNativeDateModule,
     MatDatepickerModule,

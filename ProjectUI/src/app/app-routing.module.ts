@@ -20,6 +20,7 @@ const routes: Routes = [
   {path:'trip/:tripID',component: TripComponent},
   {path:'trip/:tripID/:subtripID', component: SubtripComponent},
   {path:'trip/:tripID/calendar',component: CalendarComponent}
+  
 ];
 
 @NgModule({

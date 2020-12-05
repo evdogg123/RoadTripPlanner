@@ -15,7 +15,7 @@
 
 
     <div id="calendarSidePanel" [ngClass]="openedCalendar ? '' : 'closed'" class="shadow">
-      <app-calendar></app-calendar>
+      <app-calendar [savedPlaces]="savedPlaces"></app-calendar>
     </div>
 
     <p><button mat-button id=calendarButton (click)="expandCalendar()">

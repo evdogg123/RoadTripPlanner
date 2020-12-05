@@ -40,5 +40,11 @@ export class ProjectsService {
   getLocationSummary(data:string){
     return this.http.get(`${this.path}wikiSearch/${data}`);
   }
+  addActivity(data:any, tripId:string, subTripId: string){
+    return this.http.put(`${this.path}trip/${tripId}/${subTripId}`, data);
+  }
+  getSubTrip(tripId:string, subTripId: string){
+    return this.http.get(`${this.path}trip/${tripId}/${subTripId}`);
+  }
   }
 

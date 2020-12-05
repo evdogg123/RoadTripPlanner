@@ -155,4 +155,23 @@ export class TripsController {
        
    }
 
+   addActivity(req: express.Request, res: express.Response){
+    const tripId = Database.stringToId(req.params.tripId);
+    const subTripId = req.params.subTripId;
+    TripsController.db.updateRecord(TripsController.tripsTable, { _id: tripId, "subTrips.place_id": subTripId},  {$addToSet: { 'subTrips.$.activities': req.body }} )
+    .then((results) => results ? (res.send({ fn: 'updateTrip', status: 'success' })) : (res.send({ fn: 'addSubTrip', status: 'failure', data: 'Not found' })).end())
+    .catch(err => res.send({ fn: 'addSubTrip', status: 'failure', data: err }).end());
+
+   }
+   getSubTrip(req: express.Request, res: express.Response){
+
+    const tripId = Database.stringToId(req.params.tripId);
+    const subTripId = req.params.subTripId;
+    console.log(tripId);
+    TripsController.db.getOneRecord(TripsController.tripsTable,  { _id: tripId, "subTrips.place_id": subTripId})
+        .then((results) => res.send({ fn: 'getTrip', status: 'success', data: results }).end())
+        .catch((reason) => res.status(500).send(reason).end());
+
+   }
+
 }
