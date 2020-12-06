@@ -38,8 +38,11 @@ editTrip() {
   console.log("Edit Trip.....");
   //this.updating = true;
   console.log(this.tripForm.value.name);
-  this.projSvc.editTrip({name:this.tripForm.value.name, description:this.tripForm.value.description}, this.tripId).subscribe(result =>{
+  this.projSvc.editTrip({name:this.tripForm.value.name, description:this.tripForm.value.description}, this.edittripSvc.tripId).subscribe(result =>{
     console.log(result);
+    this.edittripSvc.show_box = false;
+    this.router.navigateByUrl("/home")
+    
   })
 }
 
