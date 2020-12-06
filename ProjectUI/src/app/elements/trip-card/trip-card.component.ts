@@ -4,6 +4,7 @@ import { TripsService } from 'src/app/trips.service';
 import { Router } from '@angular/router';
 import { EditTripInfoService } from 'src/app/services/edit-trip-info.service';
 
+
 @Component({
   selector: 'app-trip-card',
   templateUrl: './trip-card.component.html',
@@ -57,10 +58,11 @@ export class TripCardComponent implements OnInit {
     }
   }
 
-  // editTrip(id, name, description){
-  //   console.log("Trip id: " + id);
-  //   this.router.navigate(["/editdetails"], {state: {"tripId" : id, "name": name, "description": description}});
-  //   //this.router.navigate["/editdetails"]
-  // }
+  editTrip(id, name, description, startDate, endDate){
+    this.edittripSvc.updateData(id, name, description, startDate, endDate);
+    console.log(this.edittripSvc.tripId, this.edittripSvc.name, this.edittripSvc.description, this.edittripSvc.startDate, this.edittripSvc.endDate)
+    this.edittripSvc.changeContent();
+    
+  }
 
 }

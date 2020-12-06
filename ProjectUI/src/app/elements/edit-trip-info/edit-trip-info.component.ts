@@ -17,8 +17,6 @@ export class EditTripInfoComponent implements OnInit {
   returnUrl: string;
   error: string;
   tripId: string;
-  name: string;
-  description: string;
   state;
   
 
@@ -27,16 +25,14 @@ export class EditTripInfoComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private projSvc:ProjectsService, public edittripSvc: EditTripInfoService) { }
 
   ngOnInit(): void {
-    this.tripId = window.history.state.tripId; 
-    this.name = window.history.state.name;
-    this.description = window.history.state.description;
-    this.tripForm = this.formBuilder.group({
-      name: [window.history.state.name, Validators.required],
-      description: [window.history.state.description, Validators.required]
-    });
+    this.tripId = ''; 
+    
+    this.tripForm = this.edittripSvc.tripForm;
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
   }
+
+  
 
 editTrip() {
   console.log("Edit Trip.....");
