@@ -36,11 +36,10 @@ export class EditTripInfoComponent implements OnInit {
 
 editTrip() {
   console.log("Edit Trip.....");
-  this.updating = true;
-  //console.log(this.tripForm.value.name);
+  //this.updating = true;
+  console.log(this.tripForm.value.name);
   this.projSvc.editTrip({name:this.tripForm.value.name, description:this.tripForm.value.description}, this.tripId).subscribe(result =>{
     console.log(result);
-    this.router.navigateByUrl("/home");
   })
 }
 
