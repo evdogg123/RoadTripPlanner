@@ -52,10 +52,10 @@ import { EditTripInfoComponent } from './elements/edit-trip-info/edit-trip-info.
     EditTripInfoComponent,
   ],
   imports: [
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0',
-      libraries: ['places', 'directions']
-    }),
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0',
+    //   libraries: ['places', 'directions']
+    // }),
     FormsModule,
     MatSidenavModule,
     MatButtonModule,

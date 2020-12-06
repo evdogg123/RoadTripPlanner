@@ -29,3 +29,16 @@ body {
 .cdk-overlay-container {
     z-index: 10005
 }
+
+.cal-disabled {
+    background-color: #eee  !important;
+    pointer-events: none  !important;
+  }
+  
+  .cal-disabled .cal-day-number {
+    opacity: 0.1  !important; 
+  }
+
+.paintBrushColor{
+    color: black;
+}

@@ -16,7 +16,8 @@
       "dom"
     ],
     "types": [
-      "googlemaps"
+      "googlemaps",
+      "jquery"
     ]
   },
   "angularCompilerOptions": {

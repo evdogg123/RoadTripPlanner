@@ -1,5 +1,5 @@
 /// <reference types="@types/googlemaps" />
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { CalendarComponent } from "../calendar/calendar.component";
@@ -37,6 +37,7 @@ export class TripComponent implements OnInit {
   totalMinutes: number;
   totalMilesStr: string;
   totalTimeStr: string;
+  selectedDayViewDate: Date;
   //Front-end HTML logic
   saveLocButtonVisible = false;
   planTripButtonVisible = false;
@@ -463,7 +464,7 @@ rmation about the place
     if (this.openedCalendar) {
       document.getElementById("calendarBar").animate([
         // keyframes
-        { left: '-675px' }
+        { left: '-45vw' }
       ], {
         // timing options
         duration: 1000,
@@ -476,7 +477,7 @@ rmation about the place
       document.getElementById("calendarBar").animate([
         // keyframes
 
-        { left: '0px' }
+        { left: '0vw' }
       ], {
         duration: 1000,
         fill: "both",

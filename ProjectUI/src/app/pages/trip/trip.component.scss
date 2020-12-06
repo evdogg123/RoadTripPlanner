@@ -66,6 +66,12 @@
     height: 100% !important;
   }
 
+  #summary{
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    overflow-y: scroll;
+  overflow-x: hidden;
+  }
   #googleMap{
     width: 100%;
     overflow: hidden;
@@ -89,9 +95,12 @@
     cursor: default;
   }
 
+  #deleteLocButton{
+    background-color: crimson;
+  }
   #calendarBar{
     position: absolute;
-    left:0;
+    left:-45vw;
     justify-self: flex-start;
     flex-wrap: nowrap;
     display: flex;
@@ -126,11 +135,13 @@
     justify-content: center;
   }
   #calendarSidePanel{
+    padding-top: 1vw;
+
     position:relative;
     visibility: visible;
     overflow: hidden;
   //overflow: hidden;
-  
+  width: 45vw;
   border-color: white;
   border-style: solid;
   border-bottom-right-radius: 30px;
@@ -307,6 +318,6 @@ background-color:   #e9ecef;
 
 }
 
-#summary{
-  overflow:scroll;
+.locButs{
+  margin:.5vw;
 }

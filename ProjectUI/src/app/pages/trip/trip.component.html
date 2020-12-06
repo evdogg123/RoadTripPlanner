@@ -1,6 +1,3 @@
-<script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0&callback=initAutocomplete&libraries=places&v=weekly"
-  defer></script>
 
 <div id="tripContent">
   <div style="text-align:center">
@@ -39,31 +36,31 @@
     <div id=infoBarElems class="shadow">
       <div id="selectedPlaceCard">
         <div *ngIf="currentSelectedPlace">
-          <h2>
+          <h2 style = "text-align:center">
             {{currentSelectedPlace.formatted_address}}
           </h2>
         </div>
         <img src="" id="locImg" height="200">
 
+     
+          <div id = "summary" *ngIf="currentSelectedPlace && currentSelectedPlace.summary" id = "summary">
+              {{currentSelectedPlace.summary}}
+          </div>
+      
         <button type="button" id="saveLocButton"
           (click)="saveLocation(); this.deleteButtonVisible = true; this.planTripButtonVisible = true; this.saveLocButtonVisible = false"
-          *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Save
+          *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary locButs">Save
           Location</button>
+        <button type="button" id="planTripButton" (click)="planTrip()" *ngIf="this.planTripButtonVisible"
+                  [disabled]="currentSelectedPlace === undefined" class="btn btn-primary locButs">Plan Trip</button>
+                  
 
         <button type="button" id="deleteLocButton"
           (click)="deleteSubTrip(); this.deleteButtonVisible = false; this.planTripButtonVisible = false; this.saveLocButtonVisible = true"
           *ngIf="this.deleteButtonVisible" [disabled]="currentSelectedPlace === undefined"
-          class="btn btn-primary">Delete Location</button>
+          class="btn btn-primary locButs">Delete Location</button>
 
-        <button type="button" id="planTripButton" (click)="planTrip()" *ngIf="this.planTripButtonVisible"
-          [disabled]="currentSelectedPlace === undefined" class="btn btn-primary">Plan Trip</button>
-          
-          <div *ngIf="currentSelectedPlace && currentSelectedPlace.summary" id = "summary">
-              {{currentSelectedPlace.summary}}
-          </div>
-      
-
-
+        
 
       </div>
 

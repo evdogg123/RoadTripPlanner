@@ -2,7 +2,7 @@
 import { Component, OnInit, ElementRef, ViewChild, NgZone  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
-import { AgmCoreModule, GoogleMapsAPIWrapper, MapsAPILoader } from '@agm/core';
+
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 const MARKER_PATH =
@@ -52,7 +52,7 @@ export class SubtripComponent implements OnInit {
   public searchElementRef: ElementRef;
 
 
-  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private mapsAPILoader: MapsAPILoader,
+  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService,
     private ngZone: NgZone, private router: Router) { }
 
   /*

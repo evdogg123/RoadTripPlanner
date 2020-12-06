@@ -10,3 +10,25 @@ h3 {
   .ng-tns-c223-0{
     z-index: 100000000000000000000000000000;
   }
+
+
+.cal-day-selectedb,
+.cal-day-selectedb:hover {
+  background-color: deeppink !important;
+}
+
+
+
+.cal-disabled {
+  background-color: #eee  !important;
+  pointer-events: none  !important;
+}
+
+.cal-disabled .cal-day-number {
+  opacity: 0.1  !important; 
+}
+
+#brushBut{
+  background-color: #007bff;
+  color: white;
+}
