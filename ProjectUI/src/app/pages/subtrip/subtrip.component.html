@@ -1,7 +1,7 @@
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0&callback=initAutocomplete&libraries=places&v=weekly"
   defer>
-  </script>
+</script>
 
 <button mat-button class="floating-btn" (click)="goBack()">
   <mat-icon> arrow_back</mat-icon>
@@ -11,12 +11,12 @@
 
   <div class="col custom-container">
     <h1 class="text-center mb-4">Saved Activities</h1>
-    <div *ngIf="this.subTripLocation" class="row">
+    <div class="row">
 
       <!-- <div *ngIf="this.subTripLocation.activities.length>0" class="w-100"> -->
-        <div *ngFor="let activity of this.subTripLocation.activities" class="col-xl-6">
-          <app-activity-card [activity]=activity></app-activity-card>
-        </div>
+      <div *ngFor="let activity of this.subTripLocation.activities" class="col-xl-6">
+        <app-activity-card [activity]=activity></app-activity-card>
+      </div>
       <!-- </div> -->
 
       <!-- <div *ngIf="this.subTripLocation.activities.length==0" class="w-100">
@@ -88,79 +88,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-<!-- <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0&callback=initAutocomplete&libraries=places&v=weekly"
-  defer></script>
-<button mat-button id=back_arrow (click)="goBack()">
-  <mat-icon> arrow_back</mat-icon>
-</button>
-
-<div id="savedActivitiesContainer" *ngIf="this.subTripLocation" class="row">
-  <div id="savedActivities" *ngFor="let activity of this.subTripLocation.activities" class="col-md-4">
-    <app-activity-card></app-activity-card>
-  </div>
-</div>
-
-<div id="mapComponent">
-
-  <div id="toggleButtonContainer">
-    <mat-button-toggle-group name="fontStyle" id="toggleSearchType" aria-label="Font Style">
-      <mat-button-toggle class="actionButton" value="restaurant" (change)="onValChange($event.value)">
-        <mat-icon> local_dining</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle class="actionButton" value="lodging" (change)="onValChange($event.value)">
-        <mat-icon> local_hotel</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle class="actionButton" value="tourist_attraction" (change)="onValChange($event.value)">
-        <mat-icon> local_see</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-  <div id="searchContainer">
-    <input id="pac-input" class="controls" type="text" placeholder="Search For a Place" />
-  </div>
-  <div id="googleMap" #gmap
-    style="width: 100%;position: absolute;overflow: visible;height: 95%;top: 5%;scroll-behavior: none;"></div>
-  <div id="listing">
-    <table id="resultsTable">
-      <tbody id="results"></tbody>
-    </table>
-  </div>
-
-
-  <div style="display: none">
-    <div id="info-content">
-      <table>
-        <tr id="iw-url-row" class="iw_table_row">
-          <td id="iw-icon" class="iw_table_icon"></td>
-          <td id="iw-url"></td>
-        </tr>
-        <tr id="iw-address-row" class="iw_table_row">
-          <td class="iw_attribute_name">Address:</td>
-          <td id="iw-address"></td>
-        </tr>
-        <tr id="iw-phone-row" class="iw_table_row">
-          <td class="iw_attribute_name">Telephone:</td>
-          <td id="iw-phone"></td>
-        </tr>
-        <tr id="iw-rating-row" class="iw_table_row">
-          <td class="iw_attribute_name">Rating:</td>
-          <td id="iw-rating"></td>
-        </tr>
-        <tr id="iw-website-row" class="iw_table_row">
-          <td class="iw_attribute_name">Website:</td>
-          <td id="iw-website"></td>
-        </tr>
-        <button mat-button class="actionButton" (click)="saveActivity()">
-          Save
-        </button>
-
-      </table>
-    </div>
-  </div>
-</div> -->
