@@ -1,4 +1,7 @@
-
+<ngx-spinner bdColor="rgba(255,255,255,1)" style="flex-direction: column;display: flex;height: 100%;" size="large"
+  color="#525252" type="ball-scale-multiple">
+  <p style="font-size: 20px;text-align: center; color: #525252">Loading Trip...</p>
+</ngx-spinner>
 <div id="tripContent">
   <div style="text-align:center">
     <p class="h1">
@@ -27,8 +30,10 @@
 
   <div id="infoBar">
     <div>
-      <p><button id=locNavButton mat-button (click)="ToggleLocInfo()">
-          <mat-icon> navigate_before</mat-icon>
+      <p><button id=locNavButton mat-button (click)="ToggleLocInfo()"
+          [disabled]="this.currentSelectedPlace === undefined">
+          <mat-icon *ngIf="!this.openedLocInfo"> navigate_before</mat-icon>
+          <mat-icon *ngIf="this.openedLocInfo"> navigate_next</mat-icon>
         </button></p>
 
     </div>
@@ -36,31 +41,32 @@
     <div id=infoBarElems class="shadow">
       <div id="selectedPlaceCard">
         <div *ngIf="currentSelectedPlace">
-          <h2 style = "text-align:center">
+          <h2 style="text-align:center">
             {{currentSelectedPlace.formatted_address}}
           </h2>
         </div>
         <img src="" id="locImg" height="200">
 
-     
-          <div id = "summary" *ngIf="currentSelectedPlace && currentSelectedPlace.summary" id = "summary">
-              {{currentSelectedPlace.summary}}
-          </div>
-      
+
+        <div id="summary" *ngIf="currentSelectedPlace && currentSelectedPlace.summary" id="summary">
+          {{currentSelectedPlace.summary}}
+        </div>
+
         <button type="button" id="saveLocButton"
           (click)="saveLocation(); this.deleteButtonVisible = true; this.planTripButtonVisible = true; this.saveLocButtonVisible = false"
-          *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined" class="btn btn-primary locButs">Save
+          *ngIf="this.saveLocButtonVisible" [disabled]="currentSelectedPlace === undefined"
+          class="btn btn-primary locButs">Save
           Location</button>
         <button type="button" id="planTripButton" (click)="planTrip()" *ngIf="this.planTripButtonVisible"
-                  [disabled]="currentSelectedPlace === undefined" class="btn btn-primary locButs">Plan Trip</button>
-                  
+          [disabled]="currentSelectedPlace === undefined" class="btn btn-primary locButs">Plan Trip</button>
+
 
         <button type="button" id="deleteLocButton"
           (click)="deleteSubTrip(); this.deleteButtonVisible = false; this.planTripButtonVisible = false; this.saveLocButtonVisible = true"
           *ngIf="this.deleteButtonVisible" [disabled]="currentSelectedPlace === undefined"
           class="btn btn-primary locButs">Delete Location</button>
 
-        
+
 
       </div>
 
@@ -68,7 +74,7 @@
   </div>
 
 
-  <div id=routePlannerContainer>
+  <div id=routePlannerContainer *ngIf="this.savedPlaces && this.savedPlaces.length > 1">
     <div id="routePlanner" class="shadow">
       <div cdkDropList class="locList" (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal">
 
