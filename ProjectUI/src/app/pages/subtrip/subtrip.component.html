@@ -11,12 +11,21 @@
 
   <div class="col custom-container">
     <h1 class="text-center mb-4">Saved Activities</h1>
+<<<<<<< HEAD
     <div class="row">
 
       <!-- <div *ngIf="this.subTripLocation.activities.length>0" class="w-100"> -->
       <div *ngFor="let activity of this.subTripLocation.activities" class="col-xl-6">
         <app-activity-card [activity]=activity></app-activity-card>
       </div>
+=======
+    <div *ngIf="this.subTripLocation" class="row">
+
+      <!-- <div *ngIf="this.subTripLocation.activities.length>0" class="w-100"> -->
+        <div *ngFor="let activity of this.subTripLocation.activities" class="col-xl-6">
+          <app-activity-card [activity]=activity></app-activity-card>
+        </div>
+>>>>>>> can't delete activities and need to show something if no activities saved
       <!-- </div> -->
 
       <!-- <div *ngIf="this.subTripLocation.activities.length==0" class="w-100">
