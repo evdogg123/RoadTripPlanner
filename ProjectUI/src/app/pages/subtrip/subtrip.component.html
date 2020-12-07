@@ -23,13 +23,13 @@
 
     <div class="centered"> 
       <mat-button-toggle-group class="m-auto" name="fontStyle" aria-label="Font Style">
-        <mat-button-toggle class="actionButton" value="restaurant" (change)="onValChange($event.value)">
+        <mat-button-toggle class="bg-primary" value="restaurant" (change)="onValChange($event.value)">
           <mat-icon> local_dining</mat-icon>
         </mat-button-toggle>
-        <mat-button-toggle class="actionButton" value="lodging" (change)="onValChange($event.value)">
+        <mat-button-toggle class="bg-primary" value="lodging" (change)="onValChange($event.value)">
           <mat-icon> local_hotel</mat-icon>
         </mat-button-toggle>
-        <mat-button-toggle class="actionButton" value="tourist_attraction" (change)="onValChange($event.value)">
+        <mat-button-toggle class="bg-primary" value="tourist_attraction" (change)="onValChange($event.value)">
           <mat-icon> local_see</mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
@@ -37,8 +37,7 @@
 
     <input class="search" type="text" placeholder="Search for a Place">
 
-    <div id="googleMap" #gmap
-      style="width: 100%;position: absolute;overflow: visible;height: 95%;top: 5%;scroll-behavior: none;">
+    <div #gmap class="map">
     </div>
 
     <div id="listing">
