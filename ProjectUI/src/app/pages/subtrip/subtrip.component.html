@@ -7,21 +7,30 @@
   <mat-icon> arrow_back</mat-icon>
 </button>
 
-
-
-<div class="row h-100 w-100">
+<div class="row h-100 w-100 m-0">
 
   <div class="col custom-container">
+    <h1 class="text-center mb-4">Saved Activities</h1>
     <div *ngIf="this.subTripLocation" class="row">
-      <div *ngFor="let activity of this.subTripLocation.activities" class="col-lg">
-        <app-activity-card></app-activity-card>
-      </div>
+
+      <!-- <div *ngIf="this.subTripLocation.activities.length>0" class="w-100"> -->
+        <div *ngFor="let activity of this.subTripLocation.activities" class="col-xl-6">
+          <app-activity-card [activity]=activity></app-activity-card>
+        </div>
+      <!-- </div> -->
+
+      <!-- <div *ngIf="this.subTripLocation.activities.length==0" class="w-100">
+        <h2 class="text-center m-5">
+          You currently have no activies planned. <br> Select one from the map and click "save".
+        </h2>
+      </div> -->
+
     </div>
   </div>
 
   <div class="col p-0">
 
-    <div class="centered"> 
+    <div class="centered">
       <mat-button-toggle-group class="m-auto" name="fontStyle" aria-label="Font Style">
         <mat-button-toggle class="bg-primary" value="restaurant" (change)="onValChange($event.value)">
           <mat-icon> local_dining</mat-icon>
@@ -40,7 +49,7 @@
     <div #gmap class="map">
     </div>
 
-    <div id="listing">
+    <div class="listing">
       <table id="resultsTable">
         <tbody id="results"></tbody>
       </table>

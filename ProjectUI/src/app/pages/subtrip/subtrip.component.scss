@@ -50,7 +50,22 @@ mat-button-toggle-group {
   width: 100%; 
   height: 100%; 
   z-index: 1;
-  overflow: auto; 
+}
+
+.listing {
+  position: absolute;
+  width: 30%;
+  height: 50%;
+  overflow: auto;
+  left: 70%;
+  top: 30%;
+  cursor: pointer;
+  overflow-x: hidden;
+  z-index: 2; 
+}
+
+::ng-deep .ng-start-inserted {
+  width: 100%; 
 }
 
 
