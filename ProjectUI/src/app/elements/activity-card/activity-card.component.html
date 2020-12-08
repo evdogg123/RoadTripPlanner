@@ -18,7 +18,7 @@
                     class="btn btn-sm btn-outline-secondary">Delete</button>
                 <button (click)="cancelDelete()" [ngClass]="{'btn btn-sm btn-secondary': del_confirm, 'hide': !del_confirm}" type="button" id="del"
                     class="">Cancel</button>
-                <button (click)="deleteActivity(activity._id)" [ngClass]="{'btn btn-sm btn-danger': del_confirm, 'hide': !del_confirm}" type="button" id="del"
+                <button (click)="deleteActivity(activity.place_id)" [ngClass]="{'btn btn-sm btn-danger': del_confirm, 'hide': !del_confirm}" type="button" id="del"
                     class="">Confirm</button>
             </div>
             <div class="d-flex justify-content-between align-items-center">

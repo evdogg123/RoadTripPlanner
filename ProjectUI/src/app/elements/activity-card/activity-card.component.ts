@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ProjectsService } from 'src/app/services/projects.service';
+import { SubtripService } from 'src/app/subtrip.service';
+import { TripsService } from 'src/app/trips.service';
 import { AlertService } from '../_alert';
 
 @Component({
@@ -13,7 +16,9 @@ export class ActivityCardComponent implements OnInit {
   is_lodging: boolean = false; 
   is_tourist: boolean = false; 
 
-  constructor(protected alertService: AlertService) { }
+  constructor(protected alertService: AlertService,
+    private projSvc:ProjectsService,
+    public subtripSvc: SubtripService,) { }
 
   ngOnInit(): void {
     let types = this.activity.types; 
@@ -40,12 +45,18 @@ export class ActivityCardComponent implements OnInit {
     this.del_confirm = false; 
   }
 
-  deleteActivity(id){
-    // this.projSvc.deleteTrip(id, id).subscribe(res => this.projSvc.getTrips().subscribe(result=>{
-      // console.log(result.data);
-      // this.tripsSvc.trips=result.data;
-      this.alertService.error("Activity deleted: " + this.activity.name, {autoClose: true}); 
-    // }));
+  deleteActivity(activityID){
+  
+     this.projSvc.deleteActivity({ Name: activityID}, this.subtripSvc.tripID, this.subtripSvc.subtripID)
+     .subscribe(() => this.projSvc.getTrip(this.subtripSvc.tripID)
+     .subscribe(
+       res => {
+         
+
+         this.alertService.success("Activity deleted", {autoClose: true}); 
+
+       }
+     ));
       this.del_confirm = false; 
   }
 

@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { startOfDay } from 'date-fns';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AlertService } from 'src/app/elements/_alert';
+import { SubtripService } from 'src/app/subtrip.service';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -69,6 +70,7 @@ export class TripComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private tripSvc: ProjectsService,
     private router: Router,
+    public subtripSvc: SubtripService,
     private http: HttpClient,
     private spinner: NgxSpinnerService,
     protected alertService: AlertService) { }
@@ -483,6 +485,7 @@ export class TripComponent implements OnInit {
 
     // data["center"] = { lat: this.currentSelectedPlace.location.lat(), lng: this.currentSelectedPlace.location.lng() };
 
+    this.subtripSvc.setData(data);
     this.router.navigateByUrl('/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"], { state: { "data": data } });
 
   }

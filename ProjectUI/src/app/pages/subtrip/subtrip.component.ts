@@ -6,6 +6,7 @@ import { ProjectsService } from 'src/app/services/projects.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AlertService } from 'src/app/elements/_alert';
+import { SubtripService } from 'src/app/subtrip.service';
 const MARKER_PATH =
   "https://developers.google.com/maps/documentation/javascript/images/marker_green";
 const hostnameRegexp = new RegExp("^https?://.+?/");
@@ -56,6 +57,7 @@ export class SubtripComponent implements OnInit {
   constructor(private route: ActivatedRoute, 
     private tripSvc: ProjectsService,
     private ngZone: NgZone, 
+    public subtripSvc: SubtripService,
     private router: Router, 
     protected alertService: AlertService) { }
 
@@ -63,6 +65,7 @@ export class SubtripComponent implements OnInit {
     Initializes the google map with an integrated search box listening for user input
     */
   createGoogleMap() {
+    console.log(this.subtripSvc.data);
     console.log(this.subTripLocationGeo);
     let bounds: any = {};
     if (this.subTripLocationGeo.viewport.north) {
@@ -107,6 +110,7 @@ export class SubtripComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  
     this.route.paramMap.subscribe(params => {
       console.log(params.get('tripID'));
 
@@ -120,8 +124,9 @@ export class SubtripComponent implements OnInit {
           this.subTripLocation = subtrip.filter(item => { return item.place_id == this.subTripID; })[0];
           console.log(this.subTripLocation);
         });
-
-      this.subTripLocationGeo = history.state.data;
+      console.log("histoyr.state.data: " + history.state.data.toString());
+      this.subTripLocationGeo = this.subtripSvc.data;
+      this.subtripSvc.setIDs(this.tripID, this.subTripID);
     });
 
     //console.log(history.state);
