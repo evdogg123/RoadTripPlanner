@@ -63,13 +63,14 @@
         <div class="btn-group mb-5">
 
             <div class="container">
-                <button (click)="edittripSvc.show_box = false" class="btn btn-outline-danger btn-lg">
+                <button (click)="edittripSvc.show_box = false" class="btn btn-outline-danger btn-lg" [disabled]="updating">
                     Cancel
                 </button>
             </div>
 
             <div class="container">
-                <button class="btn btn-primary btn-lg">
+                <button class="btn btn-primary btn-lg" [disabled]="updating">
+                    <span *ngIf="updating" class="spinner-border spinner-border-sm mr-1"></span>
                     Update Trip
                 </button>
             </div>

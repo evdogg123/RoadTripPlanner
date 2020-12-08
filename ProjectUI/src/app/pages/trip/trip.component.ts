@@ -7,6 +7,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HttpClient } from '@angular/common/http';
 import { startOfDay } from 'date-fns';
 import { NgxSpinnerService } from "ngx-spinner";
+import { AlertService } from 'src/app/elements/_alert';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -64,7 +65,12 @@ export class TripComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private router: Router, private http: HttpClient, private spinner: NgxSpinnerService) { }
+  constructor(private route: ActivatedRoute, 
+    private tripSvc: ProjectsService, 
+    private router: Router, 
+    private http: HttpClient, 
+    private spinner: NgxSpinnerService, 
+    protected alertService: AlertService) { }
 
   ngOnInit() {
     this.spinner.show();
@@ -178,7 +184,8 @@ export class TripComponent implements OnInit {
 
           }
         } else {
-          window.alert("Directions request failed due to " + status);
+          // window.alert("Directions request failed due to " + status);
+          this.alertService.error("Directions request failed due to ", status); 
         }
       }
     );
@@ -464,11 +471,11 @@ export class TripComponent implements OnInit {
   isValidSearch(place: any) {
 
     if (!place.geometry) {
-      alert("Invalid Location.");
+      this.alertService.error("Invalid location. Please enter the name of a city.")
       return false;
     }
     if (!place.types.includes("locality")) {
-      alert("Invalid Location.");
+      this.alertService.error("Invalid location. Please enter the name of a city.")
       return false;
     }
     return true;
