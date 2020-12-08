@@ -42,7 +42,7 @@ export class EditTripInfoComponent implements OnInit {
 
 editTrip() {
   console.log("Edit Trip.....");
-  //this.updating = true;
+  this.updating = true;
   console.log(this.tripForm.value.name);
   this.projSvc.editTrip({name:this.tripForm.value.name, description:this.tripForm.value.description,
      startDate: this.tripForm.value.startDate, endDate:this.tripForm.value.endDate}, this.edittripSvc.tripId).subscribe(result =>{

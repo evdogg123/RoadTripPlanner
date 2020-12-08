@@ -1,0 +1,73 @@
+:root {
+    --jumbotron-padding-y: 3rem;
+  }
+  
+  .container {
+    max-width: 40rem;
+  }
+  
+  footer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  footer p {
+    margin-bottom: .25rem;
+  }
+  
+  .box-shadow {
+    box-shadow: 0 .75rem .75rem rgba(0, 0, 0, .5);
+  }
+  
+  .card-header {
+    text-align: center;
+  }
+  
+  .no-outline {
+    border-width: 0;
+  }
+  
+  /* 
+   * This class allows the user to click on the whole card
+   * to activate the routerLink, but the user can also click
+   * on the delete button to delete without ALSO clicking 
+   * on the card itself. 
+  */
+  .fake-button {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+  }
+  
+  .expand {
+      min-width: 100%; 
+      top: 0%; 
+      left: 0%; 
+      padding: 1.25rem; 
+      box-shadow: 0 0.75rem .75rem rgba(0, 0, 0, .5);
+      z-index: 1; 
+      transition: max-height 0.25s, min-width 0.25s, top 0.25s, left 0.25s, box-shadow 0.5s, z-index 0.1s; 
+  }
+  
+  .expand:hover {
+      max-height: 100%; 
+      min-width: 115%; 
+      top: -5%;  
+      left: -7.5%; 
+      box-shadow: 0 1.5rem 1.5rem rgba(0, 0, 0, .75);
+      z-index: 2; 
+  }
+  
+  .hide {
+    display: none; 
+  }
+  
+  .w-100 {
+    width: 100%; 
+  }
+  
+  .dim {
+    background-color: rgba(0, 0, 0, 0.25);
+  }

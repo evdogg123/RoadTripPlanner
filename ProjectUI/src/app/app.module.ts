@@ -37,6 +37,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { AddTripComponent } from './elements/add-trip/add-trip.component';
 import { EditTripInfoComponent } from './elements/edit-trip-info/edit-trip-info.component';
+import { ActivityCardComponent } from './elements/activity-card/activity-card.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     TripCardComponent,
     AddTripComponent,
     EditTripInfoComponent,
+    ActivityCardComponent,
   ],
   imports: [
     // AgmCoreModule.forRoot({
