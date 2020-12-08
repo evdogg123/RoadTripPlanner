@@ -5,6 +5,7 @@ import { ProjectsService } from 'src/app/services/projects.service';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AlertService } from 'src/app/elements/_alert';
 const MARKER_PATH =
   "https://developers.google.com/maps/documentation/javascript/images/marker_green";
 const hostnameRegexp = new RegExp("^https?://.+?/");
@@ -52,8 +53,11 @@ export class SubtripComponent implements OnInit {
   public searchElementRef: ElementRef;
 
 
-  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService,
-    private ngZone: NgZone, private router: Router) { }
+  constructor(private route: ActivatedRoute, 
+    private tripSvc: ProjectsService,
+    private ngZone: NgZone, 
+    private router: Router, 
+    protected alertService: AlertService) { }
 
   /*
     Initializes the google map with an integrated search box listening for user input
@@ -367,6 +371,8 @@ export class SubtripComponent implements OnInit {
             console.log(res["data"]);
             this.subTripLocation = res["data"]["subTrips"].filter((item) => { return item.place_id == this.subTripID; })[0];
             console.log(this.subTripLocation);
+
+            this.alertService.success("Activity planned!"); 
 
           }
         ));

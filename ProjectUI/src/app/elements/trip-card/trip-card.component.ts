@@ -3,6 +3,7 @@ import { ProjectsService } from 'src/app/services/projects.service';
 import { TripsService } from 'src/app/trips.service';
 import { Router } from '@angular/router';
 import { EditTripInfoService } from 'src/app/services/edit-trip-info.service';
+import { AlertService } from '../_alert';
 
 
 @Component({
@@ -17,7 +18,11 @@ export class TripCardComponent implements OnInit {
   start_date; 
   end_date; 
 
-  constructor(private projSvc:ProjectsService, public tripsSvc: TripsService, private router: Router, public edittripSvc: EditTripInfoService) { 
+  constructor(private projSvc:ProjectsService, 
+    public tripsSvc: TripsService, 
+    private router: Router, 
+    public edittripSvc: EditTripInfoService, 
+    protected alertService: AlertService) { 
 
   }
 
@@ -45,6 +50,7 @@ export class TripCardComponent implements OnInit {
     this.projSvc.deleteTrip(id, id).subscribe(res => this.projSvc.getTrips().subscribe(result=>{
       console.log(result.data);
       this.tripsSvc.trips=result.data;
+      this.alertService.error("Trip deleted: " + this.trip.name + " (click x to dismiss)"); 
     }));
       this.del_confirm = false; 
   }

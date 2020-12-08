@@ -11,21 +11,18 @@
 
   <div class="col custom-container">
     <h1 class="text-center mb-4">Saved Activities</h1>
-    <div class="row">
-
-      <!-- <div *ngIf="this.subTripLocation.activities.length>0" class="w-100"> -->
+    <div *ngIf="this.subTripLocation.activities.length>0" class="row">
       <div *ngFor="let activity of this.subTripLocation.activities" class="col-xl-6">
         <app-activity-card [activity]=activity></app-activity-card>
       </div>
-      <!-- </div> -->
-
-      <!-- <div *ngIf="this.subTripLocation.activities.length==0" class="w-100">
-        <h2 class="text-center m-5">
-          You currently have no activies planned. <br> Select one from the map and click "save".
-        </h2>
-      </div> -->
-
     </div>
+
+    <div *ngIf="this.subTripLocation.activities.length==0" class="row h-75">
+      <h2 class="text-center m-auto no-activities">
+        You currently have no activies planned. <br><br><br> Select one from the map and click "save".
+      </h2>
+    </div>
+    
   </div>
 
   <div class="col p-0">

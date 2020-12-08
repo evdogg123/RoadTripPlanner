@@ -444,6 +444,8 @@ export class TripComponent implements OnInit {
       this.directionsRenderer,
       false
     );
+
+    this.alertService.success("Stop in " + this.currentSelectedPlace.name + " saved!"); 
   }
 
   planTrip() {
@@ -621,6 +623,8 @@ export class TripComponent implements OnInit {
           this.directionsRenderer,
           false
         );
+
+        this.alertService.error("Stop in " + this.currentSelectedPlace.name + " deleted. (click x to dismiss)")
 
       });
 

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AlertService } from '../_alert';
 
 @Component({
   selector: 'app-activity-card',
@@ -9,7 +10,7 @@ export class ActivityCardComponent implements OnInit {
   @Input() activity;
   del_confirm: boolean = false;
 
-  constructor() { }
+  constructor(protected alertService: AlertService) { }
 
   ngOnInit(): void {
 
@@ -27,6 +28,7 @@ export class ActivityCardComponent implements OnInit {
     // this.projSvc.deleteTrip(id, id).subscribe(res => this.projSvc.getTrips().subscribe(result=>{
       // console.log(result.data);
       // this.tripsSvc.trips=result.data;
+      this.alertService.error("Activity deleted: " + this.activity.name + " (click x to dismiss)"); 
     // }));
       this.del_confirm = false; 
   }
