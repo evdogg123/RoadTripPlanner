@@ -65,11 +65,11 @@ export class TripComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, 
-    private tripSvc: ProjectsService, 
-    private router: Router, 
-    private http: HttpClient, 
-    private spinner: NgxSpinnerService, 
+  constructor(private route: ActivatedRoute,
+    private tripSvc: ProjectsService,
+    private router: Router,
+    private http: HttpClient,
+    private spinner: NgxSpinnerService,
     protected alertService: AlertService) { }
 
   ngOnInit() {
@@ -188,7 +188,7 @@ export class TripComponent implements OnInit {
           }
         } else {
           // window.alert("Directions request failed due to " + status);
-          this.alertService.error("Directions request failed due to ", status); 
+          this.alertService.error("Directions request failed due to ", status);
         }
       }
     );
@@ -445,7 +445,7 @@ export class TripComponent implements OnInit {
       false
     );
 
-    this.alertService.success("Stop in " + this.currentSelectedPlace.name + " saved!", {autoClose: true}); 
+    this.alertService.success("Stop in " + this.currentSelectedPlace.name + " saved!", { autoClose: true });
   }
 
   planTrip() {
@@ -477,11 +477,11 @@ export class TripComponent implements OnInit {
   isValidSearch(place: any) {
 
     if (!place.geometry) {
-      this.alertService.error("Invalid location. Please enter the name of a city.", {autoClose: true})
+      this.alertService.error("Invalid location. Please enter the name of a city.", { autoClose: true })
       return false;
     }
     if (!place.types.includes("locality")) {
-      this.alertService.error("Invalid location. Please enter the name of a city.", {autoClose: true})
+      this.alertService.error("Invalid location. Please enter the name of a city.", { autoClose: true })
       return false;
     }
     return true;
@@ -598,10 +598,20 @@ export class TripComponent implements OnInit {
     console.log(this.savedMarkers);
     this.savedMarkers.forEach((marker) => {
       console.log(place.geometry.location);
-      if (place["geometry"]["location"]["lat"] == marker.getPosition().lat() &&
-        place["geometry"]["location"]["lng"] == marker.getPosition().lng()) {
-        marker.setMap(null);
+      if (typeof this.currentSelectedPlace.geometry.location.lat === 'function') {
+        if (place["geometry"]["location"].lat() == marker.getPosition().lat() &&
+          place["geometry"]["location"].lng() == marker.getPosition().lng()) {
+          marker.setMap(null);
+        }
       }
+      else {
+        if (place["geometry"]["location"]["lat"] == marker.getPosition().lat() &&
+          place["geometry"]["location"]["lng"] == marker.getPosition().lng()) {
+          marker.setMap(null);
+        }
+
+      }
+
     });
 
 
@@ -624,7 +634,7 @@ export class TripComponent implements OnInit {
           false
         );
 
-        this.alertService.error("Stop in " + this.currentSelectedPlace.name + " removed", {autoClose: true}); 
+        this.alertService.error("Stop in " + this.currentSelectedPlace.name + " removed", { autoClose: true });
 
       });
 
