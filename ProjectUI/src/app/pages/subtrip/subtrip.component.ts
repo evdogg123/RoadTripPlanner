@@ -1,5 +1,5 @@
 /// <reference types="@types/googlemaps" />
-import { Component, OnInit, ElementRef, ViewChild, NgZone  } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 
@@ -28,7 +28,7 @@ export class SubtripComponent implements OnInit {
   map: google.maps.Map;
   bounds = new google.maps.LatLngBounds();
   input: any;
- places: google.maps.places.PlacesService;
+  places: google.maps.places.PlacesService;
   searchBox: any;
   directionsService = new google.maps.DirectionsService();
   directionsRenderer;
@@ -36,7 +36,7 @@ export class SubtripComponent implements OnInit {
   savedMarkers: google.maps.Marker[] = []; //saved, populated by backend
   trip;
   infoWindow: google.maps.InfoWindow;
-  mapBounds:any;
+  mapBounds: any;
   savedPlaces: any[];
   initialCenter: any;
   destination: any;
@@ -47,8 +47,8 @@ export class SubtripComponent implements OnInit {
   private geoCoder;
   state$: Observable<object>;
   currentSelectedMarkerInfo: any;
+  subTripLocationGeo: any;
 
- 
   public searchElementRef: ElementRef;
 
 
@@ -58,20 +58,30 @@ export class SubtripComponent implements OnInit {
   /*
     Initializes the google map with an integrated search box listening for user input
     */
-   createGoogleMap(){
-    console.log(this.subTripLocation);
-    if (this.subTripLocation){
-      this.initialCenter = this.subTripLocation.geometry.location;
+  createGoogleMap() {
+    console.log(this.subTripLocationGeo);
+    let bounds: any = {};
+    if (this.subTripLocationGeo.viewport.north) {
+      bounds = this.subTripLocationGeo.viewport;
     }
-    else{
-      this.initialCenter = {lat:20,lng:20};
+    else {
+      bounds = {
+        north: this.subTripLocationGeo.viewport.lat.j,
+        south: this.subTripLocationGeo.viewport.lat.i,
+        east: this.subTripLocationGeo.viewport.lng.j,
+        west: this.subTripLocationGeo.viewport.lng.i
+      }
+
     }
+
+    console.log(bounds);
+    this.initialCenter = this.subTripLocationGeo["center"];
     let mapProp = {
       zoom: 5,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       center: this.initialCenter,
       restriction: {
-        latLngBounds: this.subTripLocation.geometry.viewport,
+        latLngBounds: bounds,
         strictBounds: false,
       },
     };
@@ -79,29 +89,19 @@ export class SubtripComponent implements OnInit {
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.directionsRenderer = new google.maps.DirectionsRenderer({ map: this.map, suppressMarkers: true, preserveViewport: true });
     this.input = document.getElementById("pac-input") as HTMLInputElement;
-    this.searchBox = new google.maps.places.SearchBox(this.input);
     this.places = new google.maps.places.PlacesService(this.map);
     this.infoWindow = new google.maps.InfoWindow({
       content: document.getElementById("info-content") as HTMLElement,
     });
-    
+
     document.getElementById("googleMap").children[0].setAttribute("style", "height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: rgb(229, 227, 223); overflow:hidden;");
-    this.map.addListener("bounds_changed", () => {
-      this.searchBox.setBounds(this.map.getBounds() as google.maps.LatLngBounds);
-    });
-    this.searchBox.addListener("places_changed", () => {
-      const places = this.searchBox.getPlaces();
-      this.handleSearch(places);
-      if (places.length == 0) {
-        return;
-      }
-    });
+
     setTimeout(() => {
       this.search("restaurant");
     }, 2000);
-    
+
   }
-  
+
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       console.log(params.get('tripID'));
@@ -109,19 +109,28 @@ export class SubtripComponent implements OnInit {
       this.tripID = params.get('tripID')
       this.subTripID = params.get('subtripID');
       console.log(params);
+      this.tripSvc.getTrip(params.get('tripID'))
+        .subscribe(res => {
+          let subtrip = res["data"]["subTrips"];
+          console.log(res);
+          this.subTripLocation = subtrip.filter(item => { return item.place_id == this.subTripID; })[0];
+          console.log(this.subTripLocation);
+        });
+
+      this.subTripLocationGeo = history.state.data;
     });
-    
-    console.log(history.state);
-    this.subTripLocation = history.state.data;
+
+    //console.log(history.state);
+
     console.log(this.subTripLocation);
-  
+
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.createGoogleMap();
   }
-  handleSearch(places: any){
-    
+  handleSearch(places: any) {
+
     let place = places[0]; //Using first result of search if there are multiple results
     console.log(place);
     const bounds = new google.maps.LatLngBounds();
@@ -145,12 +154,12 @@ export class SubtripComponent implements OnInit {
 
   }
 
-  search(type:string){
+  search(type: string) {
     console.log(this.map.getBounds());
     const search = {
       bounds: this.map.getBounds() as google.maps.LatLngBounds,
       // types: ["lodging"],
-      types:[type]
+      types: [type]
     };
     this.places.nearbySearch(
       search,
@@ -162,7 +171,7 @@ export class SubtripComponent implements OnInit {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           // clearResults();
           // clearMarkers(); LATER
-  
+
           // Create a marker for each hotel found, and
           // assign a letter of the alphabetic to each marker icon.
           for (let i = 0; i < results.length; i++) {
@@ -180,11 +189,11 @@ export class SubtripComponent implements OnInit {
             // If the user clicks a hotel marker, show the details of that hotel
             // in an info window.
             // @ts-ignore TODO(jpoehnelt) refactor to avoid storing on marker
-           // this.markers[i].placeResult = results[i];
+            // this.markers[i].placeResult = results[i];
             // google.maps.event.addListener(markers[i], "click", showInfoWindow);
             setTimeout(this.dropMarker(i), i * 100);
             this.markers[i].addListener('click', () => {
-            this.markerClickHandler(this.markers[i], results[i]);
+              this.markerClickHandler(this.markers[i], results[i]);
             });
             this.addResult(results[i], i);
           }
@@ -193,12 +202,12 @@ export class SubtripComponent implements OnInit {
     );
 
   }
-  markerClickHandler(marker: google.maps.Marker,result: google.maps.places.PlaceResult ){
+  markerClickHandler(marker: google.maps.Marker, result: google.maps.places.PlaceResult) {
     console.log(marker);
     console.log(result);
     this.currentSelectedMarkerInfo = result;
     this.places.getDetails(
-      { placeId:result.place_id },
+      { placeId: result.place_id },
       (place, status) => {
         if (status !== google.maps.places.PlacesServiceStatus.OK) {
           return;
@@ -211,7 +220,7 @@ export class SubtripComponent implements OnInit {
 
   clearResults() {
     const results = document.getElementById("results") as HTMLElement;
-  
+
     while (results.childNodes[0]) {
       results.removeChild(results.childNodes[0]);
     }
@@ -230,7 +239,7 @@ export class SubtripComponent implements OnInit {
     const results = document.getElementById("results") as HTMLElement;
     const markerLetter = String.fromCharCode("A".charCodeAt(0) + (i % 26));
     const markerIcon = MARKER_PATH + markerLetter + ".png";
-  
+
     const tr = document.createElement("tr");
     tr.style.backgroundColor = i % 2 === 0 ? "#F0F0F0" : "#FFFFFF";
     let marker = this.markers[i];
@@ -239,7 +248,7 @@ export class SubtripComponent implements OnInit {
     };
 
 
-  
+
     const iconTd = document.createElement("td");
     const nameTd = document.createElement("td");
     const icon = document.createElement("img");
@@ -261,7 +270,7 @@ export class SubtripComponent implements OnInit {
       '<b><a href="' + place.url + '">' + place.name + "</a></b>";
     (document.getElementById("iw-address") as HTMLElement).textContent =
       place.vicinity;
-  
+
     if (place.formatted_phone_number) {
       (document.getElementById("iw-phone-row") as HTMLElement).style.display = "";
       (document.getElementById("iw-phone") as HTMLElement).textContent =
@@ -270,13 +279,13 @@ export class SubtripComponent implements OnInit {
       (document.getElementById("iw-phone-row") as HTMLElement).style.display =
         "none";
     }
-  
+
     // Assign a five-star rating to the hotel, using a black star ('&#10029;')
     // to indicate the rating the hotel has earned, and a white star ('&#10025;')
     // for the rating points not achieved.
     if (place.rating) {
       let ratingHtml = "";
-  
+
       for (let i = 0; i < 5; i++) {
         if (place.rating < i + 0.5) {
           ratingHtml += "&#10025;";
@@ -293,13 +302,13 @@ export class SubtripComponent implements OnInit {
       (document.getElementById("iw-rating-row") as HTMLElement).style.display =
         "none";
     }
-  
+
     // The regexp isolates the first part of the URL (domain plus subdomain)
     // to give a short URL for displaying in the info window.
     if (place.website) {
       let fullUrl = place.website;
       let website = String(hostnameRegexp.exec(place.website));
-  
+
       if (!website) {
         website = "http://" + place.website + "/";
         fullUrl = website;
@@ -316,49 +325,50 @@ export class SubtripComponent implements OnInit {
   }
 
 
-  onValChange(value){
+  onValChange(value) {
     this.clearResults();
     this.clearMarkers();
     this.search(value);
-}
-
-
- dropMarker(i) {
-      this.markers[i].setMap(this.map);
-  
   }
-  
- 
- isValidSearch(place: any) {
 
-   if (!place.geometry) {
-     alert("Invalid Location.");
-     return false;
-   }
-   if (!place.types.includes("locality")) {
-     alert("Invalid Location.");
-     return false;
-   }
-   return true;
- }
 
- goBack() {
-  console.log("go back");
-  this.router.navigate(["/trip/" + this.tripID]);
-}
+  dropMarker(i) {
+    this.markers[i].setMap(this.map);
 
-saveActivity(){
-  console.log("here");
-  console.log(this.currentSelectedMarkerInfo);
-  this.tripSvc.addActivity(this.currentSelectedMarkerInfo,this.tripID,this.subTripID)
-    .subscribe(() => this.tripSvc.getTrip(this.tripID)
-      .subscribe(
-        res=> {this.trip = res["data"];
-        console.log(res["data"]);
-        this.subTripLocation = res["data"]["subTrips"].filter((item) => { return item.place_id == this.subTripID; })[0];
-        console.log(this.subTripLocation);
-      
-      }
-      ));
+  }
+
+
+  isValidSearch(place: any) {
+
+    if (!place.geometry) {
+      alert("Invalid Location.");
+      return false;
+    }
+    if (!place.types.includes("locality")) {
+      alert("Invalid Location.");
+      return false;
+    }
+    return true;
+  }
+
+  goBack() {
+    console.log("go back");
+    this.router.navigate(["/trip/" + this.tripID]);
+  }
+
+  saveActivity() {
+    console.log("here");
+    console.log(this.currentSelectedMarkerInfo);
+    this.tripSvc.addActivity(this.currentSelectedMarkerInfo, this.tripID, this.subTripID)
+      .subscribe(() => this.tripSvc.getTrip(this.tripID)
+        .subscribe(
+          res => {
+            this.trip = res["data"];
+            console.log(res["data"]);
+            this.subTripLocation = res["data"]["subTrips"].filter((item) => { return item.place_id == this.subTripID; })[0];
+            console.log(this.subTripLocation);
+
+          }
+        ));
   }
 }

@@ -1,10 +1,12 @@
 /// <reference types="@types/googlemaps" />
-import { Component, OnInit, ViewChild, ElementRef, NgZone} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { CalendarComponent } from "../calendar/calendar.component";
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HttpClient } from '@angular/common/http';
+import { startOfDay } from 'date-fns';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -13,6 +15,14 @@ import { HttpClient } from '@angular/common/http';
 export class TripComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
   @ViewChild(CalendarComponent) calendar: CalendarComponent;
+
+  options = {
+    path: 'assets/data.json',
+
+    autoplay: true,
+    loop: true
+  };
+
 
   //Google maps member variables
 
@@ -25,6 +35,7 @@ export class TripComponent implements OnInit {
   markers: google.maps.Marker[] = []; //temp, returned by search
   savedMarkers: google.maps.Marker[] = []; //saved, populated by backend
   trip;
+  isLoading = true;
   tripID;
   savedPlaces: any[];
   initialCenter: any;
@@ -53,21 +64,19 @@ export class TripComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private router: Router,private http:HttpClient ) { }
+  constructor(private route: ActivatedRoute, private tripSvc: ProjectsService, private router: Router, private http: HttpClient, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.spinner.show();
     this.route.paramMap.subscribe(params => {
-      console.log(params.get('tripID'));
       this.tripSvc.getTrip(params.get('tripID'))
         .subscribe(res => {
           console.log(res);
           this.trip = res.data;
           this.initialCenter = this.trip["center"];
-          console.log(this.initialCenter);
           this.savedPlaces = this.trip["subTrips"];
           this.tripID = params.get('tripID');
           this.createGoogleMap();
-          this.getLocationSummary("hi");
         });
     });
 
@@ -79,20 +88,20 @@ export class TripComponent implements OnInit {
     setTimeout(() => {
       if (this.savedPlaces.length > 0) {
         this.initSavedSubTripData();
-     
+        this.spinner.hide();
       }
     }, 5000);
 
 
     setTimeout(() => {
-      console.log(this.trip["startDate"]);
-      this.calendar.startDate = new Date(this.trip["startDate"]);
-      this.calendar.endDate = new Date(this.trip["endDate"]);
+      console.log("SETTING START DATE: " + this.trip["startDate"]);
+      this.calendar.startDate = startOfDay(new Date(this.trip["startDate"]));
+      this.calendar.endDate = startOfDay(new Date(this.trip["endDate"]));
 
-      }
-    , 1000);
-   
-   
+    }
+      , 1000);
+
+
   }
 
 
@@ -125,47 +134,48 @@ export class TripComponent implements OnInit {
           console.log("DISPLAYING ROUTE");
           directionsRenderer.setDirections(response);
           const route = response.routes[0];
-
-          console.log(response);
           this.routes = response["routes"][0]["legs"];
           this.totalMiles = 0;
           this.totalMinutes = 0;
           this.totalMilesStr = undefined;
           this.totalTimeStr = undefined;
           this.routes.forEach(leg => {
-            console.log(leg["duration"])
             leg["duration"]["text"] = leg["duration"]["text"].replace(/hours|hour/gi, "hr");
             leg["duration"]["text"] = leg["duration"]["text"].replace(/mins|min/gi, "m");
             leg["duration"]["text"] = leg["duration"]["text"].replace(/ /g, "");
 
             let tempDist = leg["distance"]["text"].match(/\d/g);
             let tempTime = leg["duration"]["text"].replace("m", "").split("hr");
-            console.log(tempTime);
-            if (tempTime[1]){
+            if (tempTime[1]) {
               this.totalMinutes += parseInt(tempTime[0]) * 60;
               this.totalMinutes += parseInt(tempTime[1]);
             }
-            else{
+            else {
               this.totalMinutes += parseInt(tempTime[0]);
             }
-           
+
             tempDist = parseInt(tempDist.join(""));
             this.totalMiles += tempDist;
           });
+          if (this.isLoading) {
+            this.isLoading = false;
+            this.spinner.hide();
+          }
           this.totalMilesStr = "Total Miles: " + this.totalMiles + " mi";
           this.totalTimeStr = "Total Time: " + Math.floor(this.totalMinutes / 60) + " hours " + (this.totalMinutes % 60) + " min"
           if (optimize) {
             let newSavedPlaces = [];
             newSavedPlaces.push(this.savedPlaces[0]);
-            for (let i =0; i < this.routes.length; i++){
-              for (let j = 1; j < this.savedPlaces.length; j++){
-                if (this.routes[i]["end_address"] == this.savedPlaces[j]["formatted_address"]){
+            for (let i = 0; i < this.routes.length; i++) {
+              for (let j = 1; j < this.savedPlaces.length; j++) {
+                if (this.routes[i]["end_address"] == this.savedPlaces[j]["formatted_address"]) {
                   newSavedPlaces.push(this.savedPlaces[j]);
                 }
               }
             }
+
             this.savedPlaces = newSavedPlaces;
-          
+
           }
         } else {
           window.alert("Directions request failed due to " + status);
@@ -177,9 +187,6 @@ export class TripComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log(event);
-    console.log(event.previousIndex);
-    console.log(event.currentIndex);
     this.optimized = false;
     moveItemInArray(this.savedPlaces, event.previousIndex, event.currentIndex);
     this.calculateAndDisplayRoute(
@@ -191,13 +198,13 @@ export class TripComponent implements OnInit {
 
 
   createGoogleMap() {
+
     /*
     Initializes the google map with an integrated search box listening for user input
     */
-   let initialZoom = 8;
-    console.log(this.initialCenter);
+    let initialZoom = 8;
     if (this.initialCenter == null) {
-      initialZoom= 3;
+      initialZoom = 4;
       this.initialCenter = { lat: 37.090240, lng: -95.712891 };
     }
     let mapProp = {
@@ -205,7 +212,7 @@ export class TripComponent implements OnInit {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       center: this.initialCenter
     };
-    
+
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     this.directionsRenderer = new google.maps.DirectionsRenderer({ map: this.map, suppressMarkers: true, preserveViewport: true });
@@ -254,7 +261,6 @@ export class TripComponent implements OnInit {
     //Handles both saved locations and locations returned by the user's search
 
     this.currentSelectedPlace = place;
-    console.log(place);
     let photoUrl = this.getPhotoUrl(place, saved);
     document.getElementById('locImg').setAttribute('src', photoUrl);
     if (saved) {
@@ -284,7 +290,7 @@ export class TripComponent implements OnInit {
       else {
         icon = {
           url: savedPlace.icon as string,
-          size: new google.maps.Size(71, 71), 
+          size: new google.maps.Size(71, 71),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(17, 34),
           scaledSize: new google.maps.Size(25, 25),
@@ -307,21 +313,25 @@ export class TripComponent implements OnInit {
       } else {
         bounds.extend(savedPlace.geometry.location);
       }
-      
+
 
     });
-    console.log(bounds);
     this.saveCenter(bounds);
     this.initMarkerListeners();
-    this.calculateAndDisplayRoute(
-      this.directionsService,
-      this.directionsRenderer,
-      false
-    );
+    if (this.savedPlaces.length > 1) {
+      this.calculateAndDisplayRoute(
+        this.directionsService,
+        this.directionsRenderer,
+        false
+      );
+    }
+    else {
+      this.spinner.hide();
+    }
+
   }
 
   saveCenter(bounds: google.maps.LatLngBounds) {
-    console.log(bounds.getCenter().lat());
     this.tripSvc.updateCenter({ center: { lat: bounds.getCenter().lat(), lng: bounds.getCenter().lng() } }, this.tripID);
   }
 
@@ -330,14 +340,13 @@ export class TripComponent implements OnInit {
     /*
     Triggered when user selects a location from the search bar
     -Creates and populates the left side bar with info current view date
-
-rmation about the place
+  
+  rmation about the place
     -Adds a temporary Marker with a randomly generated color
     -Resizes the maps bounds to include this new location
     */
 
     let place = places[0]; //Using first result of search if there are multiple results
-    console.log(place);
     const bounds = new google.maps.LatLngBounds();
     this.clearTempMarkers();
     if (!this.isValidSearch(place)) {
@@ -347,13 +356,12 @@ rmation about the place
     this.currentSelectedPlace = place;
     let photoUrl = this.getPhotoUrl(place, false);
     place["photoUrl"] = photoUrl;
-    this.getLocationSummary(place).subscribe(res => 
-      {this.currentSelectedPlace["summary"] = res["data"];
-      console.log(res["data"]);
+    this.getLocationSummary(place).subscribe(res => {
+      this.currentSelectedPlace["summary"] = res["data"];
     });
     this.createInfoBar(place, false);
     this.currentSelectedColor = this.getColor();
-    let icon = this.createIcon( this.currentSelectedColor);
+    let icon = this.createIcon(this.currentSelectedColor);
     this.markers.push(
       new google.maps.Marker({
         map: this.map,
@@ -367,7 +375,6 @@ rmation about the place
     } else {
       this.bounds.extend(place.geometry.location);
     }
-    console.log(this.bounds);
     this.map.setCenter(this.bounds.getCenter());
     if (!this.openedLocInfo) {
       this.ToggleLocInfo();
@@ -375,6 +382,25 @@ rmation about the place
     }
 
   }
+
+
+  addSingleMarkerListener(marker: google.maps.Marker, place: any) {
+    //Listens for clicks on icons to display information about the saved location
+    marker.addListener('click', () => {
+      this.singleMarkerClickHandler(marker, place);
+    });
+
+  }
+
+  singleMarkerClickHandler(marker: google.maps.Marker, place: any) {
+    this.createInfoBar(place, true);
+    if (!this.openedLocInfo) {
+      this.ToggleLocInfo();
+
+    }
+
+  }
+
 
   /*
   ****************
@@ -384,11 +410,23 @@ rmation about the place
 
 
   saveLocation() {
+    if (this.savedPlaces.length == 0) {
+      this.tripSvc.updateCenter({ center: { lat: this.currentSelectedPlace.geometry.location.lat(), lng: this.currentSelectedPlace.geometry.location.lng() } }, this.tripID);
+    }
     this.currentSelectedPlace["color"] = this.currentSelectedColor;
     this.currentSelectedPlace["activities"] = [];
-    console.log(this.currentSelectedPlace);
-    console.log("Trip id: " + this.tripID);
     this.savedPlaces.push(this.currentSelectedPlace);
+    this.clearTempMarkers();
+    let icon = this.createIcon(this.currentSelectedColor);
+    console.log(this.currentSelectedColor);
+    let marker = new google.maps.Marker({
+      map: this.map,
+      icon,
+      title: this.currentSelectedPlace.name,
+      position: this.currentSelectedPlace.geometry.location,
+    })
+    this.savedMarkers.push(marker);
+    this.addSingleMarkerListener(marker, this.currentSelectedPlace)
     this.tripSvc.addSubTrip(this.currentSelectedPlace, this.tripID);
     this.calculateAndDisplayRoute(
       this.directionsService,
@@ -398,9 +436,22 @@ rmation about the place
   }
 
   planTrip() {
-    console.log("GOTO SubTrip planning page");
-   // this.router.navigate(['/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"]]);
-    this.router.navigateByUrl('/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"], { state: { "data": this.currentSelectedPlace } });
+
+    //this.router.navigate(['/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"]]);
+    let data: any = {};
+    console.log(this.currentSelectedPlace);
+    if (typeof this.currentSelectedPlace.geometry.location.lat === 'function') {
+      data["center"] = { lat: this.currentSelectedPlace.geometry.location.lat(), lng: this.currentSelectedPlace.geometry.location.lng() };
+      data["viewport"] = { lat: this.currentSelectedPlace.geometry.viewport.Wa, lng: this.currentSelectedPlace.geometry.viewport.Sa };
+    }
+    else {
+      data["center"] = this.currentSelectedPlace.geometry.location;
+      data["viewport"] = this.currentSelectedPlace.geometry.viewport;
+    }
+
+    // data["center"] = { lat: this.currentSelectedPlace.location.lat(), lng: this.currentSelectedPlace.location.lng() };
+
+    this.router.navigateByUrl('/trip/' + this.tripID + '/' + this.currentSelectedPlace["place_id"], { state: { "data": data } });
 
   }
 
@@ -449,7 +500,6 @@ rmation about the place
   }
   clearTempMarkers() {
     this.markers.forEach((marker) => {
-      console.log(marker);
       marker.setMap(null);
     });
     this.markers = [];
@@ -459,7 +509,9 @@ rmation about the place
   ****************
   ANIMATION FUNCTIONS
   ****************
+   
   */
+
   expandCalendar() {
     if (this.openedCalendar) {
       document.getElementById("calendarBar").animate([
@@ -474,6 +526,12 @@ rmation about the place
       this.openedCalendar = false;
     }
     else {
+      // hacky way to throw on new thread!
+      setTimeout(() => {
+        this.calendar.initializeDateToPlaceBindings();
+      }
+        , 0);
+
       document.getElementById("calendarBar").animate([
         // keyframes
 
@@ -523,19 +581,49 @@ rmation about the place
     );
   }
 
+  deleteMarker(place: any) {
+    console.log(this.savedMarkers);
+    this.savedMarkers.forEach((marker) => {
+      console.log(place.geometry.location);
+      if (place["geometry"]["location"]["lat"] == marker.getPosition().lat() &&
+        place["geometry"]["location"]["lng"] == marker.getPosition().lng()) {
+        marker.setMap(null);
+      }
+    });
 
+
+
+  }
 
   deleteSubTrip() {
     console.log(this.currentSelectedPlace.name);
     console.log("Trip id: " + this.tripID);
-    this.tripSvc.deleteSubTrip({ Name: this.currentSelectedPlace.place_id }, this.tripID);
+    this.tripSvc.deleteSubTrip({ Name: this.currentSelectedPlace.place_id }, this.tripID)
+      .subscribe(res => {
+        console.log('success', res);
+        this.savedPlaces.splice(
+          this.savedPlaces.findIndex(place => place.place_id == this.currentSelectedPlace.place_id), 1);
+        this.deleteMarker(this.currentSelectedPlace);
+        this.calculateAndDisplayRoute(
+          this.directionsService,
+          this.directionsRenderer,
+          false
+        );
+
+      });
+
   }
 
-  getLocationSummary(place:any){
+  getLocationSummary(place: any) {
     let query: string = "";
-
     query += place["address_components"][0]["long_name"] + ", ";
-    query += place["address_components"][2]["long_name"];
+    place["address_components"].forEach(element => {
+      if (element["types"].includes("administrative_area_level_1")) {
+        query += element["long_name"];
+      }
+    });
+    console.log(place);
+
     console.log(query);
     return this.tripSvc.getLocationSummary(query);
   }

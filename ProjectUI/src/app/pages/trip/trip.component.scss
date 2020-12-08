@@ -211,7 +211,7 @@
 #routePlanner{
   z-index: 1000;
   height: 100%;
-  padding: 2vw 0vw 0vw 1vw;
+  padding: 1vh 0vw 0vw 1vw;
   border-color: white;
 
   background-color: white;
@@ -229,7 +229,7 @@
   justify-content: center;
 }
 .locList{
-  height: 70%;
+  height: 10vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -292,13 +292,14 @@
   width:100%;
   position: absolute;
   bottom:0;
-  height: 10vw;
+  height: 15vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
 #optimizeButtonContainer{
+  height: 4vh;
   display: flex;
   justify-content: space-evenly;
 }
@@ -320,4 +321,13 @@ background-color:   #e9ecef;
 
 .locButs{
   margin:.5vw;
+}
+
+
+button:disabled{
+  opacity: 0.35; 
+  color: #444;
+}
+.loading-text[_ngcontent-bni-c171]{
+height: 100% !important;
 }

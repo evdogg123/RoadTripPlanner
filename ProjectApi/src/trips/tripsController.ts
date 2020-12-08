@@ -5,7 +5,7 @@ import { Database } from '../common/MongoDB';
 import { Config } from '../config';
 import { Client, defaultAxiosInstance } from "@googlemaps/google-maps-services-js";
 import { } from 'googlemaps';
-import  { AxiosInstance } from "axios";
+import { AxiosInstance } from "axios";
 import wiki from 'wikijs';
 
 export class TripsController {
@@ -23,7 +23,7 @@ export class TripsController {
     updateSubTrip
     */
 
-    updateCenter(req: express.Request, res: express.Response){
+    updateCenter(req: express.Request, res: express.Response) {
         const tripId = Database.stringToId(req.params.tripId);
         console.log(req.body);
         console.log(tripId);
@@ -35,7 +35,7 @@ export class TripsController {
 
     getTrips(req: express.Request, res: express.Response) {
         console.log(req);
-      
+
         const user_id = req.body.authUser.email; //Don't think I need this?
         TripsController.db.getRecords(TripsController.tripsTable, { userId: user_id })
             .then((results) => res.send({ fn: 'getTrips', status: 'success', data: results }).end())
@@ -74,13 +74,13 @@ export class TripsController {
         console.log(tripId);
 
         const subTrip: SubTripsModel = SubTripsModel.fromObject(req.body);
-     
+
         //{ $push: {subTrips:req.body}}
-        TripsController.db.updateRecord(TripsController.tripsTable, { _id: tripId  },  {$addToSet: { 'subTrips': req.body }} )
+        TripsController.db.updateRecord(TripsController.tripsTable, { _id: tripId }, { $addToSet: { 'subTrips': req.body } })
             .then((results) => results ? (res.send({ fn: 'updateTrip', status: 'success' })) : (res.send({ fn: 'addSubTrip', status: 'failure', data: 'Not found' })).end())
             .catch(err => res.send({ fn: 'addSubTrip', status: 'failure', data: err }).end());
 
-       
+
     }
 
     /* deleteSubTrip(req: express.Request, res: express.Response){
@@ -94,14 +94,14 @@ export class TripsController {
             .catch(err => res.send({ fn: 'deleteSubTrip', status: 'failure', data: err }).end());
     } */
 
-    deleteSubTrip(req: express.Request, res: express.Response){
+    deleteSubTrip(req: express.Request, res: express.Response) {
         console.log("Trying to delete subTrip...");
         const id = Database.stringToId(req.params.id);
         //const subTrip = SubTripsModel.fromObject(req.body);
         //const formAddr = subTrip.formattedAddr;
         const placeid = req.body.Name;
         console.log(placeid);
-        TripsController.db.updateRecord(TripsController.tripsTable, {_id: id}, {$pull: {'subTrips': {place_id: placeid}}})
+        TripsController.db.updateRecord(TripsController.tripsTable, { _id: id }, { $pull: { 'subTrips': { place_id: placeid } } })
             .then((results) => results ? (res.send({ fn: 'deleteSubTrip', status: 'success' })) : (res.send({ fn: 'deleteSubTrip', status: 'failure', data: 'Not found' })).end())
             .catch(err => res.send({ fn: 'deleteSubTrip', status: 'failure', data: err }).end());
     }
@@ -140,38 +140,38 @@ export class TripsController {
             .catch((reason) => res.status(500).send(reason).end());
     }
 
-    editSubStrip(req: express.Request, res: express.Response){
+    editSubStrip(req: express.Request, res: express.Response) {
         console.log("Tring to edit subtrip...");
-        
+
     }
 
-   getWikiSearch(req: express.Request, res: express.Response){
-    console.log(req.params);
-    console.log(req.body);
-    wiki().page(req.params.data)
-    .then(page => page.summary())
-        .then(summary => res.send({"data":summary}));
+    getWikiSearch(req: express.Request, res: express.Response) {
+        console.log(req.params);
+        console.log(req.body);
+        wiki().page(req.params.data)
+            .then(page => page.summary())
+            .then(summary => res.send({ "data": summary }));
 
-       
-   }
 
-   addActivity(req: express.Request, res: express.Response){
-    const tripId = Database.stringToId(req.params.tripId);
-    const subTripId = req.params.subTripId;
-    TripsController.db.updateRecord(TripsController.tripsTable, { _id: tripId, "subTrips.place_id": subTripId},  {$addToSet: { 'subTrips.$.activities': req.body }} )
-    .then((results) => results ? (res.send({ fn: 'updateTrip', status: 'success' })) : (res.send({ fn: 'addSubTrip', status: 'failure', data: 'Not found' })).end())
-    .catch(err => res.send({ fn: 'addSubTrip', status: 'failure', data: err }).end());
+    }
 
-   }
-   getSubTrip(req: express.Request, res: express.Response){
+    addActivity(req: express.Request, res: express.Response) {
+        const tripId = Database.stringToId(req.params.tripId);
+        const subTripId = req.params.subTripId;
+        TripsController.db.updateRecord(TripsController.tripsTable, { _id: tripId, "subTrips.place_id": subTripId }, { $addToSet: { 'subTrips.$.activities': req.body } })
+            .then((results) => results ? (res.send({ fn: 'updateTrip', status: 'success' })) : (res.send({ fn: 'addSubTrip', status: 'failure', data: 'Not found' })).end())
+            .catch(err => res.send({ fn: 'addSubTrip', status: 'failure', data: err }).end());
 
-    const tripId = Database.stringToId(req.params.tripId);
-    const subTripId = req.params.subTripId;
-    console.log(tripId);
-    TripsController.db.getOneRecord(TripsController.tripsTable,  { _id: tripId, "subTrips.place_id": subTripId})
-        .then((results) => res.send({ fn: 'getTrip', status: 'success', data: results }).end())
-        .catch((reason) => res.status(500).send(reason).end());
+    }
+    getSubTrip(req: express.Request, res: express.Response) {
 
-   }
+        const tripId = Database.stringToId(req.params.tripId);
+        const subTripId = req.params.subTripId;
+        console.log(tripId);
+        TripsController.db.getOneRecord(TripsController.tripsTable, { _id: tripId, "subTrips.place_id": subTripId })
+            .then((results) => res.send({ fn: 'getTrip', status: 'success', data: results }).end())
+            .catch((reason) => res.status(500).send(reason).end());
+
+    }
 
 }

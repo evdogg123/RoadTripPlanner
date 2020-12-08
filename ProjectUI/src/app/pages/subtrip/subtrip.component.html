@@ -1,7 +1,7 @@
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0xQbma77tUGQYTH32GR7UJKatgV3vjl0&callback=initAutocomplete&libraries=places&v=weekly"
   defer>
-</script>
+  </script>
 
 <button mat-button class="floating-btn" (click)="goBack()">
   <mat-icon> arrow_back</mat-icon>
@@ -54,37 +54,38 @@
         <tbody id="results"></tbody>
       </table>
     </div>
+  </div>
 
 
-    <div style="display: none">
-      <div id="info-content">
-        <table>
-          <tr id="iw-url-row" class="iw_table_row">
-            <td id="iw-icon" class="iw_table_icon"></td>
-            <td id="iw-url"></td>
-          </tr>
-          <tr id="iw-address-row" class="iw_table_row">
-            <td class="iw_attribute_name">Address:</td>
-            <td id="iw-address"></td>
-          </tr>
-          <tr id="iw-phone-row" class="iw_table_row">
-            <td class="iw_attribute_name">Telephone:</td>
-            <td id="iw-phone"></td>
-          </tr>
-          <tr id="iw-rating-row" class="iw_table_row">
-            <td class="iw_attribute_name">Rating:</td>
-            <td id="iw-rating"></td>
-          </tr>
-          <tr id="iw-website-row" class="iw_table_row">
-            <td class="iw_attribute_name">Website:</td>
-            <td id="iw-website"></td>
-          </tr>
-          <button mat-button class="actionButton" (click)="saveActivity()">
-            Save
-          </button>
 
-        </table>
-      </div>
+  <div style="display: none">
+    <div id="info-content">
+      <table>
+        <tr id="iw-url-row" class="iw_table_row">
+          <td id="iw-icon" class="iw_table_icon"></td>
+          <td id="iw-url"></td>
+        </tr>
+        <tr id="iw-address-row" class="iw_table_row">
+          <td class="iw_attribute_name">Address:</td>
+          <td id="iw-address"></td>
+        </tr>
+        <tr id="iw-phone-row" class="iw_table_row">
+          <td class="iw_attribute_name">Telephone:</td>
+          <td id="iw-phone"></td>
+        </tr>
+        <tr id="iw-rating-row" class="iw_table_row">
+          <td class="iw_attribute_name">Rating:</td>
+          <td id="iw-rating"></td>
+        </tr>
+        <tr id="iw-website-row" class="iw_table_row">
+          <td class="iw_attribute_name">Website:</td>
+          <td id="iw-website"></td>
+        </tr>
+        <button mat-button class="actionButton" (click)="saveActivity()">
+          Save
+        </button>
+
+      </table>
     </div>
   </div>
 </div>

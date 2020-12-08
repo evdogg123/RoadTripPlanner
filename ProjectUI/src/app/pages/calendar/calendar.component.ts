@@ -37,7 +37,7 @@ const colors: any = {
 })
 export class CalendarComponent implements OnInit {
   @Input() savedPlaces;
-
+  oldSavedPlaces: any = [];
 
   selectedDayViewDate: Date;
   selectedDays: any = [];
@@ -84,10 +84,7 @@ export class CalendarComponent implements OnInit {
         }
 
       );
-      console.log(this.savedPlaces);
-      console.log(this.events);
       this.initializeDateToPlaceBindings();
-      this.view = CalendarView.Month;
       this.setView(CalendarView.Month);
       this.ref.detectChanges();
     }, 6000);
@@ -136,51 +133,13 @@ export class CalendarComponent implements OnInit {
 
 
   events: CalendarEvent[] = [
-    // {
-    //   start: subDays(startOfDay(new Date()), 1),
-    //   end: addDays(new Date(), 1),
-    //   title: 'A 3 day event',
-    //   color: colors.red,
-    //   actions: this.actions,
-    //   allDay: true,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true,
-    //   },
-    //   draggable: true,
-    // },
-    // {
-    //   start: startOfDay(new Date()),
-    //   title: 'An event with no end date',
-    //   color: colors.yellow,
-    //   actions: this.actions,
-    // },
-    // {
-    //   start: subDays(endOfMonth(new Date()), 3),
-    //   end: addDays(endOfMonth(new Date()), 3),
-    //   title: 'A long event that spans 2 months',
-    //   color: colors.blue,
-    //   allDay: true,
-    // },
-    // {
-    //   start: addHours(startOfDay(new Date()), 2),
-    //   end: addHours(new Date(), 2),
-    //   title: 'A draggable and resizable event',
-    //   color: colors.yellow,
-    //   actions: this.actions,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true,
-    //   },
-    //   draggable: true,
-    // },
   ];
 
 
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal, private ref:ChangeDetectorRef) { }
+  constructor(private modal: NgbModal, private ref: ChangeDetectorRef) { }
 
 
   // dayClicked(event): void {
@@ -223,8 +182,8 @@ export class CalendarComponent implements OnInit {
         this.selectedMonthViewDay = day;
         // day.cssClass = 'cal-day-selected1';
         if (this.dateToPlaceBindings[addDays(day.date, 1).toString()] == this.selectedPlace ||
-        this.dateToPlaceBindings[subDays(day.date, 1).toString()] == this.selectedPlace){
-            //Doesnt quite work should fix it if I have time
+          this.dateToPlaceBindings[subDays(day.date, 1).toString()] == this.selectedPlace) {
+          //Doesnt quite work should fix it if I have time
           day.backgroundColor = this.selectedPlace.color;
           day["location"] = this.selectedPlace.name;
           this.dateToPlaceBindings[day.date.toString()] = this.selectedPlace;
@@ -252,26 +211,25 @@ export class CalendarComponent implements OnInit {
   }
 
   beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
-    console.log("here!!?????????????");
-    console.log(this.dateToPlaceBindings);
+    console.log("IN beforeMonthViewRender");
     body.forEach((day) => {
       if (!this.dateIsValid(day.date)) {
         day.cssClass = 'cal-disabled';
       }
-      
+
       else if (
         this.selectedDays.some(
           (selectedDay) => selectedDay.date.getTime() === day.date.getTime()
         )
       ) {
-        day.backgroundColor =  this.dateToPlaceBindings[day.date.toString()].color;
+        day.backgroundColor = this.dateToPlaceBindings[day.date.toString()].color;
         day["location"] = this.dateToPlaceBindings[day.date.toString()].name;
       }
-      else{
-        day.backgroundColor =  this.dateToPlaceBindings[day.date.toString()].color;
+      else {
+        day.backgroundColor = this.dateToPlaceBindings[day.date.toString()].color;
         day["location"] = this.dateToPlaceBindings[day.date.toString()].name;
       }
-      
+
     });
   }
   eventTimesChanged({
@@ -325,46 +283,69 @@ export class CalendarComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
   dateIsValid(date: Date): boolean {
-    return date >= this.startDate && date <= this.endDate;
+    return date >= startOfDay(this.startDate) && date <= this.endDate;
   }
 
-  setSelectedLocation(place:any){
-   console.log(place);
-   this.selectedPlace = place;
-}
-initializeDateToPlaceBindings(){
-  if (this.savedPlaces.dateToPlaceBindings){
-    //To do, send stuff to backend save these bindings
+  setSelectedLocation(place: any) {
+    console.log(place);
+    this.selectedPlace = place;
   }
-  else{
-    let current = this.startDate;
-    let end = this.endDate;
-    let diffTime = end.getTime() - current.getTime(); 
-    let numDays = (diffTime / (1000 * 3600 * 24)) + 1; 
-    console.log(numDays);
-    let numLocations = this.savedPlaces.length;
+  initializeDateToPlaceBindings() {
+    if (this.savedPlaces.dateToPlaceBindings) {
+      //To do, send stuff to backend save these bindings
+    }
+    else if (!this.isSameSavedPlaces(this.oldSavedPlaces, this.savedPlaces)) {
+      let current = this.startDate;
+      let end = this.endDate;
+      let diffTime = end.getTime() - current.getTime();
+      let numDays = (diffTime / (1000 * 3600 * 24)) + 1;
+      console.log(numDays);
+      let numLocations = this.savedPlaces.length;
+      console.log("NUMBER OR LOCATIONS: " + numLocations);
+      let daysPerLocation = Math.floor(numDays / numLocations);
+      let extraDays = numDays % numLocations;
+      console.log(extraDays);
+      console.log(daysPerLocation);
 
-    let daysPerLocation = Math.floor(numDays / numLocations);
-    let extraDays = numDays % numLocations;
-    console.log(extraDays);
-    console.log(daysPerLocation);
+      for (let i = 0; i < numLocations; i++) {
+        for (let j = 0; j < daysPerLocation; j++) {
+          this.dateToPlaceBindings[current.toString()] = this.savedPlaces[i]
+          current = addDays(current, 1);
+        }
+        if (extraDays > 0) {
+          this.dateToPlaceBindings[current.toString()] = this.savedPlaces[i];
+          current = addDays(current, 1);
+          extraDays -= 1;
+        }
 
-    for (let i = 0; i < numLocations; i++){
-      for (let j = 0; j < daysPerLocation; j++){
-        this.dateToPlaceBindings[current.toString()] = this.savedPlaces[i]
-        current = addDays(current, 1);
       }
-      if (extraDays > 0){
-        this.dateToPlaceBindings[current.toString()] = this.savedPlaces[i];
-        current = addDays(current, 1);
-        extraDays -= 1;
+      console.log(this.dateToPlaceBindings);
+      this.setView(CalendarView.Week);
+      this.ref.detectChanges();
+      this.setView(CalendarView.Month);
+      this.ref.detectChanges();
+      this.oldSavedPlaces = JSON.parse(JSON.stringify(this.savedPlaces));
+
+    }
+
+  }
+
+  isSameSavedPlaces(oldSaved: any, newSaved: any) {
+    console.log(oldSaved);
+    console.log(newSaved);
+    if (oldSaved.length != newSaved.length) {
+      return false;
+    }
+    else {
+      for (let i = 0; i < oldSaved.length; i++) {
+        if (oldSaved[i]["formatted_address"] != newSaved[i]["formatted_address"]) {
+          return false;
+        }
       }
-     console.log(this.dateToPlaceBindings);
+      return true;
     }
 
 
   }
-
-}
 
 }
