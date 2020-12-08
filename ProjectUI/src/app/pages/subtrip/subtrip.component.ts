@@ -372,7 +372,7 @@ export class SubtripComponent implements OnInit {
             this.subTripLocation = res["data"]["subTrips"].filter((item) => { return item.place_id == this.subTripID; })[0];
             console.log(this.subTripLocation);
 
-            this.alertService.success("Activity planned!"); 
+            this.alertService.success("Activity planned!", {autoClose: true}); 
 
           }
         ));

@@ -445,7 +445,7 @@ export class TripComponent implements OnInit {
       false
     );
 
-    this.alertService.success("Stop in " + this.currentSelectedPlace.name + " saved!"); 
+    this.alertService.success("Stop in " + this.currentSelectedPlace.name + " saved!", {autoClose: true}); 
   }
 
   planTrip() {
@@ -477,11 +477,11 @@ export class TripComponent implements OnInit {
   isValidSearch(place: any) {
 
     if (!place.geometry) {
-      this.alertService.error("Invalid location. Please enter the name of a city.")
+      this.alertService.error("Invalid location. Please enter the name of a city.", {autoClose: true})
       return false;
     }
     if (!place.types.includes("locality")) {
-      this.alertService.error("Invalid location. Please enter the name of a city.")
+      this.alertService.error("Invalid location. Please enter the name of a city.", {autoClose: true})
       return false;
     }
     return true;
@@ -624,7 +624,7 @@ export class TripComponent implements OnInit {
           false
         );
 
-        this.alertService.error("Stop in " + this.currentSelectedPlace.name + " deleted. (click x to dismiss)")
+        this.alertService.error("Stop in " + this.currentSelectedPlace.name + " removed", {autoClose: true}); 
 
       });
 

@@ -50,7 +50,7 @@ export class TripCardComponent implements OnInit {
     this.projSvc.deleteTrip(id, id).subscribe(res => this.projSvc.getTrips().subscribe(result=>{
       console.log(result.data);
       this.tripsSvc.trips=result.data;
-      this.alertService.error("Trip deleted: " + this.trip.name + " (click x to dismiss)"); 
+      this.alertService.error("Trip deleted: " + this.trip.name, {autoClose: true}); 
     }));
       this.del_confirm = false; 
   }

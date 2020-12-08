@@ -28,7 +28,7 @@ export class ActivityCardComponent implements OnInit {
     // this.projSvc.deleteTrip(id, id).subscribe(res => this.projSvc.getTrips().subscribe(result=>{
       // console.log(result.data);
       // this.tripsSvc.trips=result.data;
-      this.alertService.error("Activity deleted: " + this.activity.name + " (click x to dismiss)"); 
+      this.alertService.error("Activity deleted: " + this.activity.name, {autoClose: true}); 
     // }));
       this.del_confirm = false; 
   }
