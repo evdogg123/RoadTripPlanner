@@ -21,7 +21,11 @@
                 <button (click)="deleteActivity(activity._id)" [ngClass]="{'btn btn-sm btn-danger': del_confirm, 'hide': !del_confirm}" type="button" id="del"
                     class="">Confirm</button>
             </div>
-            <small class="text-muted" [ngClass]="{'hide': del_confirm}">{{activity.rating}} stars</small>
+            <div class="d-flex justify-content-between align-items-center">
+                <mat-icon *ngIf="is_food" [ngClass]="{'hide': del_confirm}">local_dining</mat-icon>
+                <mat-icon *ngIf="is_lodging" [ngClass]="{'hide': del_confirm}">local_hotel</mat-icon>
+                <mat-icon *ngIf="is_tourist" [ngClass]="{'hide': del_confirm}">local_see</mat-icon>
+            </div>
         </div>
 
     </div>
