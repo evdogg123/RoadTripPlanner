@@ -9,10 +9,26 @@ import { AlertService } from '../_alert';
 export class ActivityCardComponent implements OnInit {
   @Input() activity;
   del_confirm: boolean = false;
+  is_food: boolean = false; 
+  is_lodging: boolean = false; 
+  is_tourist: boolean = false; 
 
   constructor(protected alertService: AlertService) { }
 
   ngOnInit(): void {
+    let types = this.activity.types; 
+    for (var i = 0; i < types.length; i++) {
+        if (types[i] == "food") {
+          this.is_food = true; 
+        }
+        if (types[i] == "lodging") {
+          this.is_lodging = true; 
+        }
+        if (types[i] == "tourist_attraction") {
+          this.is_tourist = true;
+        }
+    }
+
 
   }
 
