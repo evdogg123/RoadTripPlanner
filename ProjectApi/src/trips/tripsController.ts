@@ -148,9 +148,11 @@ export class TripsController {
     getWikiSearch(req: express.Request, res: express.Response) {
         console.log(req.params);
         console.log(req.body);
-        wiki().page(req.params.data)
-            .then(page => page.summary())
-            .then(summary => res.send({ "data": summary }));
+        let response: any = {};
+        wiki().page(req.params.data).then(page =>
+            Promise.all([page.images(), page.summary(), page.mainImage()])
+        ).then(
+            data => res.send({ "data": data }));
 
 
     }

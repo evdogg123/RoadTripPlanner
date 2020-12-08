@@ -30,13 +30,11 @@
   </div>
   <mat-menu #menu="matMenu">
     <button mat-menu-item *ngFor="let place of this.savedPlaces" class="paintBrushColor" value="place.name"
-      (click)="setSelectedLocation(place)">
+      [style.background-color]="place.color" (click)="setSelectedLocation(place)">
       {{ place.name }}
     </button>
   </mat-menu>
-  <div *ngIf="this.selectedPlace" [style.background-color]="this.selectedPlace.color">
 
-  </div>
 </div>
 <br />
 <div [ngSwitch]="view">

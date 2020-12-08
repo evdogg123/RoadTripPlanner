@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView, } from 'angular-calendar';
 import { ViewEncapsulation } from '@angular/core';
-
+import { AlertService } from 'src/app/elements/_alert';
 
 const colors: any = {
   red: {
@@ -107,7 +107,7 @@ export class CalendarComponent implements OnInit {
 
   activeDayIsOpen: boolean = false;
 
-  constructor(private modal: NgbModal, private ref: ChangeDetectorRef) { }
+  constructor(private modal: NgbModal, private ref: ChangeDetectorRef, protected alertService: AlertService) { }
 
 
   // dayClicked(event): void {
@@ -152,9 +152,19 @@ export class CalendarComponent implements OnInit {
         if (this.dateToPlaceBindings[addDays(day.date, 1).toString()] == this.selectedPlace ||
           this.dateToPlaceBindings[subDays(day.date, 1).toString()] == this.selectedPlace) {
           //Doesnt quite work should fix it if I have time
-          day.backgroundColor = this.selectedPlace.color;
-          day["location"] = this.selectedPlace.name;
-          this.dateToPlaceBindings[day.date.toString()] = this.selectedPlace;
+          if (!this.isOnlyDay(this.dateToPlaceBindings[day.date.toString()])) {
+            day.backgroundColor = this.selectedPlace.color;
+            day["location"] = this.selectedPlace.name;
+            this.dateToPlaceBindings[day.date.toString()] = this.selectedPlace;
+          }
+          else {
+            this.alertService.error("Invalid Operation", { autoClose: true });
+          }
+
+
+        }
+        else {
+          this.alertService.error("Invalid Operation", { autoClose: true });
         }
 
 
@@ -167,6 +177,20 @@ export class CalendarComponent implements OnInit {
 
   }
 
+  isOnlyDay(place: any) {
+    let count = 0;
+    console.log(place);
+    for (let [key, value] of Object.entries(this.dateToPlaceBindings)) {
+      if (this.dateToPlaceBindings[key]["formatted_address"] == place["formatted_address"]) {
+        count += 1;
+        if (count > 1) {
+          return false;
+        }
+      }
+    }
+    return true;
+
+  }
   beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
     console.log("IN beforeMonthViewRender");
     body.forEach((day) => {

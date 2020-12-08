@@ -49,6 +49,7 @@ export class TripComponent implements OnInit {
   totalMinutes: number;
   totalMilesStr: string;
   totalTimeStr: string;
+  colorsUsed: number[] = [];
   selectedDayViewDate: Date;
   //Front-end HTML logic
   saveLocButtonVisible = false;
@@ -82,6 +83,7 @@ export class TripComponent implements OnInit {
           this.initialCenter = this.trip["center"];
           this.savedPlaces = this.trip["subTrips"];
           this.tripID = params.get('tripID');
+          this.initColorsUsed();
           this.createGoogleMap();
         });
     });
@@ -271,12 +273,13 @@ export class TripComponent implements OnInit {
     //Handles both saved locations and locations returned by the user's search
 
     this.currentSelectedPlace = place;
-    let photoUrl = this.getPhotoUrl(place, saved);
-    document.getElementById('locImg').setAttribute('src', photoUrl);
+    let photoUrl = this.currentSelectedPlace.photoUrl;
+
     if (saved) {
       this.planTripButtonVisible = true;
       this.saveLocButtonVisible = false;
       this.deleteButtonVisible = true;
+      document.getElementById('locImg').setAttribute('src', this.currentSelectedPlace["photoUrl"]);
     }
     else {
       this.planTripButtonVisible = false;
@@ -365,12 +368,28 @@ export class TripComponent implements OnInit {
     }
     this.currentSelectedPlace = null;
     this.currentSelectedPlace = place;
-    let photoUrl = this.getPhotoUrl(place, false);
-    place["photoUrl"] = photoUrl;
     this.getLocationSummary(place).subscribe(res => {
-      this.currentSelectedPlace["summary"] = res["data"];
+      let found = false;
+      for (let i = 0; i < res["data"][0].length; i++) {
+        if (res["data"][0][i].match(/collage/i)) {
+          console.log("found good image");
+          this.currentSelectedPlace["photoUrl"] = res["data"][0][i];
+          found = true;
+          break;
+        }
+        else if (res["data"][0][i].match(/downtown|skyline/i)) {
+          this.currentSelectedPlace["photoUrl"] = res["data"][0][i];
+          found = true;
+        }
+      }
+      if (!found) {
+        this.currentSelectedPlace["photoUrl"] = res["data"][2];
+      }
+      this.currentSelectedPlace["summary"] = res["data"][1];
+      document.getElementById('locImg').setAttribute('src', this.currentSelectedPlace["photoUrl"]);
+      this.createInfoBar(place, false);
     });
-    this.createInfoBar(place, false);
+
     this.currentSelectedColor = this.getColor();
     let icon = this.createIcon(this.currentSelectedColor);
     this.markers.push(
@@ -499,18 +518,29 @@ export class TripComponent implements OnInit {
   }
 
   getColor() {
-    return "hsl(" + 360 * Math.random() + ',' +
+    let uniqueColorFound = false;
+    let count = 0;
+    let h: number;
+    while (!uniqueColorFound && count < 20) {
+      h = 360 * Math.random();
+      count += 1;
+      let validColor = true;
+      for (let i = 0; i < this.colorsUsed.length; i++) {
+        if (Math.abs(h - this.colorsUsed[i]) < 20) {
+          validColor = false;
+          break;
+        }
+      }
+      if (validColor) {
+        uniqueColorFound = true;
+      }
+    }
+    this.colorsUsed.push(h);
+    return "hsl(" + h + ',' +
       100 + '%,' +
       50 + '%)'
   }
-  getPhotoUrl(place: any, saved: boolean) {
-    if (saved) {
-      return place["photoUrl"];
-    }
-    else {
-      return place.photos[0].getUrl({ maxWidth: 500, maxHeight: 500 });
-    }
-  }
+
   clearTempMarkers() {
     this.markers.forEach((marker) => {
       marker.setMap(null);
@@ -652,6 +682,17 @@ export class TripComponent implements OnInit {
 
     console.log(query);
     return this.tripSvc.getLocationSummary(query);
+  }
+  initColorsUsed() {
+    this.savedPlaces.forEach(
+      place => {
+        let i = place["color"].indexOf("(");
+        let j = place["color"].indexOf(",");
+        let str = String(place["color"]);
+        this.colorsUsed.push(Number(str.slice(i + 1, j)));
+      }
+    );
+    console.log(this.colorsUsed);
   }
 
 }

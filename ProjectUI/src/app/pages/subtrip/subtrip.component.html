@@ -22,29 +22,35 @@
 
   <div class="col p-0">
 
-    <div class="centered">
-      <mat-button-toggle-group class="m-auto" name="fontStyle" aria-label="Font Style">
-        <mat-button-toggle class="bg-primary" value="restaurant" (change)="onValChange($event.value)">
-          <mat-icon> local_dining</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle class="bg-primary" value="lodging" (change)="onValChange($event.value)">
-          <mat-icon> local_hotel</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle class="bg-primary" value="tourist_attraction" (change)="onValChange($event.value)">
-          <mat-icon> local_see</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
+
+
 
     <div #gmap class="map" id="googleMap">
     </div>
+    <div id="sideBar">
+      <div id="toggleContainer">
+        <mat-button-toggle-group class="m-auto" name="fontStyle" aria-label="Font Style">
+          <mat-button-toggle class="bg-primary" value="restaurant" (change)="onValChange($event.value)">
+            <mat-icon> local_dining</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle class="bg-primary" value="lodging" (change)="onValChange($event.value)">
+            <mat-icon> local_hotel</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle class="bg-primary" value="tourist_attraction" (change)="onValChange($event.value)">
+            <mat-icon> local_see</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
 
-    <div class="listing">
-      <table id="resultsTable">
-        <tbody id="results"></tbody>
-      </table>
+
+      <div class="listing">
+        <table id="resultsTable">
+          <tbody id="results"></tbody>
+        </table>
+      </div>
     </div>
   </div>
+
 
 
 
