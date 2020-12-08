@@ -88,6 +88,9 @@ export class TripComponent implements OnInit {
     setTimeout(() => {
       if (this.savedPlaces.length > 0) {
         this.initSavedSubTripData();
+
+      }
+      else {
         this.spinner.hide();
       }
     }, 5000);
@@ -326,6 +329,7 @@ export class TripComponent implements OnInit {
       );
     }
     else {
+      console.log("here");
       this.spinner.hide();
     }
 
@@ -596,6 +600,7 @@ export class TripComponent implements OnInit {
   }
 
   deleteSubTrip() {
+    this.optimized = false;
     console.log(this.currentSelectedPlace.name);
     console.log("Trip id: " + this.tripID);
     this.tripSvc.deleteSubTrip({ Name: this.currentSelectedPlace.place_id }, this.tripID)

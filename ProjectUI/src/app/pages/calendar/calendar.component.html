@@ -1,128 +1,78 @@
-<script 
-src="https://code.jquery.com/jquery-3.4.1.js" 
-integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" 
-crossorigin="anonymous"> 
-    </script> 
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+  </script>
 
 
 
-  <div class="row text-center">
-    <div class="col-md-4">
-      <div class="btn-group">
-        <div
-          class="btn btn-primary"
-          mwlCalendarPreviousView
-          [view]="view"
-          [(viewDate)]="viewDate"
-          (viewDateChange)="closeOpenMonthViewDay()"
-        >
+<div class="row text-center">
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
         <mat-icon> arrow_back</mat-icon>
-        </div>
-        <div
-          class="btn btn-outline-secondary"
-          mwlCalendarToday
-          [(viewDate)]="viewDate"
-        >
-          Today
-        </div>
-        <div
-          class="btn btn-primary"
-          mwlCalendarNextView
-          [view]="view"
-          [(viewDate)]="viewDate"
-          (viewDateChange)="closeOpenMonthViewDay()"
-        >
+      </div>
+      <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+        Today
+      </div>
+      <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
         <mat-icon> arrow_forward</mat-icon>
-        </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <h1>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h1>
-    </div>
-    <div id = paintBrushContainer class="col-md-4">
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" id = "brushBut">
+  </div>
+  <div class="col-md-4">
+    <h1>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h1>
+  </div>
+  <div id=paintBrushContainer class="col-md-4">
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" id="brushBut">
       <mat-icon>brush</mat-icon>
     </button>
   </div>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item *ngFor="let place of this.savedPlaces" [style.background-color]="place.color"
-       class = "paintBrushColor" value="place.name" (click)="setSelectedLocation(place)">
-        {{ place.name }}
-      </button>
-    </mat-menu>
-    <div *ngIf = "this.selectedPlace" [style.background-color]="this.selectedPlace.color">
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngFor="let place of this.savedPlaces" class="paintBrushColor" value="place.name"
+      (click)="setSelectedLocation(place)">
+      {{ place.name }}
+    </button>
+  </mat-menu>
+  <div *ngIf="this.selectedPlace" [style.background-color]="this.selectedPlace.color">
 
+  </div>
+</div>
+<br />
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+    [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
+    (beforeViewRender)="beforeMonthViewRender($event)" [cellTemplate]="customCellTemplate">
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+  </mwl-calendar-week-view>
+
+  <ng-template #customCellTemplate let-day="day" let-openDay="openDay" let-locale="locale"
+    let-tooltipPlacement="tooltipPlacement" let-highlightDay="highlightDay" let-unhighlightDay="unhighlightDay"
+    let-eventClicked="eventClicked" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody">
+    <div class="cal-cell-top">
+      <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+      <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+      <br>
+      <div *ngIf="day.location">
+        {{day.location}}
+      </div>
     </div>
-  </div>
-  <br />
-  <div [ngSwitch]="view">
-    <mwl-calendar-month-view
-      *ngSwitchCase="CalendarView.Month"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      [activeDayIsOpen]="activeDayIsOpen"
-      (dayClicked)="dayClicked($event.day)"
-      (eventClicked)="handleEvent('Clicked', $event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-      (beforeViewRender)="beforeMonthViewRender($event)"
-      [cellTemplate]="customCellTemplate"
-    >
-    </mwl-calendar-month-view>
-    <mwl-calendar-week-view
-      *ngSwitchCase="CalendarView.Week"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      (eventClicked)="handleEvent('Clicked', $event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-    >
-    </mwl-calendar-week-view>
-  
-<ng-template
-#customCellTemplate
-let-day="day"
-let-openDay="openDay"
-let-locale="locale"
-let-tooltipPlacement="tooltipPlacement"
-let-highlightDay="highlightDay"
-let-unhighlightDay="unhighlightDay"
-let-eventClicked="eventClicked"
-let-tooltipTemplate="tooltipTemplate"
-let-tooltipAppendToBody="tooltipAppendToBody">
-<div class="cal-cell-top">
-  <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
-  <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
-  <small *ngIf = "day.location">
-    {{day.location}}
-    </small
->
+
+    <div class="cal-events" *ngIf="day.events.length > 0">
+      <div class="cal-event" *ngFor="let event of day.events;"
+        [style.background-color]="day.backgroundColor ? day.backgroundColor : (event.color?.primary)"
+        [ngClass]="event?.cssClass" (mouseenter)="highlightDay.emit({event: event})"
+        (mouseleave)="unhighlightDay.emit({event: event})"
+        [mwlCalendarTooltip]="event.title | calendarEventTitle:'monthTooltip':event"
+        [tooltipPlacement]="tooltipPlacement" [tooltipEvent]="event" [tooltipTemplate]="tooltipTemplate"
+        [tooltipAppendToBody]="tooltipAppendToBody" mwlDraggable [class.cal-draggable]="event.draggable"
+        dragActiveClass="cal-drag-active" [dropData]="{event: event, draggedFrom: day}"
+        [dragAxis]="{x: event.draggable, y: event.draggable}" (mwlClick)="eventClicked.emit({ event: event })">
+      </div>
+    </div>
+  </ng-template>
+
 </div>
-
-<div class="cal-events" *ngIf="day.events.length > 0">
-  <div
-    class="cal-event"
-    *ngFor="let event of day.events;"
-    [style.background-color]="day.backgroundColor ? day.backgroundColor : (event.color?.primary)"
-    [ngClass]="event?.cssClass"
-    (mouseenter)="highlightDay.emit({event: event})"
-    (mouseleave)="unhighlightDay.emit({event: event})"
-    [mwlCalendarTooltip]="event.title | calendarEventTitle:'monthTooltip':event"
-    [tooltipPlacement]="tooltipPlacement"
-    [tooltipEvent]="event"
-    [tooltipTemplate]="tooltipTemplate"
-    [tooltipAppendToBody]="tooltipAppendToBody"
-    mwlDraggable
-    [class.cal-draggable]="event.draggable"
-    dragActiveClass="cal-drag-active"
-    [dropData]="{event: event, draggedFrom: day}"
-    [dragAxis]="{x: event.draggable, y: event.draggable}"
-    (mwlClick)="eventClicked.emit({ event: event })">
-  </div>
-</div>
-</ng-template>
-    
-  </div>
-
-
-

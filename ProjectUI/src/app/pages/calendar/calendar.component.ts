@@ -38,7 +38,7 @@ const colors: any = {
 export class CalendarComponent implements OnInit {
   @Input() savedPlaces;
   oldSavedPlaces: any = [];
-
+  paintBrushColor = "white"
   selectedDayViewDate: Date;
   selectedDays: any = [];
   selectedMonthViewDay: CalendarMonthViewDay;
@@ -52,38 +52,6 @@ export class CalendarComponent implements OnInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       console.log(this.startDate);
-      this.events.push(
-        {
-          start: this.startDate,
-          end: this.startDate,
-          title: 'Trip Begins!',
-          color: colors.green,
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: false,
-        }
-
-      );
-      this.events.push(
-        {
-          start: startOfDay(this.endDate),
-          end: startOfDay(this.endDate),
-          title: 'Trip Ends',
-          color: colors.red,
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: false,
-        }
-
-      );
       this.initializeDateToPlaceBindings();
       this.setView(CalendarView.Month);
       this.ref.detectChanges();
@@ -137,7 +105,7 @@ export class CalendarComponent implements OnInit {
 
 
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
 
   constructor(private modal: NgbModal, private ref: ChangeDetectorRef) { }
 
@@ -192,18 +160,7 @@ export class CalendarComponent implements OnInit {
 
 
       }
-      if (
-        (isSameDay(this.viewDate, day.date) && this.activeDayIsOpen === true) ||
-        day.events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-        setTimeout(() => {
-          this.activeDayIsOpen = false;
-          console.log("here");
-        }, 200);
-      }
+
       this.viewDate = day.date;
 
     }
@@ -222,12 +179,18 @@ export class CalendarComponent implements OnInit {
           (selectedDay) => selectedDay.date.getTime() === day.date.getTime()
         )
       ) {
-        day.backgroundColor = this.dateToPlaceBindings[day.date.toString()].color;
-        day["location"] = this.dateToPlaceBindings[day.date.toString()].name;
+
+        if (this.dateToPlaceBindings[day.date.toString()]) {
+          day.backgroundColor = this.dateToPlaceBindings[day.date.toString()].color;
+          day["location"] = this.dateToPlaceBindings[day.date.toString()].name;
+        }
       }
+
       else {
-        day.backgroundColor = this.dateToPlaceBindings[day.date.toString()].color;
-        day["location"] = this.dateToPlaceBindings[day.date.toString()].name;
+        if (this.dateToPlaceBindings[day.date.toString()]) {
+          day.backgroundColor = this.dateToPlaceBindings[day.date.toString()].color;
+          day["location"] = this.dateToPlaceBindings[day.date.toString()].name;
+        }
       }
 
     });
@@ -289,6 +252,7 @@ export class CalendarComponent implements OnInit {
   setSelectedLocation(place: any) {
     console.log(place);
     this.selectedPlace = place;
+    this.paintBrushColor = this.selectedPlace.color;
   }
   initializeDateToPlaceBindings() {
     if (this.savedPlaces.dateToPlaceBindings) {
