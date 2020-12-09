@@ -28,6 +28,7 @@ export class TripsRouter extends AppRouter{
         this.expressRouter.put('/trip/:id/editSubTrip',[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.editSubStrip);
         this.expressRouter.get("/wikiSearch/:data",TripsRouter.tripsController.getWikiSearch);
         this.expressRouter.put("/trip/:tripId/:subTripId",[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.addActivity);
+        this.expressRouter.delete("/trip/:tripId/:subTripId",[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.deleteActivity);
         this.expressRouter.get("/trip/:tripId/:subTripId",[SecurityMiddleware.RequireAuth],TripsRouter.tripsController.getSubTrip);
     }    
 }

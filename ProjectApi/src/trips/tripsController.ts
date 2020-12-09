@@ -163,12 +163,7 @@ export class TripsController {
             .then((results) => results ? (res.send({ fn: 'deleteActivity', status: 'success' })) : (res.send({ fn: 'deleteActivity', status: 'failure', data: 'Not found' })).end())
             .catch(err => res.send({ fn: 'deleteActivity', status: 'failure', data: err }).end());
     }
-
-
-
-
-    
-    
+ 
     getSubTrip(req: express.Request, res: express.Response) {
 
         const tripId = Database.stringToId(req.params.tripId);

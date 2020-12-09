@@ -44,7 +44,7 @@ export class ProjectsService {
     return this.http.put(`${this.path}trip/${tripId}/${subTripId}`, data);
   }
   deleteActivity(data: any, tripId: string, subTripId: string) {
-    return this.http.put(`${this.path}trip/${tripId}/${subTripId}`, data);
+    return this.http.delete(`${this.path}trip/${tripId}/${subTripId}`, data);
   }
   getSubTrip(tripId: string, subTripId: string) {
     return this.http.get(`${this.path}trip/${tripId}/${subTripId}`);
